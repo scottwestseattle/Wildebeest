@@ -3,6 +3,7 @@ package com.exerciser;
 import android.util.Log;
 
 import com.exerciser.Program.ProgramContent;
+import com.exerciser.sessions.content.SessionContent;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -33,7 +34,7 @@ public class RssReader {
     public volatile boolean parsingComplete = false;
 
     List<ProgramContent.ProgramItem> programItems = null;
-//session:    List<SessionContent.Session> sessionItems = null;
+    List<SessionContent.SessionItem> sessionItems = null;
 
     public RssReader(String url) {
         this.urlString = url;
@@ -44,11 +45,11 @@ public class RssReader {
         fetchXML();
     }
 
-//session:    public void fetchSessionList(List<SessionContent.Session> sessionItems, int courseId) {
-//session:        this.sessionItems = sessionItems;
-//session:        this.courseId = courseId;
-//session:        fetchXML();
-//session:    }
+    public void fetchSessionList(List<SessionContent.SessionItem> sessionItems, int courseId) {
+        this.sessionItems = sessionItems;
+        this.courseId = courseId;
+        fetchXML();
+    }
 
     public void fetchXML() {
 
@@ -151,9 +152,8 @@ public class RssReader {
 
                             this.sessionCount++; // count the session from the program list
 
-/*session:
                             if (null != this.sessionItems && -1 != this.courseId && this.programId == this.courseId) {
-                                SessionContent.Session item = new SessionContent.Session(
+                                SessionContent.SessionItem item = new SessionContent.SessionItem(
                                         this.sessionId,
                                         this.sessionName,
                                         this.sessionDescription,
@@ -165,7 +165,6 @@ public class RssReader {
 
                                 this.sessionItems.add(item);
                             }
- */
                         }
                         else if(name.equals("lesson_id")){
                             try {

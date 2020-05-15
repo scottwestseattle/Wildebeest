@@ -1,4 +1,4 @@
-package com.exerciser;
+package com.exerciser.sessions;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,8 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.exerciser.Program.ProgramContent;
-import com.exerciser.Program.ProgramContent.ProgramItem;
+import com.exerciser.R;
+import com.exerciser.sessions.content.SessionContent;
+import com.exerciser.sessions.content.SessionContent.SessionItem;
 
 /**
  * A fragment representing a list of Items.
@@ -21,7 +22,7 @@ import com.exerciser.Program.ProgramContent.ProgramItem;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ProgramsFragment extends Fragment {
+public class SessionsFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -33,13 +34,13 @@ public class ProgramsFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ProgramsFragment() {
+    public SessionsFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ProgramsFragment newInstance(int columnCount) {
-        ProgramsFragment fragment = new ProgramsFragment();
+    public static SessionsFragment newInstance(int columnCount) {
+        SessionsFragment fragment = new SessionsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -58,7 +59,7 @@ public class ProgramsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_programs_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_sessions_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -69,7 +70,15 @@ public class ProgramsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ProgramsRecyclerViewAdapter(ProgramContent.programList, mListener));
+
+            //
+            // call up to the activity to get the course id that was saved during the call from the main activity list
+            // todo: where should this be done?
+            //
+            SessionsActivity a = (SessionsActivity) getActivity();
+            SessionContent sessionContent = new SessionContent(a.courseId);
+
+            recyclerView.setAdapter(new SessionsRecyclerViewAdapter(sessionContent.sessionList, mListener));
         }
         return view;
     }
@@ -104,6 +113,6 @@ public class ProgramsFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(ProgramItem item);
+        void onListFragmentInteraction(SessionItem item);
     }
 }

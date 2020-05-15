@@ -8,6 +8,7 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
 import com.exerciser.Program.ProgramContent;
+import com.exerciser.sessions.SessionsActivity;
 
 import java.util.Locale;
 
@@ -27,15 +28,11 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
         // handle click from Program list: load Sessions
         //
 
-        /*
         Intent intent = new Intent(this, SessionsActivity.class);
         intent.putExtra("courseId", item.id);
         intent.putExtra("courseName", item.name);
         intent.putExtra("sessionCount", item.sessionCount);
-
         startActivity(intent);
-
-         */
     }
 
     @Override
@@ -54,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitle("Exerciser Programs");
+        setTitle("Programs");
 
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
 
