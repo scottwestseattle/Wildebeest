@@ -8,6 +8,7 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
 import com.exerciser.Program.ProgramContent;
+import com.exerciser.Program.ProgramsFragment;
 import com.exerciser.sessions.SessionsActivity;
 
 import java.util.Locale;

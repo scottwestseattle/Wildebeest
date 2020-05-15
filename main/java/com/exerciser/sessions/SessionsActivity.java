@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.exerciser.MainActivity;
 import com.exerciser.R;
+import com.exerciser.exercises.ExercisesActivity;
 import com.exerciser.sessions.content.SessionContent;
 
 public class SessionsActivity extends AppCompatActivity  implements SessionsFragment.OnListFragmentInteractionListener {
@@ -37,14 +38,11 @@ public class SessionsActivity extends AppCompatActivity  implements SessionsFrag
         // start the selected exercise
         //
 
-        /*
-        Intent intent = new Intent(this, ExerciseActivity.class);
+        Intent intent = new Intent(this, ExercisesActivity.class);
         intent.putExtra("sessionName", item.parent + ": Day " + item.number);
         intent.putExtra("sessionId", item.id);
         intent.putExtra("courseId", courseId);
         startActivity(intent);
-
-         */
     }
 
     public void navigateUp() {

@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <fragment
-        android:name="com.exerciser.ProgramsFragment"
+        android:name="com.exerciser.Program.ProgramsFragment"
         android:id="@+id/programsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

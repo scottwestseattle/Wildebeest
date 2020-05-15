@@ -1,30 +1,30 @@
-package com.exerciser;
+package com.exerciser.exercises;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.exerciser.ProgramsFragment.OnListFragmentInteractionListener;
-import com.exerciser.Program.ProgramContent.ProgramItem;
+import com.exerciser.R;
+import com.exerciser.exercises.StartFragment.OnListFragmentInteractionListener;
+import com.exerciser.exercises.content.ExerciseContent;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link ProgramItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link ExerciseItem} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRecyclerViewAdapter.ViewHolder> {
+public class StartRecyclerViewAdapter extends RecyclerView.Adapter<StartRecyclerViewAdapter.ViewHolder> {
 
-    private final List<ProgramItem> mValues;
+    private final List<ExerciseContent.ExerciseItem> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public ProgramsRecyclerViewAdapter(List<ProgramItem> items, OnListFragmentInteractionListener listener) {
+    public StartRecyclerViewAdapter(List<ExerciseContent.ExerciseItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -32,15 +32,18 @@ public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRe
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_programs, parent, false);
+                .inflate(R.layout.fragment_start, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.programName.setText(mValues.get(position).name);
-        holder.programDescription.setText(mValues.get(position).description);
+        holder.mIdView.setText(mValues.get(position).name);
+        holder.mContentView.setText(Integer.toString(mValues.get(position).runSeconds) + " seconds");
+
+        int id = holder.mView.getResources().getIdentifier(holder.mItem.imageName, "drawable", holder.mView.getContext().getPackageName());
+        holder.mImageView.setImageResource(id);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,27 +64,22 @@ public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRe
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public ProgramItem mItem;
-
-        CardView card_view;
-        TextView programName;
-        TextView programDescription;
-        TextView sessionCount;
-        RelativeLayout programLayout;
+        public final TextView mIdView;
+        public final TextView mContentView;
+        public final ImageView mImageView;
+        public ExerciseContent.ExerciseItem mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            card_view = (CardView) view.findViewById(R.id.card_view);
-            programName = (TextView)view.findViewById(R.id.program_name);
-            programDescription = (TextView)view.findViewById(R.id.program_description);
-            sessionCount = (TextView)view.findViewById(R.id.session_count);
-            programLayout = (RelativeLayout) view.findViewById(R.id.program_layout);
+            mIdView = (TextView) view.findViewById(R.id.program_name);
+            mContentView = (TextView) view.findViewById(R.id.content);
+            mImageView = (ImageView) view.findViewById(R.id.program_photo);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + programName.getText() + "'";
+            return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.exerciser;
+package com.exerciser.Program;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.exerciser.Program.ProgramContent;
 import com.exerciser.Program.ProgramContent.ProgramItem;
+import com.exerciser.R;
 
 /**
  * A fragment representing a list of Items.
