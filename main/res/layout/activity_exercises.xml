@@ -6,11 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".exercises.ExercisesActivity">
 
-    <fragment
+    <FrameLayout
+        android:id="@+id/fragment_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
+    <!-- fragment
         android:id="@+id/exercisesFragment"
         android:name="com.exerciser.exercises.StartFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" / -->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabPlay"

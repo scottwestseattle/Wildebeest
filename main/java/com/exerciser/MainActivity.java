@@ -15,7 +15,6 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ProgramsFragment.OnListFragmentInteractionListener
 {
-
     public TextToSpeech tts = null;
 
     public MainActivity()

@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.util.Log;
 import android.view.View;
 
@@ -14,7 +15,11 @@ import com.exerciser.R;
 import com.exerciser.exercises.content.ExerciseContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+import java.util.Set;
 
 public class ExercisesActivity extends AppCompatActivity  implements StartFragment.OnListFragmentInteractionListener {
 
@@ -32,8 +37,8 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         //
         Fragment f = getSupportFragmentManager().getPrimaryNavigationFragment();
         if (null != f) {
-            //todo: speak("Ready to start.", TextToSpeech.QUEUE_ADD);
-            //todo: NavHostFragment.findNavController(f).navigate(R.id.action_StartFragment_to_BreakFragment);
+            speak("Ready to start.", TextToSpeech.QUEUE_ADD);
+            loadFragment("BreakFragment");
         }
     }
     @Override
@@ -54,6 +59,8 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         String subTitle = exercises.exerciseList.size() + " exercises, Time: " + exercises.getTotalTime();
         setTitle(title + ": " + subTitle);
 
+        loadFragment("StartFragment");
+
         FloatingActionButton fabPlay = findViewById(R.id.fabPlay);
         fabPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,9 +70,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
                 Fragment fragment = getActiveFragment();
 
                 if (fragment instanceof StartFragment) {
-                    loadFragment();
-
-                    //todo: NavHostFragment.findNavController(fragment).navigate(R.id.action_StartFragment_to_BreakFragment);
+                    loadFragment("BreakFragment");
                 } else if (fragment instanceof BreakFragment) {
                     boolean paused = ((BreakFragment) fragment).onFabPlayPauseClicked();
                     setFabPlayIcon(paused);
@@ -74,7 +79,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
                     setFabPlayIcon(paused);
                 } else if (fragment instanceof FinishedFragment) {
                     reset();
-                    //todo: NavHostFragment.findNavController(fragment).navigate(R.id.action_finishedFragment_to_StartFragment);
+                    loadFragment("StartFragment");
                 }
             }
         });
@@ -88,7 +93,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
                 Fragment fragment = getActiveFragment();
 
                 if (fragment instanceof StartFragment) {
-                    //todo: NavHostFragment.findNavController(fragment).navigate(R.id.action_StartFragment_to_BreakFragment);
+                    loadFragment("BreakFragment");
                 } else if (fragment instanceof BreakFragment) {
                     boolean paused = ((BreakFragment) fragment).onFabNextClicked();
                     setFabPlayIcon(paused);
@@ -97,7 +102,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
                     setFabPlayIcon(paused);
                 } else if (fragment instanceof FinishedFragment) {
                     reset();
-                    //todo: NavHostFragment.findNavController(fragment).navigate(R.id.action_finishedFragment_to_StartFragment);
+                    loadFragment("StartFragment");
                 }
             }
         });
@@ -124,18 +129,61 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
                     ((ExerciseFragment) fragment).onHardStop();
                 } else if (fragment instanceof FinishedFragment) {
                     setFabPlayIcon(showPlayIcon);
-                    //todo: NavHostFragment.findNavController(fragment).navigate(R.id.action_finishedFragment_to_StartFragment);
+                    loadFragment("StartFragment");
+                }
+            }
+        });
+
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int ttsLang = tts.setLanguage(Locale.US);
+
+                    if (ttsLang == TextToSpeech.LANG_MISSING_DATA
+                            || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "The Language is not supported!");
+                    } else {
+                        Log.i("TTS", "Language Supported.");
+                    }
+
+                    Log.i("TTS", "Initialization success.");
+                    isSpeechLoaded = true;
+                    //speak("Speech has been initialized.", TextToSpeech.QUEUE_ADD);
+                    //speak("speech ready", TextToSpeech.QUEUE_ADD);
+                } else {
+                    Log.i("TTS", "TTS Initialization failed!");
                 }
             }
         });
 
     }
 
-    public void loadFragment()
-    {
+    public void loadFragment(String tag) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.exercisesFragment, new BreakFragment());
+
+        Fragment fragment = fm.findFragmentByTag(tag);
+        if (null == fragment) {
+            switch(tag) {
+                case "StartFragment":
+                    fragment = new StartFragment();
+                    break;
+                case "BreakFragment":
+                    fragment = new BreakFragment();
+                    break;
+                case "ExerciseFragment":
+                    fragment = new ExerciseFragment();
+                    break;
+                case "FinishedFragment":
+                    fragment = new FinishedFragment();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        ft.replace(R.id.fragment_holder, fragment);
         ft.commit();
     }
 
@@ -155,14 +203,17 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
     }
 
     public void speak(String text, int queueAction) {
-
-        /* todo:
-        int speechStatus = tts.speak(text, queueAction, null);
-        if (speechStatus == TextToSpeech.ERROR) {
-            Log.i("TTS", "Error in converting Text to Speech!");
+        if (null != tts) {
+            int speechStatus = tts.speak(text, queueAction, null);
+            if (speechStatus == TextToSpeech.ERROR) {
+                Log.i("TTS", "Error in converting Text to Speech!");
+            }
         }
+    }
 
-         */
+    public void shutup() {
+        if (null != tts && tts.isSpeaking())
+            tts.stop();
     }
 
     private Fragment getActiveFragment()
@@ -170,10 +221,6 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         FragmentManager fm = getSupportFragmentManager();
         List<Fragment> fragments = (null != fm) ? fm.getFragments() : null;
         Fragment fragment = (null != fragments && fragments.size() > 0) ? fragments.get(0) : null;
-
-        //Fragment nav = getSupportFragmentManager().getPrimaryNavigationFragment();
-        //List<Fragment> fragments = (null != nav) ? nav.getChildFragmentManager().getFragments() : null;
-        //Fragment fragment = (null != fragments && fragments.size() > 0) ? fragments.get(0) : null;
 
         return fragment;
     }
@@ -187,5 +234,60 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
     public void setFabButtonIcon(int buttonId, int buttonIcon) {
         FloatingActionButton fabPlay = findViewById(buttonId);
         fabPlay.setImageResource(buttonIcon);
+    }
+
+    public boolean isLoaded() {
+        return null != this.tts && this.isSpeechLoaded && this.exercises.isLoaded();
+    }
+
+    public boolean isLastExercise() {
+        return (this.currentExerciseIndex == this.exercises.exerciseList.size() - 1);
+    }
+
+    public int getTotalExercises() {
+        return this.exercises.exerciseList.size();
+    }
+
+    public int getTimerSeconds() {
+
+        int seconds = -1;
+
+        if (getCurrentExercise().isFirst()) {
+            seconds = this.exercises.startSeconds;
+        }
+        else {
+            // get break seconds from previous item NOT current item
+            if (this.currentExerciseIndex > 0)
+                seconds = this.exercises.exerciseList.get(this.currentExerciseIndex - 1).breakSeconds;
+        }
+
+        return seconds;
+    }
+
+    public ExerciseContent.ExerciseItem getNextExercise() {
+
+        ExerciseContent.ExerciseItem ex = null;
+
+        if (this.exercises.isLoaded()) {
+
+            this.currentExerciseIndex++;
+
+            if (this.currentExerciseIndex < this.exercises.exerciseList.size()) {
+                ex = this.exercises.exerciseList.get(this.currentExerciseIndex);
+            }
+        }
+
+        return ex;
+    }
+
+    public ExerciseContent.ExerciseItem getCurrentExercise() {
+        ExerciseContent.ExerciseItem ex = null;
+
+        if (this.currentExerciseIndex < this.exercises.exerciseList.size())
+        {
+            ex = this.exercises.exerciseList.get(this.currentExerciseIndex);
+        }
+
+        return ex;
     }
 }
