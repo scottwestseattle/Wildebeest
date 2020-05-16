@@ -50,7 +50,7 @@ public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRe
         String time = new SimpleDateFormat("mm:ss").format(new Date(((long) holder.mItem.seconds) * 1000));
         String description = "Total Time: " + time;
         holder.programDescription.setText(description);
-        //todo: holder.cardLayout.setBackgroundResource(R.drawable.bg_session_card);
+        holder.cardLayout.setBackgroundResource(R.drawable.bg_session_card);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

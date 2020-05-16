@@ -148,7 +148,8 @@ public class HandleXML {
 
                         else if(name.equals("imageName")){
                             // remove file extension so we can find the matching Android resource
-                            this.imageName = text.substring(0, text.lastIndexOf("."));
+                            //this.imageName = text.substring(0, text.lastIndexOf("."));
+                            this.imageName = text;
                         }
 
                         else{

@@ -22,11 +22,11 @@
 
             <ImageView
                 android:id="@+id/program_photo"
-                android:layout_width="250px"
+                android:layout_width="220px"
                 android:layout_height="250px"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="13dp"
                 />
 
             <TextView
@@ -36,7 +36,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@+id/program_photo"
-                android:textSize="20dp"
+                android:textSize="17dp"
                 />
 
             <TextView
