@@ -5,12 +5,14 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".exercises.ExerciseFragment">
+    tools:context=".exercises.ExerciseFragment"
+    android:layout_marginBottom="65dp"
+    >
 
     <ImageView
         android:id="@+id/imageViewCurrent"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="280dp"
         android:layout_marginBottom="0dp"
         android:src="@drawable/push_ups"
         app:layout_constraintBottom_toTopOf="@id/textview_exercise_name"
@@ -20,7 +22,7 @@
 
     <TextView
         android:id="@+id/textview_exercise_count"
-        android:textSize="16dp"
+        android:textSize="14dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

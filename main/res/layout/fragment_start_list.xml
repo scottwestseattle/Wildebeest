@@ -10,4 +10,6 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".exercises.StartFragment"
-    tools:listitem="@layout/fragment_start" />
+    tools:listitem="@layout/fragment_start"
+    android:layout_marginBottom="65dp"
+    />

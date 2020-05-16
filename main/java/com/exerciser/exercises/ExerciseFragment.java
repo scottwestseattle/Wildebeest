@@ -67,17 +67,9 @@ public class ExerciseFragment extends Fragment {
         loadCurrent();
     }
 
-    public void showFragment(String tag)
-    {
-        ExercisesActivity activity = (ExercisesActivity) getActivity();
-        if (null != activity) {
-            activity.loadFragment(tag);
-        }
-    }
-
     public void onHardStop() {
         stopTimer();
-        showFragment("StartFragment");
+        loadFragment("StartFragment");
     }
 
     public boolean onFabNextClicked() {
@@ -193,9 +185,9 @@ public class ExerciseFragment extends Fragment {
 
     private void showNextFragment() {
         if ( ((ExercisesActivity)getActivity()).isLastExercise() )
-            showFragment("FinishedFragment");
+            loadFragment("FinishedFragment");
         else
-            showFragment("BreakFragment");
+            loadFragment("BreakFragment");
     }
 
     private void startTimer(int seconds)
@@ -242,6 +234,14 @@ public class ExerciseFragment extends Fragment {
             TextView countDown = view.findViewById(R.id.textview_countdown);
             if (null != countDown)
                 countDown.setText(Integer.toString(seconds));
+        }
+    }
+
+    public void loadFragment(String tag)
+    {
+        ExercisesActivity activity = (ExercisesActivity) getActivity();
+        if (null != activity) {
+            activity.loadFragment(tag);
         }
     }
 }
