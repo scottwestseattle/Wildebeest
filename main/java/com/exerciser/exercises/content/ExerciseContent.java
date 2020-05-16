@@ -15,7 +15,6 @@ public class ExerciseContent {
     public static final int startSeconds = 15;
     public static final int breakEndCountdownSeconds = 5;
     public static final int exerciseEndCountdownSeconds = 10;
-    private static RssReader rss = null;
 
     /**
      * The array of items from the rss feed
@@ -26,8 +25,7 @@ public class ExerciseContent {
     {
         String url = "https://learnfast.xyz/lessons/rss/" + exerciseId;
         Log.i("parse", "Get Exercises from RSS...");
-        rss = new RssReader();
-        rss.fetchExerciseList(url, exerciseList);
+        RssReader.fetchExerciseList(url, exerciseList);
     }
 
     public String getTotalTime() {
@@ -53,7 +51,7 @@ public class ExerciseContent {
     }
 
     public boolean isLoaded() {
-        return (null != rss && rss.isLoaded());
+        return (RssReader.isLoaded());
     }
 
     /**

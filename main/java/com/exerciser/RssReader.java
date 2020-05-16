@@ -16,60 +16,65 @@ import java.util.List;
 
 public class RssReader {
 
-    private XmlPullParserFactory xmlFactoryObject;
-    public volatile boolean parsingComplete = false;
-    public String urlString = "";
+    static private XmlPullParserFactory xmlFactoryObject;
+    static private volatile boolean parsingComplete = false;
+    static public String urlString = "";
 
-    private String programName = "";
-    private int programId = -1;
-    private String programDescription = "";
-    private int sessionCount = 0;
+    static private String programName = "";
+    static private int programId = -1;
+    static private String programDescription = "";
+    static private int sessionCount = 0;
 
-    private int courseId = -1;
-    private int sessionId = -1;
-    private int sessionNumber = -1;
-    private String sessionName = "";
-    private String sessionDescription = "";
-    private int sessionExerciseCount = -1;
-    private int sessionSeconds = -1;
-    private String sessionParentName = "";
+    static private int courseId = -1;
+    static private int sessionId = -1;
+    static private int sessionNumber = -1;
+    static private String sessionName = "";
+    static private String sessionDescription = "";
+    static private int sessionExerciseCount = -1;
+    static private int sessionSeconds = -1;
+    static private String sessionParentName = "";
 
-    private String exerciseName = "";
-    private int exerciseRunSeconds = -1;
-    private int exerciseBreakSeconds = -1;
-    private String exerciseDescription = "";
-    private String exerciseImageName = "";
+    static private String exerciseName = "";
+    static private int exerciseRunSeconds = -1;
+    static private int exerciseBreakSeconds = -1;
+    static private String exerciseDescription = "";
+    static private String exerciseImageName = "";
 
-    List<ProgramContent.ProgramItem> programItems = null;
-    List<SessionContent.SessionItem> sessionItems = null;
-    List<ExerciseContent.ExerciseItem> exerciseItems = null;
+    static List<ProgramContent.ProgramItem> programItems = null;
+    static List<SessionContent.SessionItem> sessionItems = null;
+    static List<ExerciseContent.ExerciseItem> exerciseItems = null;
 
-    public RssReader()
+    private RssReader()
     {
+        // only allow static use
     }
 
-    public void fetchProgramList(String url, List<ProgramContent.ProgramItem> items) {
+    static public void fetchProgramList(String url, List<ProgramContent.ProgramItem> items) {
         items.clear();
-        this.programItems = items;
+        programItems = items;
+
         fetchXML(url);
     }
 
-    public void fetchSessionList(String url, List<SessionContent.SessionItem> items, int courseId) {
+    static public void fetchSessionList(String url, List<SessionContent.SessionItem> items, int id) {
         items.clear();
-        this.sessionItems = items;
-        this.courseId = courseId;
+        sessionItems = items;
+        courseId = id;
+
         fetchXML(url);
     }
 
-    public void fetchExerciseList(String url, List<ExerciseContent.ExerciseItem> items) {
+    static public void fetchExerciseList(String url, List<ExerciseContent.ExerciseItem> items) {
         items.clear();
-        this.exerciseItems = items;
+        exerciseItems = items;
+
         fetchXML(url);
     }
 
-    public void fetchXML(String url) {
+    static public void fetchXML(String url) {
 
-        this.urlString = url;
+        parsingComplete = false;
+        urlString = url;
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -113,7 +118,7 @@ public class RssReader {
         }
     }
 
-    public void parse(XmlPullParser myParser) {
+    static public void parse(XmlPullParser myParser) {
         int event;
         String text = null;
         int order = 1;
@@ -147,79 +152,79 @@ public class RssReader {
                         // the 'course' block
                         //
                         if(name.equals("course")){
-                            if (null != this.programItems) {
+                            if (null != programItems) {
                                 ProgramContent.ProgramItem item = new ProgramContent.ProgramItem(
-                                        this.programId,
-                                        this.programName,
-                                        this.programDescription,
+                                        programId,
+                                        programName,
+                                        programDescription,
                                         -1,
-                                        this.sessionCount
+                                        sessionCount
                                 );
 
-                                this.programItems.add(item);
+                                programItems.add(item);
 
-                                this.sessionCount = 0; // re-start the count
+                                sessionCount = 0; // re-start the count
                             }
                         }
                         else if (name.equals("course_name")){
-                            this.programName = text.trim();
+                            programName = text.trim();
                         }
                         else if(name.equals("course_id")){
                             try {
-                                this.programId = Integer.parseInt(text);
+                                programId = Integer.parseInt(text);
                             } catch(NumberFormatException nfe){}
                         }
                         else if(name.equals("course_description")){
-                            this.programDescription = text.trim();
+                            programDescription = text.trim();
                         }
                         //
                         // the 'lesson' block
                         //
                         else if(name.equals("lesson")){
 
-                            this.sessionCount++; // count the session from the program list
+                            sessionCount++; // count the session from the program list
 
-                            if (null != this.sessionItems && -1 != this.courseId && this.programId == this.courseId) {
+                            if (null != sessionItems && -1 != courseId && programId == courseId) {
                                 SessionContent.SessionItem item = new SessionContent.SessionItem(
-                                        this.sessionId,
-                                        this.sessionName,
-                                        this.sessionDescription,
-                                        this.sessionNumber,
-                                        this.sessionParentName,
-                                        this.sessionSeconds,
-                                        this.sessionExerciseCount
+                                        sessionId,
+                                        sessionName,
+                                        sessionDescription,
+                                        sessionNumber,
+                                        sessionParentName,
+                                        sessionSeconds,
+                                        sessionExerciseCount
                                 );
 
-                                this.sessionItems.add(item);
+                                sessionItems.add(item);
                             }
                         }
                         else if(name.equals("lesson_id")){
                             try {
-                                this.sessionId = Integer.parseInt(text);
+                                sessionId = Integer.parseInt(text);
                             } catch(NumberFormatException nfe){}
                         }
                         else if (name.equals("lesson_name")){
-                            this.sessionName = text.trim();
+                            sessionName = text.trim();
                         }
                         else if(name.equals("lesson_description")){
-                            this.sessionDescription = text.trim();
+                            sessionDescription = text.trim();
                         }
                         else if(name.equals("lesson_parent")){
-                            this.sessionParentName = text.trim();
+                            sessionParentName = text.trim();
                         }
                         else if(name.equals("lesson_number")){
                             try {
-                                this.sessionNumber = Integer.parseInt(text);
+                                sessionNumber = Integer.parseInt(text);
                             } catch(NumberFormatException nfe){}
                         }
                         else if(name.equals("lesson_exercise_count")){
                             try {
-                                this.sessionExerciseCount = Integer.parseInt(text);
+                                sessionExerciseCount = Integer.parseInt(text);
                             } catch(NumberFormatException nfe){}
                         }
                         else if(name.equals("lesson_seconds")){
                             try {
-                                this.sessionSeconds = Integer.parseInt(text);
+                                sessionSeconds = Integer.parseInt(text);
                             } catch(NumberFormatException nfe){}
                         }
                         //
@@ -228,37 +233,37 @@ public class RssReader {
                         if(name.equals("record")){
                             //Log.i("parse", "record end tag, save the record");
                             ExerciseContent.ExerciseItem ei = new ExerciseContent.ExerciseItem(
-                                    this.exerciseName,
-                                    this.exerciseDescription,
-                                    this.exerciseImageName,
-                                    this.exerciseRunSeconds,
-                                    this.exerciseBreakSeconds,
+                                    exerciseName,
+                                    exerciseDescription,
+                                    exerciseImageName,
+                                    exerciseRunSeconds,
+                                    exerciseBreakSeconds,
                                     order++,
-                                    this.exerciseDescription);
+                                    exerciseDescription);
 
-                            this.exerciseItems.add(ei);
+                            exerciseItems.add(ei);
                         }
                         else if (name.equals("name")){
-                            this.exerciseName = text.trim();
+                            exerciseName = text.trim();
                             Log.i("parse", "name value: " + text);
                         }
                         else if(name.equals("runSeconds")){
                             try {
-                                this.exerciseRunSeconds = testing ? testingRunSeconds : Integer.parseInt(text);
+                                exerciseRunSeconds = testing ? testingRunSeconds : Integer.parseInt(text);
                             } catch(NumberFormatException nfe){}
                         }
                         else if(name.equals("breakSeconds")){
                             try {
-                                this.exerciseBreakSeconds = testing ? testingBreakSeconds : Integer.parseInt(text);
+                                exerciseBreakSeconds = testing ? testingBreakSeconds : Integer.parseInt(text);
                             } catch(NumberFormatException nfe){}
                         }
                         else if(name.equals("description")){
-                            this.exerciseDescription = text.trim();
+                            exerciseDescription = text.trim();
                         }
                         else if(name.equals("imageName")){
                             // remove file extension so we can find the matching Android resource
-                            //this.imageName = text.substring(0, text.lastIndexOf("."));
-                            this.exerciseImageName = text;
+                            //imageName = text.substring(0, text.lastIndexOf("."));
+                            exerciseImageName = text;
                         }
 
                         //
@@ -283,8 +288,8 @@ public class RssReader {
         }
     }
 
-    public boolean isLoaded()
+    static public boolean isLoaded()
     {
-        return this.parsingComplete;
+        return parsingComplete;
     }
 }

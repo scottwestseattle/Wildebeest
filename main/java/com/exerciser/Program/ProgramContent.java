@@ -5,19 +5,9 @@ import android.util.Log;
 import com.exerciser.RssReader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/**
- * Helper class for providing sample content for user interfaces created by
- * Android template wizards.
- * <p>
- * TODO: Replace all uses of this class before publishing your app.
- */
 public class ProgramContent {
-
-    private static RssReader rss = null;
 
     /**
      * The array of items from the rss feed
@@ -31,8 +21,7 @@ public class ProgramContent {
     static {
         String url = "https://learnfast.xyz/courses/rss";
         Log.i("parse", "Getting program list from rss...");
-        rss = new RssReader();
-        rss.fetchProgramList(url, programList);
+        RssReader.fetchProgramList(url, programList);
     }
 
     private static void addItem(ProgramItem item) {
@@ -44,7 +33,7 @@ public class ProgramContent {
     }
 
     public boolean isLoaded() {
-        return (null != rss && rss.isLoaded());
+        return (RssReader.isLoaded());
     }
 
 

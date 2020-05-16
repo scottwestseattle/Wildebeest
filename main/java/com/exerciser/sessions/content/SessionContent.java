@@ -5,19 +5,10 @@ import android.util.Log;
 import com.exerciser.RssReader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/**
- * Helper class for providing sample content for user interfaces created by
- * Android template wizards.
- * <p>
- * TODO: Replace all uses of this class before publishing your app.
- */
 public class SessionContent {
 
-    private static RssReader rss = null;
     public static int courseId = -1;
     public static List<SessionContent.SessionItem> sessionList = new ArrayList<SessionItem>();
 
@@ -30,8 +21,7 @@ public class SessionContent {
         this.courseId = courseId;
         String url = "https://learnfast.xyz/courses/rss";
         Log.i("parse", "Getting Session list from rss...");
-        rss = new RssReader();
-        rss.fetchSessionList(url, sessionList, courseId);
+        RssReader.fetchSessionList(url, sessionList, courseId);
     }
 
     private static void addItem(SessionItem item) {
