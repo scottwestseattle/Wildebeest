@@ -7,26 +7,19 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.Voice;
-import android.util.Log;
 import android.view.View;
 
 import com.exerciser.R;
+import com.exerciser.Speech;
 import com.exerciser.exercises.content.ExerciseContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-import java.util.Set;
 
 public class ExercisesActivity extends AppCompatActivity  implements StartFragment.OnListFragmentInteractionListener {
 
     public static ExerciseContent exercises = null;
     public int currentExerciseIndex = -1;
-    public TextToSpeech tts = null;
-    public boolean isSpeechLoaded = false;
     public int programId = -1;
     public String sessionName = "";
 
@@ -134,29 +127,6 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
             }
         });
 
-        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    int ttsLang = tts.setLanguage(Locale.US);
-
-                    if (ttsLang == TextToSpeech.LANG_MISSING_DATA
-                            || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        Log.e("TTS", "The Language is not supported!");
-                    } else {
-                        Log.i("TTS", "Language Supported.");
-                    }
-
-                    Log.i("TTS", "Initialization success.");
-                    isSpeechLoaded = true;
-                    //speak("Speech has been initialized.", TextToSpeech.QUEUE_ADD);
-                    //speak("speech ready", TextToSpeech.QUEUE_ADD);
-                } else {
-                    Log.i("TTS", "TTS Initialization failed!");
-                }
-            }
-        });
-
     }
 
     public void loadFragment(String tag) {
@@ -203,17 +173,11 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
     }
 
     public void speak(String text, int queueAction) {
-        if (null != tts) {
-            int speechStatus = tts.speak(text, queueAction, null);
-            if (speechStatus == TextToSpeech.ERROR) {
-                Log.i("TTS", "Error in converting Text to Speech!");
-            }
-        }
+        Speech.speak(text, queueAction);
     }
 
     public void shutup() {
-        if (null != tts && tts.isSpeaking())
-            tts.stop();
+        Speech.shutup();
     }
 
     private Fragment getActiveFragment()
@@ -237,7 +201,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
     }
 
     public boolean isLoaded() {
-        return null != this.tts && this.isSpeechLoaded && this.exercises.isLoaded();
+        return this.exercises.isLoaded();
     }
 
     public boolean isLastExercise() {

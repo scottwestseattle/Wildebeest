@@ -13,19 +13,18 @@
         android:id="@+id/imageViewCurrent"
         android:layout_width="match_parent"
         android:layout_height="280dp"
-        android:layout_marginBottom="0dp"
         android:src="@drawable/push_ups"
         app:layout_constraintBottom_toTopOf="@id/textview_exercise_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="20dp"
+        />
 
     <TextView
         android:id="@+id/textview_exercise_count"
         android:textSize="14dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/imageViewCurrent"
         app:layout_constraintBottom_toTopOf="@id/textview_exercise_name"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,10 +57,9 @@
         android:id="@+id/textview_countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="100dp"
+        android:textSize="90dp"
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_exercise_seconds"
         />

@@ -30,8 +30,8 @@ public class SessionContent {
         this.courseId = courseId;
         String url = "https://learnfast.xyz/courses/rss";
         Log.i("parse", "Getting Session list from rss...");
-        rss = new RssReader(url);
-        rss.fetchSessionList(sessionList, courseId);
+        rss = new RssReader();
+        rss.fetchSessionList(url, sessionList, courseId);
     }
 
     private static void addItem(SessionItem item) {

@@ -3,6 +3,7 @@ package com.exerciser.Program;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,15 +43,35 @@ public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRe
         holder.mItem = mValues.get(position);
         holder.programName.setText(mValues.get(position).name);
         holder.programDescription.setText(mValues.get(position).description);
+        switch(position)
+        {
+            case 0:
+                holder.programLayout.setBackgroundResource(R.drawable.bg_0);
+                break;
+            case 1:
+                holder.programLayout.setBackgroundResource(R.drawable.bg_1);
+                break;
+            case 2:
+                holder.programLayout.setBackgroundResource(R.drawable.bg_2);
+                break;
+            case 3:
+                holder.programLayout.setBackgroundResource(R.drawable.bg_3);
+                break;
+            default:
+                holder.card_view.setCardBackgroundColor(Color.RED);
+                break;
+        }
 
+        // show number of sessions
+        int cnt = mValues.get(position).sessionCount;
+        String sessionCount = Integer.toString(cnt) + ((cnt == 1) ? " session" : " sessions");
+        holder.sessionCount.setText(sessionCount);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+            if (null != mListener) {
+                mListener.onListFragmentInteraction(holder.mItem);
+            }
             }
         });
     }

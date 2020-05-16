@@ -31,8 +31,8 @@ public class ProgramContent {
     static {
         String url = "https://learnfast.xyz/courses/rss";
         Log.i("parse", "Getting program list from rss...");
-        rss = new RssReader(url);
-        rss.fetchProgramList(programList);
+        rss = new RssReader();
+        rss.fetchProgramList(url, programList);
     }
 
     private static void addItem(ProgramItem item) {

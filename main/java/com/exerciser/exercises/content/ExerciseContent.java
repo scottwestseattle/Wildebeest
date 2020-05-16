@@ -2,7 +2,7 @@ package com.exerciser.exercises.content;
 
 import android.util.Log;
 
-import com.exerciser.HandleXML;
+import com.exerciser.RssReader;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -15,7 +15,7 @@ public class ExerciseContent {
     public static final int startSeconds = 15;
     public static final int breakEndCountdownSeconds = 5;
     public static final int exerciseEndCountdownSeconds = 10;
-    private static HandleXML xml = null;
+    private static RssReader rss = null;
 
     /**
      * The array of items from the rss feed
@@ -26,7 +26,8 @@ public class ExerciseContent {
     {
         String url = "https://learnfast.xyz/lessons/rss/" + exerciseId;
         Log.i("parse", "Get Exercises from RSS...");
-        xml = new HandleXML(url, exerciseList);
+        rss = new RssReader();
+        rss.fetchExerciseList(url, exerciseList);
     }
 
     public String getTotalTime() {
@@ -52,7 +53,7 @@ public class ExerciseContent {
     }
 
     public boolean isLoaded() {
-        return (null != xml && xml.isLoaded());
+        return (null != rss && rss.isLoaded());
     }
 
     /**

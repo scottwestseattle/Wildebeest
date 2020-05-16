@@ -3,6 +3,7 @@ package com.exerciser;
 import android.util.Log;
 
 import com.exerciser.Program.ProgramContent;
+import com.exerciser.exercises.content.ExerciseContent;
 import com.exerciser.sessions.content.SessionContent;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -14,6 +15,10 @@ import java.net.URL;
 import java.util.List;
 
 public class RssReader {
+
+    private XmlPullParserFactory xmlFactoryObject;
+    public volatile boolean parsingComplete = false;
+    public String urlString = "";
 
     private String programName = "";
     private int programId = -1;
@@ -29,29 +34,42 @@ public class RssReader {
     private int sessionSeconds = -1;
     private String sessionParentName = "";
 
-    private String urlString = null;
-    private XmlPullParserFactory xmlFactoryObject;
-    public volatile boolean parsingComplete = false;
+    private String exerciseName = "";
+    private int exerciseRunSeconds = -1;
+    private int exerciseBreakSeconds = -1;
+    private String exerciseDescription = "";
+    private String exerciseImageName = "";
 
     List<ProgramContent.ProgramItem> programItems = null;
     List<SessionContent.SessionItem> sessionItems = null;
+    List<ExerciseContent.ExerciseItem> exerciseItems = null;
 
-    public RssReader(String url) {
-        this.urlString = url;
+    public RssReader()
+    {
     }
 
-    public void fetchProgramList(List<ProgramContent.ProgramItem> programItems) {
-        this.programItems = programItems;
-        fetchXML();
+    public void fetchProgramList(String url, List<ProgramContent.ProgramItem> items) {
+        items.clear();
+        this.programItems = items;
+        fetchXML(url);
     }
 
-    public void fetchSessionList(List<SessionContent.SessionItem> sessionItems, int courseId) {
-        this.sessionItems = sessionItems;
+    public void fetchSessionList(String url, List<SessionContent.SessionItem> items, int courseId) {
+        items.clear();
+        this.sessionItems = items;
         this.courseId = courseId;
-        fetchXML();
+        fetchXML(url);
     }
 
-    public void fetchXML() {
+    public void fetchExerciseList(String url, List<ExerciseContent.ExerciseItem> items) {
+        items.clear();
+        this.exerciseItems = items;
+        fetchXML(url);
+    }
+
+    public void fetchXML(String url) {
+
+        this.urlString = url;
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -99,6 +117,12 @@ public class RssReader {
         int event;
         String text = null;
         int order = 1;
+
+        // testing data
+        boolean testing = false;
+        int testingRunSeconds = 3;
+        int testingBreakSeconds = 3;
+        int testingExerciseCount = 1;
 
         try {
             event = myParser.getEventType();
@@ -148,6 +172,9 @@ public class RssReader {
                         else if(name.equals("course_description")){
                             this.programDescription = text.trim();
                         }
+                        //
+                        // the 'lesson' block
+                        //
                         else if(name.equals("lesson")){
 
                             this.sessionCount++; // count the session from the program list
@@ -195,8 +222,50 @@ public class RssReader {
                                 this.sessionSeconds = Integer.parseInt(text);
                             } catch(NumberFormatException nfe){}
                         }
+                        //
+                        // the 'exercise' block
+                        //
+                        if(name.equals("record")){
+                            //Log.i("parse", "record end tag, save the record");
+                            ExerciseContent.ExerciseItem ei = new ExerciseContent.ExerciseItem(
+                                    this.exerciseName,
+                                    this.exerciseDescription,
+                                    this.exerciseImageName,
+                                    this.exerciseRunSeconds,
+                                    this.exerciseBreakSeconds,
+                                    order++,
+                                    this.exerciseDescription);
+
+                            this.exerciseItems.add(ei);
+                        }
+                        else if (name.equals("name")){
+                            this.exerciseName = text.trim();
+                            Log.i("parse", "name value: " + text);
+                        }
+                        else if(name.equals("runSeconds")){
+                            try {
+                                this.exerciseRunSeconds = testing ? testingRunSeconds : Integer.parseInt(text);
+                            } catch(NumberFormatException nfe){}
+                        }
+                        else if(name.equals("breakSeconds")){
+                            try {
+                                this.exerciseBreakSeconds = testing ? testingBreakSeconds : Integer.parseInt(text);
+                            } catch(NumberFormatException nfe){}
+                        }
+                        else if(name.equals("description")){
+                            this.exerciseDescription = text.trim();
+                        }
+                        else if(name.equals("imageName")){
+                            // remove file extension so we can find the matching Android resource
+                            //this.imageName = text.substring(0, text.lastIndexOf("."));
+                            this.exerciseImageName = text;
+                        }
+
+                        //
+                        // skip all others
+                        //
                         else{
-                            // skip all others
+                            // skip
                         }
 
                         break;
