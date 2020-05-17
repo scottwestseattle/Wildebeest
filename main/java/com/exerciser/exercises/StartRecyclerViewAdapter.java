@@ -2,6 +2,9 @@ package com.exerciser.exercises;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.exerciser.R;
+import com.exerciser.Tools;
 import com.exerciser.exercises.StartFragment.OnListFragmentInteractionListener;
 import com.exerciser.exercises.content.ExerciseContent;
 
@@ -42,8 +46,12 @@ public class StartRecyclerViewAdapter extends RecyclerView.Adapter<StartRecycler
         holder.mIdView.setText(mValues.get(position).name);
         holder.mContentView.setText(Integer.toString(mValues.get(position).runSeconds) + " seconds");
 
-        int id = holder.mView.getResources().getIdentifier(holder.mItem.imageName, "drawable", holder.mView.getContext().getPackageName());
-        holder.mImageView.setImageResource(id);
+        // make thumbnails so we don't exhaust memory on cheap phones
+        String imageName = mValues.get(position).imageName;
+        int id = holder.mView.getResources().getIdentifier(imageName, "drawable", holder.mView.getContext().getPackageName());
+        //orig: holder.mImageView.setImageResource(id);
+        holder.mImageView.setImageBitmap(
+            Tools.getThumbnail(holder.mView.getResources(), id, 100, 100));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
