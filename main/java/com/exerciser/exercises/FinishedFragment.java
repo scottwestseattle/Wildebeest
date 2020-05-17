@@ -9,6 +9,7 @@ import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.exerciser.R;
 
@@ -21,8 +22,8 @@ public class FinishedFragment extends Fragment {
             "You made it your bitch!",
             "You did it like a boss!",
             "Boom chocka locka!",
-            "Well done!",
-            "Whose your daddy!",
+            "Whazzup?",
+            "Who's your daddy!",
             "You've got that Boom Boom Pow!"
     };
 
@@ -50,9 +51,20 @@ public class FinishedFragment extends Fragment {
         if (null == activity)
             return;
 
-        activity.speak("All exercises completed.", TextToSpeech.QUEUE_ADD);
-        activity.speak((endMsgs[new Random().nextInt(endMsgs.length)]), TextToSpeech.QUEUE_ADD);
         activity.setFabPlayIcon(true);
+
+        String title = "All exercises completed!";
+        activity.speak(title, TextToSpeech.QUEUE_ADD);
+        TextView tvTitle = this.getView().findViewById(R.id.title);
+        if (null != tvTitle)
+            tvTitle.setText(title);
+
+        String msg = endMsgs[new Random().nextInt(endMsgs.length)];
+        activity.speak(msg, TextToSpeech.QUEUE_ADD);
+        TextView tvMsg = this.getView().findViewById(R.id.msg);
+        if (null != tvMsg)
+            tvMsg.setText(msg);
+
     }
 
 }

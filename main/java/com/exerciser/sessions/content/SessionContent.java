@@ -15,7 +15,7 @@ public class SessionContent {
     public SessionContent(int courseId)
     {
         //
-        // todo: the rss is read again here because I couldn't figure out how to pass in the data from the programs read
+        // todo: do the rss read again here because I couldn't figure out how to pass in the data from the programs read
         //
         sessionList.clear();
         this.courseId = courseId;

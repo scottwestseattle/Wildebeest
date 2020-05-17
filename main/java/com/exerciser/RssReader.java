@@ -25,7 +25,7 @@ public class RssReader {
     static private String programDescription = "";
     static private int sessionCount = 0;
 
-    static private int courseId = -1;
+    static private int sessionCourseId = -1;
     static private int sessionId = -1;
     static private int sessionNumber = -1;
     static private String sessionName = "";
@@ -52,6 +52,7 @@ public class RssReader {
     static public void fetchProgramList(String url, List<ProgramContent.ProgramItem> items) {
         items.clear();
         programItems = items;
+        sessionCourseId = -1; // flag that we're not loading sessions
 
         fetchXML(url);
     }
@@ -59,7 +60,7 @@ public class RssReader {
     static public void fetchSessionList(String url, List<SessionContent.SessionItem> items, int id) {
         items.clear();
         sessionItems = items;
-        courseId = id;
+        sessionCourseId = id;
 
         fetchXML(url);
     }
@@ -152,7 +153,7 @@ public class RssReader {
                         // the 'course' block
                         //
                         if(name.equals("course")){
-                            if (null != programItems) {
+                            if (sessionCourseId <= 0) { // make sure we're not loading sessions
                                 ProgramContent.ProgramItem item = new ProgramContent.ProgramItem(
                                         programId,
                                         programName,
@@ -184,7 +185,7 @@ public class RssReader {
 
                             sessionCount++; // count the session from the program list
 
-                            if (null != sessionItems && -1 != courseId && programId == courseId) {
+                            if (null != sessionItems && sessionCourseId > 0 && programId == sessionCourseId) {
                                 SessionContent.SessionItem item = new SessionContent.SessionItem(
                                         sessionId,
                                         sessionName,

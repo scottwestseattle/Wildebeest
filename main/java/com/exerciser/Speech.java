@@ -13,6 +13,12 @@ public class Speech  {
 
     public static void init(Context context)
     {
+        if (null != tts) {
+            Log.i("Speech", "Already loaded.");
+            //speak("Speech already loaded.", TextToSpeech.QUEUE_FLUSH);
+            return;
+        }
+
         tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
 
             @Override

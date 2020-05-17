@@ -7,30 +7,46 @@
     android:layout_height="match_parent"
     tools:context=".exercises.FinishedFragment"
     android:layout_marginBottom="65dp"
+    android:background="@drawable/bg_finished"
     >
 
-    <ImageView
-        android:id="@+id/imageView3"
+    <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/end"
+        android:layout_marginTop="30dp"
+        android:text="Finished"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="5dp"
         android:text="Congratulations!"
+        android:textAlignment="center"
+        android:textColor="#fff"
         android:textSize="30dp"
-        android:layout_marginTop="100dp"
-        app:layout_constraintBottom_toBottomOf="@id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="#fff"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:src="@drawable/stag"
+        app:layout_constraintTop_toBottomOf="@id/msg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         />
 
 

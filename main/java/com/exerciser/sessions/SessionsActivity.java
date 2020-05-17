@@ -1,14 +1,22 @@
 package com.exerciser.sessions;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.view.View;
 
 import com.exerciser.MainActivity;
 import com.exerciser.R;
+import com.exerciser.exercises.BreakFragment;
+import com.exerciser.exercises.ExerciseFragment;
 import com.exerciser.exercises.ExercisesActivity;
+import com.exerciser.exercises.FinishedFragment;
+import com.exerciser.exercises.StartFragment;
 import com.exerciser.sessions.content.SessionContent;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SessionsActivity extends AppCompatActivity  implements SessionsFragment.OnListFragmentInteractionListener {
 
@@ -30,6 +38,14 @@ public class SessionsActivity extends AppCompatActivity  implements SessionsFrag
         setContentView(R.layout.activity_sessions);
 
         setTitle(courseName + ": " + sessionCount + " sessions");
+
+        FloatingActionButton fabEnd = findViewById(R.id.fabEnd);
+        fabEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     @Override

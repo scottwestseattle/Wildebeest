@@ -16,12 +16,18 @@ public class ProgramContent {
 
     ProgramContent()
     {
+        Log.i("parse", "ProgramContent started");
     }
 
     static {
-        String url = "https://learnfast.xyz/courses/rss";
-        Log.i("parse", "Getting program list from rss...");
-        RssReader.fetchProgramList(url, programList);
+        if (programList.size() == 0) {
+            String url = "https://learnfast.xyz/courses/rss";
+            Log.i("ProgramContent", "Getting program list from rss...");
+            RssReader.fetchProgramList(url, programList);
+        }
+        else {
+            Log.i("ProgramContent", "Programs already loaded");
+        }
     }
 
     private static void addItem(ProgramItem item) {

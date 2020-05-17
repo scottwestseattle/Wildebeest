@@ -12,8 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.exerciser.MainActivity;
 import com.exerciser.Program.ProgramContent.ProgramItem;
 import com.exerciser.R;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -52,7 +55,12 @@ public class ProgramsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ProgramsRecyclerViewAdapter(ProgramContent.programList, mListener));
+
+            List<ProgramItem> items = ProgramContent.programList;
+            int programCount = items.size();
+            getActivity().setTitle("Programs: " + programCount);
+
+            recyclerView.setAdapter(new ProgramsRecyclerViewAdapter(items, mListener));
         }
         return view;
     }
