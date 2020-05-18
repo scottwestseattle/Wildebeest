@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
+import android.widget.TextView;
 
 import com.exerciser.R;
 import com.exerciser.Speech;
@@ -49,8 +51,13 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         setContentView(R.layout.activity_exercises);
 
         String title = this.sessionName;
-        String subTitle = exercises.exerciseList.size() + " exercises, Time: " + exercises.getTotalTime();
-        setTitle(title + ": " + subTitle);
+        title += ", " + exercises.exerciseList.size() + " exercises (" + exercises.getTotalTime() + ")";
+        setTitle(title);
+
+        String subTitle = exercises.exerciseList.size() + " exercises, Total Time: " + exercises.getTotalTime();
+        TextView tv = findViewById(R.id.textViewSubTitle);
+        if (null != tv)
+            tv.setText(subTitle);
 
         loadFragment("StartFragment");
 
