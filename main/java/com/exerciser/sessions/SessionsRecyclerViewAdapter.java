@@ -26,7 +26,17 @@ public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRe
 
     private final List<SessionItem> mValues;
     private final OnListFragmentInteractionListener mListener;
-    int counter = 0;
+
+    // array of session card background graphic ids for quick access
+    private static int bg_graphic_ids[] = {
+            R.drawable.bg_sessions_gradient_blue,
+            R.drawable.bg_sessions_gradient_red,
+            R.drawable.bg_sessions_gradient_green,
+            R.drawable.bg_sessions_gradient_yellow,
+            R.drawable.bg_sessions_gradient_purple,
+            R.drawable.bg_sessions_gradient_orange,
+            R.drawable.bg_sessions_gradient_gray
+    };
 
     public SessionsRecyclerViewAdapter(List<SessionItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -52,34 +62,18 @@ public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRe
         String description = "Total Time: " + time;
         holder.programDescription.setText(description);
 
-        int counterMax = 6;
-        if (counter == 0)
-            holder.cardLayout.setBackgroundResource(R.drawable.bg_sessions_gradient_red);
-        else if (counter == 1)
-            holder.cardLayout.setBackgroundResource(R.drawable.bg_sessions_gradient_green);
-        else if (counter == 2)
-            holder.cardLayout.setBackgroundResource(R.drawable.bg_sessions_gradient_blue);
-        else if (counter == 3)
-            holder.cardLayout.setBackgroundResource(R.drawable.bg_sessions_gradient_purple);
-        else if (counter == 4)
-            holder.cardLayout.setBackgroundResource(R.drawable.bg_sessions_gradient_orange);
-        else if (counter == 5)
-            holder.cardLayout.setBackgroundResource(R.drawable.bg_sessions_gradient_yellow);
-        else if (counter == 6)
-            holder.cardLayout.setBackgroundResource(R.drawable.bg_sessions_gradient_gray);
-
-        counter++;
-        if (counter > counterMax)
-            counter = 0;
+        // show a different bg color every day of the week
+        int color = (position % bg_graphic_ids.length);
+        holder.cardLayout.setBackgroundResource(bg_graphic_ids[color]);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+            if (null != mListener) {
+                // Notify the active callbacks interface (the activity, if the
+                // fragment is attached to one) that an item has been selected.
+                mListener.onListFragmentInteraction(holder.mItem);
+            }
             }
         });
     }
@@ -89,7 +83,7 @@ public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRe
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         final View mView;
         SessionItem mItem;
