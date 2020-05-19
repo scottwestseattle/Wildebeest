@@ -26,6 +26,8 @@ public class BreakFragment extends Fragment {
     static private boolean autoStart = false;
     static private boolean started = false;
     private int secondsRemaining = 0;
+    private int secondsRewind = 5;
+    private int secondsFastForward = secondsRewind;
     private final int second = 1000; // 1 Second
     private final int countdownSeconds = 5;
     private final int nextCountdownSeconds = 3;
@@ -167,10 +169,24 @@ public class BreakFragment extends Fragment {
         return timerPaused;
     }
 
+    public void onFabRewindClicked() {
+        this.secondsRemaining += this.secondsRewind;
+        if (timerPaused)
+            updateTimerDisplay(secondsRemaining);
+    }
+
+    public void onFabFastForwardClicked() {
+        this.secondsRemaining -= this.secondsFastForward;
+        if (this.secondsRemaining <= 0)
+            this.secondsRemaining = timerPaused ? 0 : 1;
+
+        if (timerPaused) {
+            updateTimerDisplay(secondsRemaining);
+        }
+    }
+
     private String getRandomMessage(String[] msgs) {
-
         int ix = new Random().nextInt(msgs.length);
-
         return msgs[ix];
     }
 
@@ -192,14 +208,7 @@ public class BreakFragment extends Fragment {
     public void onHardStop() {
         this.started = false;
         stopTimer();
-
         loadFragment("StartFragment");
-    }
-
-    private void setButtonText(String text, int buttonId) {
-        Button button = this.getView().findViewById(buttonId);
-        if (null != button)
-            button.setText(text);
     }
 
     private void loadNext() {
@@ -257,7 +266,7 @@ public class BreakFragment extends Fragment {
 
     private void updateTimerDisplay(int seconds)
     {
-        if (seconds > 0) {
+        if (seconds >= 0) {
             View view = this.getView();
             if (null != view) {
                 TextView countDown = view.findViewById(R.id.textview_countdown);
@@ -272,7 +281,6 @@ public class BreakFragment extends Fragment {
         //
         // set static values
         //
-
         TextView tv = this.getView().findViewById(R.id.textview_title);
         if (null != tv)
             tv.setText(title);
@@ -313,12 +321,6 @@ public class BreakFragment extends Fragment {
         ExercisesActivity activity = (ExercisesActivity) getActivity();
         if (null != activity)
             activity.speak(text, queueAction);
-    }
-
-    private void shutup() {
-        ExercisesActivity activity = (ExercisesActivity) getActivity();
-        if (null != activity)
-            activity.shutup();
     }
 
     private void loadFragment(String tag)

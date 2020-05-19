@@ -24,6 +24,8 @@ public class ExerciseFragment extends Fragment {
 
     private boolean timerPaused = false;
     private int secondsRemaining = -1;
+    private int secondsRewind = 5;
+    private int secondsFastForward = secondsRewind;
     private final int second = 1000; // 1 Second
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable(){
@@ -94,6 +96,22 @@ public class ExerciseFragment extends Fragment {
         timerPaused = !timerPaused;
 
         return timerPaused;
+    }
+
+    public void onFabRewindClicked() {
+        this.secondsRemaining += this.secondsRewind;
+        if (timerPaused)
+            updateTimerDisplay(secondsRemaining);
+    }
+
+    public void onFabFastForwardClicked() {
+        this.secondsRemaining -= this.secondsFastForward;
+        if (this.secondsRemaining <= 0)
+            this.secondsRemaining = timerPaused ? 0 : 1;
+
+        if (timerPaused) {
+            updateTimerDisplay(secondsRemaining);
+        }
     }
 
     private void setButtonText(String text, int buttonId) {

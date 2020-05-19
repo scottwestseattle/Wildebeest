@@ -1,11 +1,12 @@
 package com.exerciser.exercises;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class ExercisesActivity extends AppCompatActivity  implements StartFragment.OnListFragmentInteractionListener {
 
+    private Toolbar mToolbar;
     public static ExerciseContent exercises = null;
     public int currentExerciseIndex = -1;
     public int programId = -1;
@@ -50,16 +52,19 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
 
+        // set title and subtitle
         String title = this.sessionName;
-        title += ", " + exercises.exerciseList.size() + " exercises (" + exercises.getTotalTime() + ")";
-        setTitle(title);
-
         String subTitle = exercises.exerciseList.size() + " exercises, Total Time: " + exercises.getTotalTime();
-        TextView tv = findViewById(R.id.textViewSubTitle);
-        if (null != tv)
-            tv.setText(subTitle);
+        ActionBar ab = getSupportActionBar();
+        ab.setTitle(title);
+        ab.setSubtitle(subTitle);
 
+        // load the first fragment
         loadFragment("StartFragment");
+
+        //
+        // set up the bottom fab buttons
+        //
 
         FloatingActionButton fabPlay = findViewById(R.id.fabPlay);
         fabPlay.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +139,33 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
             }
         });
 
+        FloatingActionButton fabMinus = findViewById(R.id.fabMinus);
+        fabMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // get the active fragment so we know which action to perform
+                Fragment fragment = getActiveFragment();
+                if (fragment instanceof BreakFragment) {
+                    ((BreakFragment) fragment).onFabRewindClicked();
+                } else if (fragment instanceof ExerciseFragment) {
+                    ((ExerciseFragment) fragment).onFabRewindClicked();
+                }
+            }
+        });
+
+        FloatingActionButton fabPlus = findViewById(R.id.fabPlus);
+        fabPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // get the active fragment so we know which action to perform
+                Fragment fragment = getActiveFragment();
+                if (fragment instanceof BreakFragment) {
+                    ((BreakFragment) fragment).onFabFastForwardClicked();
+                } else if (fragment instanceof ExerciseFragment) {
+                    ((ExerciseFragment) fragment).onFabFastForwardClicked();
+                }
+            }
+        });
     }
 
     public void loadFragment(String tag) {
