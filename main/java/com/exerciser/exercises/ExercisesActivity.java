@@ -229,8 +229,9 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
     }
 
     public void setFabPlayIcon(boolean paused) {
+
         setFabButtonIcon(R.id.fabPlay,
-                paused  ? android.R.drawable.ic_media_play
+                paused  ? R.drawable.fab_play
                         : android.R.drawable.ic_media_pause);
     }
 

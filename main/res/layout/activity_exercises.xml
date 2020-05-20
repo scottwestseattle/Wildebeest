@@ -21,7 +21,7 @@
         android:layout_marginBottom="5dp"
         android:clickable="true"
         android:background="@color/colorPrimaryDark"
-        app:srcCompat="@android:drawable/ic_media_play" />
+        app:srcCompat="@drawable/fab_play" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabMinus"
@@ -31,7 +31,7 @@
         android:layout_marginLeft="80dp"
         android:layout_marginBottom="5dp"
         android:clickable="true"
-        app:srcCompat="@android:drawable/ic_media_rew" />
+        app:srcCompat="@drawable/fab_rewind" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabNext"
@@ -51,7 +51,7 @@
         android:layout_marginRight="80dp"
         android:layout_marginBottom="5dp"
         android:clickable="true"
-        app:srcCompat="@android:drawable/ic_media_ff" />
+        app:srcCompat="@drawable/fab_fast_forward" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabEnd"

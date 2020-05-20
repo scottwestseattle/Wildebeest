@@ -53,7 +53,7 @@ public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.dayLabel.setText("Day " + Integer.toString(position + 1));
+        holder.dayLabel.setText(holder.mItem.name);
         //holder.sessionNumber.setText(position + 1);
         String name = holder.mItem.exerciseCount + " exercises";
         holder.programName.setText(name);
