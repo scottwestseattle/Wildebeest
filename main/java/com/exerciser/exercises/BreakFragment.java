@@ -276,6 +276,12 @@ public class BreakFragment extends Fragment {
         }
     }
 
+    public void updateRunSeconds(int seconds) {
+        TextView tv = this.getView().findViewById(R.id.textview_exercise_seconds);
+        if (null != tv)
+            tv.setText(Integer.toString(seconds) + " seconds");
+    }
+
     private void setStaticViews(ExercisesActivity activity, ExerciseContent.ExerciseItem exerciseItem, String title)
     {
         //

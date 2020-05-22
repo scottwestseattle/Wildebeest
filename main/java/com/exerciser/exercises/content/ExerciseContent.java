@@ -45,9 +45,9 @@ public class ExerciseContent {
     private final int mTypeSideRight    = 8;
     private final int mTypeCloser       = 9;
 
-    private final int mInstructionsNone = 0;
-    private final int mInstructionsLeg  = 1;
-    private final int mInstructionsSide = 2;
+    public static final int mInstructionsNone = 0;
+    public static final int mInstructionsLeg  = 1;
+    public static final int mInstructionsSide = 2;
 
     private List<ExerciseItem> load(int type)
     {
@@ -68,14 +68,14 @@ public class ExerciseContent {
             case mTypeStarter3:
                 list.add(new ExerciseItem("Downward Dog", seconds, index++, type, mInstructionsNone));
                 list.add(new ExerciseItem("Downward Dog Elbows", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Downward Dog Knees Bent", seconds, index++, type, mInstructionsLeg));
+                list.add(new ExerciseItem("Downward Dog Knees Bent", seconds, index++, type, mInstructionsNone));
                 list.add(new ExerciseItem("Scissor", seconds, index++, type, mInstructionsLeg));
                 break;
             case mTypeAbs:
                 seconds = 40;
                 list.add(new ExerciseItem("Ab Scissors", seconds, index++, type, mInstructionsNone));
                 list.add(new ExerciseItem("Bicycle Abs", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Boat", seconds, index++, type, mInstructionsNone));
+                //list.add(new ExerciseItem("Boat", seconds, index++, type, mInstructionsNone));
                 list.add(new ExerciseItem("Cat", seconds, index++, type, mInstructionsNone));
                 list.add(new ExerciseItem("Leg Lift", seconds, index++, type, mInstructionsNone));
                 list.add(new ExerciseItem("Sprinter Situp", seconds, index++, type, mInstructionsNone));
@@ -90,7 +90,7 @@ public class ExerciseContent {
             case mTypeFlex:
                 list.add(new ExerciseItem("Balancing Cat", seconds, index++, type, mInstructionsSide));
                 list.add(new ExerciseItem("Chair", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Fire Hydrant", seconds, index++, type, mInstructionsNone));
+                list.add(new ExerciseItem("Fire Hydrant", seconds, index++, type, mInstructionsSide));
                 list.add(new ExerciseItem("Half Bow", seconds, index++, type, mInstructionsSide));
                 list.add(new ExerciseItem("Lord of the Dance", seconds, index++, type, mInstructionsSide));
                 list.add(new ExerciseItem("Lunge Stretch", seconds, index++, type, mInstructionsNone));
@@ -99,7 +99,7 @@ public class ExerciseContent {
                 list.add(new ExerciseItem("Runners Lunge", seconds, index++, type, mInstructionsNone));
                 list.add(new ExerciseItem("Skiers Lunge", seconds, index++, type, mInstructionsNone));
                 list.add(new ExerciseItem("Squat", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Standing Glute Iso", seconds * 2, index++, type, mInstructionsNone));
+                list.add(new ExerciseItem("Standing Glute Iso", seconds * 2, index++, type, mInstructionsSide));
                 list.add(new ExerciseItem("Warrior 1", seconds, index++, type, mInstructionsSide));
                 list.add(new ExerciseItem("Warrior 2", seconds, index++, type, mInstructionsSide));
                 list.add(new ExerciseItem("Warrior 3", seconds, index++, type, mInstructionsSide));
@@ -192,6 +192,7 @@ public class ExerciseContent {
 
     private void add(ExerciseItem item)
     {
+        // fix order
         item.order = exerciseList.size() + 1;
         exerciseList.add(item);
     }

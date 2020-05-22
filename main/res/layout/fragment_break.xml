@@ -13,55 +13,94 @@
         android:id="@+id/textview_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        />
 
     <TextView
         android:id="@+id/textview_countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
-        android:textSize="100dp"
+        android:textSize="100sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_title" />
+        app:layout_constraintTop_toBottomOf="@+id/textview_title"
+        />
 
     <TextView
         android:id="@+id/textview_coming_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14dp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_countdown" />
-
-    <ImageView
-        android:id="@+id/imageViewCurrent"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:src="@drawable/none"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_coming_up" />
 
     <TextView
         android:id="@+id/textview_exercise_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewCurrent" />
+        app:layout_constraintTop_toBottomOf="@id/textview_coming_up"
+        />
 
-    <TextView
-        android:id="@+id/textview_exercise_seconds"
+        <Button
+            android:id="@+id/buttonAddSeconds"
+            android:onClick="onAddSecondsButtonClick"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/design_default_color_secondary"
+            android:text="+5"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            app:layout_constraintRight_toLeftOf="@id/textview_exercise_seconds"
+            app:layout_constraintTop_toBottomOf="@id/textview_exercise_name"
+            />
+
+        <TextView
+            android:id="@+id/textview_exercise_seconds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="17sp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_exercise_name"
+            />
+
+        <Button
+            android:id="@+id/buttonSubtractSeconds"
+            android:onClick="onSubtractSecondsButtonClick"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:background="@color/design_default_color_secondary"
+            android:text="-5"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toRightOf="@id/textview_exercise_seconds"
+            app:layout_constraintTop_toBottomOf="@id/textview_exercise_name"
+            />
+
+    <ImageView
+        android:id="@+id/imageViewCurrent"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="180dp"
+        android:src="@drawable/none"
+        android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_exercise_name" />
+        app:layout_constraintTop_toBottomOf="@+id/textview_exercise_seconds" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

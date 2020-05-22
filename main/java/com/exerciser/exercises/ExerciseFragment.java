@@ -121,34 +121,69 @@ public class ExerciseFragment extends Fragment {
     }
 
     private void updateTimerAudio(int seconds) {
-        if (seconds == 11)
+
+        if (seconds > 10 && ((seconds - 1) % 10) == 0) {
+            //
+            // give instructions 1 seconds before 10 seconds threshold
+            //
+            speakInstructions();
+        }
+        else if (seconds > 10 && (seconds % 10) == 0) {
+            //
+            // give update every 10 seconds
+            //
+            speak(getSecondsRemainingMessage(seconds), TextToSpeech.QUEUE_ADD);
+        }
+        else if (seconds == 11)
         {
-            ExercisesActivity activity = (ExercisesActivity) getActivity();
-            ExerciseContent.ExerciseItem exerciseItem = activity.getCurrentExercise();
-            if (exerciseItem.instructions.length() > 0)
-            {
-                speak(exerciseItem.instructions, TextToSpeech.QUEUE_ADD);
-            }
+            //
+            // give last instructions before countdown
+            //
+            //speakInstructions();
         }
         else if (seconds <= 10 && seconds > 0) {
+            //
+            // countdown last 10 seconds
+            //
             speak(Integer.toString(seconds), TextToSpeech.QUEUE_FLUSH);
-        } else if ((seconds % 10) == 0) {
-
-            ExercisesActivity activity = (ExercisesActivity) getActivity();
-            ExerciseContent.ExerciseItem exerciseItem = activity.getCurrentExercise();
-
-            String msg = "";
-
-            if (exerciseItem.instructions.length() > 0)
-            {
-                msg += exerciseItem.instructions;
-                msg += msg.endsWith(".") ? "  " : ".  ";
-            }
-
-            msg += getSecondsRemainingMessage(seconds);
-
-            speak(msg, TextToSpeech.QUEUE_ADD);
         }
+    }
+
+    public void speakInstructions() {
+        ExerciseContent.ExerciseItem exerciseItem = ((ExercisesActivity) getActivity()).getCurrentExercise();
+        if (exerciseItem.mInstructions == 0 && exerciseItem.instructions.length() > 0) {
+            // if exercise has recognized written instructions, standardize and randomize them
+            if (exerciseItem.instructions.contains("legs"))
+                exerciseItem.mInstructions = ExerciseContent.mInstructionsLeg;
+            else if (exerciseItem.instructions.contains("sides"))
+                exerciseItem.mInstructions = ExerciseContent.mInstructionsSide;
+        }
+
+        String instructions = getInstructions(exerciseItem.mInstructions);
+
+        if (instructions.length() > 0) {
+            speak(instructions, TextToSpeech.QUEUE_ADD);
+        }
+    }
+
+    private String getInstructions(int instructions) {
+
+        int random = new Random().nextInt(2);
+        String sInstructions = "";
+
+        switch(instructions) {
+            case ExerciseContent.mInstructionsLeg:
+                sInstructions = random == 0 ? "Switch legs" : "Change legs";
+                break;
+            case ExerciseContent.mInstructionsSide:
+                sInstructions = random == 0 ? "Switch sides" : "Change sides";
+                break;
+            default:
+                sInstructions = "";
+                break;
+        }
+
+        return sInstructions;
     }
 
     private String getSecondsRemainingMessage(int seconds) {
@@ -196,7 +231,10 @@ public class ExerciseFragment extends Fragment {
         ExerciseContent.ExerciseItem exerciseItem = activity.getCurrentExercise();
         if (null != exerciseItem) {
             setStaticViews(exerciseItem, activity.getTotalExercises());
-            speak("Begin.  Do " + exerciseItem.name + " -- for " + exerciseItem.runSeconds + " seconds", TextToSpeech.QUEUE_ADD);
+            String instructions = getInstructions(exerciseItem.mInstructions);
+            if (instructions.length() > 0)
+                instructions += " every 10 seconds.";
+            speak("Begin.  Do " + exerciseItem.name + " -- for " + exerciseItem.runSeconds + " seconds.  " + instructions, TextToSpeech.QUEUE_FLUSH);
             startTimer(exerciseItem.runSeconds);
         }
     }

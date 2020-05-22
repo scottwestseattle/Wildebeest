@@ -168,6 +168,31 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         });
     }
 
+    public void onAddSecondsButtonClick(View view) {
+        addSeconds(5);
+    }
+
+    public void onSubtractSecondsButtonClick(View view) {
+        addSeconds(-5);
+    }
+
+    private void addSeconds(int seconds)
+    {
+        if (this.currentExerciseIndex < this.exercises.exerciseList.size()) {
+            ExerciseContent.ExerciseItem exercise = this.exercises.exerciseList.get(this.currentExerciseIndex);
+
+            exercise.runSeconds = exercise.runSeconds + seconds; // seconds may be positive or negative
+
+            if (exercise.runSeconds < 0)
+                exercise.runSeconds = 0;
+
+            Fragment fragment = getActiveFragment();
+            if (fragment instanceof BreakFragment) {
+                ((BreakFragment) fragment).updateRunSeconds(exercise.runSeconds);
+            }
+        }
+    }
+
     public void loadFragment(String tag) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
