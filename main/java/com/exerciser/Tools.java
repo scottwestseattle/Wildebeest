@@ -4,7 +4,14 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.util.Random;
+
 public class Tools {
+
+    public static String getRandomString(String ... msgs)
+    {
+        return msgs[new Random().nextInt(msgs.length)];
+    }
 
     public static Bitmap getThumbnail(Resources res, int resId, int reqWidth, int reqHeight) {
 

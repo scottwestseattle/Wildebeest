@@ -34,6 +34,12 @@ public class ExerciseContent {
         }
     }
 
+    public enum eInstructionType {
+        none,
+        switchLeg,
+        switchSide
+    }
+
     private final int mTypeStarter1     = 0;
     private final int mTypeStarter2     = 1;
     private final int mTypeStarter3     = 2;
@@ -45,10 +51,6 @@ public class ExerciseContent {
     private final int mTypeSideRight    = 8;
     private final int mTypeCloser       = 9;
 
-    public static final int mInstructionsNone = 0;
-    public static final int mInstructionsLeg  = 1;
-    public static final int mInstructionsSide = 2;
-
     private List<ExerciseItem> load(int type)
     {
         List<ExerciseItem> list = new ArrayList<ExerciseItem>();
@@ -57,76 +59,76 @@ public class ExerciseContent {
         switch(type)
         {
             case mTypeStarter1:
-                list.add(new ExerciseItem("Dolphin Plank", 40, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Dolphin Plank with leg lift", 40, index++, type, mInstructionsLeg));
+                list.add(new ExerciseItem("Dolphin Plank", 40, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Dolphin Plank with leg lift", 40, index++, type, eInstructionType.switchLeg));
                 break;
             case mTypeStarter2:
-                list.add(new ExerciseItem("Plank", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Plank Cross Tap", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Plank with leg lift", seconds, index++, type, mInstructionsLeg));
+                list.add(new ExerciseItem("Plank", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Plank Cross Tap", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Plank with leg lift", seconds, index++, type, eInstructionType.switchLeg));
                 break;
             case mTypeStarter3:
-                list.add(new ExerciseItem("Downward Dog", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Downward Dog Elbows", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Downward Dog Knees Bent", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Scissor", seconds, index++, type, mInstructionsLeg));
+                list.add(new ExerciseItem("Downward Dog", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Downward Dog Elbows", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Downward Dog Knees Bent", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Scissor", seconds, index++, type, eInstructionType.switchLeg));
                 break;
             case mTypeAbs:
                 seconds = 40;
-                list.add(new ExerciseItem("Ab Scissors", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Bicycle Abs", seconds, index++, type, mInstructionsNone));
-                //list.add(new ExerciseItem("Boat", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Cat", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Leg Lift", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Sprinter Situp", seconds, index++, type, mInstructionsNone));
+                list.add(new ExerciseItem("Ab Scissors", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Bicycle Abs", seconds, index++, type, eInstructionType.none));
+                //list.add(new ExerciseItem("Boat", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Cat", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Leg Lift", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Sprinter Situp", seconds, index++, type, eInstructionType.none));
                 break;
             case mTypeReverse:
-                list.add(new ExerciseItem("Bridge", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Bridge with leg lift", seconds, index++, type, mInstructionsLeg));
-                list.add(new ExerciseItem("Reverse Plank", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Reverse Table", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Reverse Table with leg lift", seconds, index++, type, mInstructionsLeg));
+                list.add(new ExerciseItem("Bridge", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Bridge with leg lift", seconds, index++, type, eInstructionType.switchLeg));
+                list.add(new ExerciseItem("Reverse Plank", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Reverse Table", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Reverse Table with leg lift", seconds, index++, type, eInstructionType.switchLeg));
                 break;
             case mTypeFlex:
-                list.add(new ExerciseItem("Balancing Cat", seconds, index++, type, mInstructionsSide));
-                list.add(new ExerciseItem("Chair", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Fire Hydrant", seconds, index++, type, mInstructionsSide));
-                list.add(new ExerciseItem("Half Bow", seconds, index++, type, mInstructionsSide));
-                list.add(new ExerciseItem("Lord of the Dance", seconds, index++, type, mInstructionsSide));
-                list.add(new ExerciseItem("Lunge Stretch", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Plow", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Plow knees bent", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Runners Lunge", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Skiers Lunge", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Squat", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Standing Glute Iso", seconds * 2, index++, type, mInstructionsSide));
-                list.add(new ExerciseItem("Warrior 1", seconds, index++, type, mInstructionsSide));
-                list.add(new ExerciseItem("Warrior 2", seconds, index++, type, mInstructionsSide));
-                list.add(new ExerciseItem("Warrior 3", seconds, index++, type, mInstructionsSide));
-                list.add(new ExerciseItem("Windmill", seconds, index++, type, mInstructionsNone));
+                list.add(new ExerciseItem("Balancing Cat", seconds, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Chair", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Fire Hydrant", seconds, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Half Bow", seconds, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Lord of the Dance", seconds, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Lunge Stretch", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Plow", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Plow knees bent", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Runners Lunge", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Skiers Lunge", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Squat", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Standing Glute Iso", seconds * 2, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Warrior 1", seconds, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Warrior 2", seconds, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Warrior 3", seconds, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Windmill", seconds, index++, type, eInstructionType.none));
                 break;
             case mTypeFixed:
-                list.add(new ExerciseItem("Curls", seconds * 2, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Push-ups", seconds, index++, type, mInstructionsNone));
+                list.add(new ExerciseItem("Curls", seconds * 2, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Push-ups", seconds, index++, type, eInstructionType.none));
                 break;
             case mTypeSideLeft:
-                list.add(new ExerciseItem("Side Plank Elbow Left", 40, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Side Plank Left", 30, index++, type, mInstructionsNone));
+                list.add(new ExerciseItem("Side Plank Elbow Left", 40, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Side Plank Left", 30, index++, type, eInstructionType.none));
                 break;
             case mTypeSideRight:
-                list.add(new ExerciseItem("Side Plank Elbow Right", 40, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Side Plank Right", 30, index++, type, mInstructionsNone));
+                list.add(new ExerciseItem("Side Plank Elbow Right", 40, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Side Plank Right", 30, index++, type, eInstructionType.none));
                 break;
             case mTypeCloser:
                 seconds = 45;
-                list.add(new ExerciseItem("Bow", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Child", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Cobra", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Happy Baby", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Squatting Buddha", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Standing Forward Bend", seconds, index++, type, mInstructionsNone));
-                list.add(new ExerciseItem("Superman", seconds, index++, type, mInstructionsSide));
-                list.add(new ExerciseItem("Tree", seconds, index++, type, mInstructionsSide));
+                list.add(new ExerciseItem("Bow", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Child", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Cobra", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Happy Baby", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Squatting Buddha", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Standing Forward Bend", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Superman", seconds, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Tree", seconds, index++, type, eInstructionType.switchSide));
                 break;
             default:
                 break;
@@ -302,16 +304,16 @@ public class ExerciseContent {
         public int order;
         public String instructions = "";
         public int type = 0;
-        public int mInstructions = 0;
+        public eInstructionType mInstructionType = eInstructionType.none;
         public boolean mUsed = false;
 
-        public ExerciseItem(String name, int runSeconds, int order, int type, int instructions) {
+        public ExerciseItem(String name, int runSeconds, int order, int type, eInstructionType instructions) {
             this.name = name;
             this.imageName = getImageName(name);
             this.runSeconds = runSeconds;
             this.order = order;
             this.type = type;
-            this.mInstructions = instructions;
+            this.mInstructionType = instructions;
         }
 
         public ExerciseItem(String name, String description, String imageName, int runSeconds, int breakSeconds, int order, String instructions) {

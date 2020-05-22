@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.exerciser.R;
+import com.exerciser.Tools;
 import com.exerciser.exercises.content.ExerciseContent;
 
 import java.util.Random;
@@ -151,33 +152,46 @@ public class ExerciseFragment extends Fragment {
 
     public void speakInstructions() {
         ExerciseContent.ExerciseItem exerciseItem = ((ExercisesActivity) getActivity()).getCurrentExercise();
-        if (exerciseItem.mInstructions == 0 && exerciseItem.instructions.length() > 0) {
-            // if exercise has recognized written instructions, standardize and randomize them
-            if (exerciseItem.instructions.contains("legs"))
-                exerciseItem.mInstructions = ExerciseContent.mInstructionsLeg;
-            else if (exerciseItem.instructions.contains("sides"))
-                exerciseItem.mInstructions = ExerciseContent.mInstructionsSide;
-        }
-
-        String instructions = getInstructions(exerciseItem.mInstructions);
-
+        String instructions = getInstructionsDeluxe(exerciseItem);
         if (instructions.length() > 0) {
             speak(instructions, TextToSpeech.QUEUE_ADD);
         }
     }
 
-    private String getInstructions(int instructions) {
+    private String getInstructionsDeluxe(ExerciseContent.ExerciseItem exerciseItem)
+    {
+        String instructions;
 
-        int random = new Random().nextInt(2);
+        if (exerciseItem.mInstructionType == ExerciseContent.eInstructionType.none) {
+            // if exercise has recognized written instructions, standardize and randomize them
+            if (exerciseItem.name.toLowerCase().contains("leg lift")) {
+                exerciseItem.mInstructionType = ExerciseContent.eInstructionType.switchLeg;
+            }
+            if (exerciseItem.instructions.length() > 0) {
+                 if (exerciseItem.instructions.contains("legs"))
+                     exerciseItem.mInstructionType = ExerciseContent.eInstructionType.switchLeg;
+                 else if (exerciseItem.instructions.contains("sides"))
+                     exerciseItem.mInstructionType = ExerciseContent.eInstructionType.switchSide;
+            }
+        }
+
+        return getInstructions(exerciseItem.mInstructionType);
+    }
+
+    private String getInstructions(ExerciseContent.eInstructionType instructionType) {
+
+        int random = 0;
         String sInstructions = "";
 
-        switch(instructions) {
-            case ExerciseContent.mInstructionsLeg:
-                sInstructions = random == 0 ? "Switch legs" : "Change legs";
+        switch(instructionType) {
+            case switchLeg: {
+                sInstructions = Tools.getRandomString("Change legs", "Switch legs");
                 break;
-            case ExerciseContent.mInstructionsSide:
-                sInstructions = random == 0 ? "Switch sides" : "Change sides";
+            }
+            case switchSide: {
+                sInstructions = Tools.getRandomString("Switch sides", "Change sides");
                 break;
+            }
             default:
                 sInstructions = "";
                 break;
@@ -187,36 +201,20 @@ public class ExerciseFragment extends Fragment {
     }
 
     private String getSecondsRemainingMessage(int seconds) {
-        String msg = "";
-        int option = new Random().nextInt(7);
+        String msg = Tools.getRandomString(
+                "# seconds to go",
+                "# seconds remaining",
+                "# more seconds",
+                "Go for # seconds longer",
+                "Go for # more seconds",
+                "Keep it up for # seconds longer",
+                "Keep going for # more seconds",
+                "Continue for # seconds longer",
+                "There are # seconds remaining",
+                "There are # more seconds to go"
+                );
 
-        switch(option) {
-            case 0:
-                msg = Integer.toString(seconds) + " seconds to go";
-                break;
-            case 1:
-                msg = Integer.toString(seconds) + " seconds remaining";
-                break;
-            case 2:
-                msg = Integer.toString(seconds) + " more seconds";
-                break;
-            case 3:
-                msg = "Go for " + Integer.toString(seconds) + " more seconds";
-                break;
-            case 4:
-                msg = "Keep it up for " + Integer.toString(seconds) + " seconds longer";
-                break;
-            case 5:
-                msg = "Keep going for " + Integer.toString(seconds) + " more seconds";
-                break;
-            case 6:
-                msg = "Continue for " + Integer.toString(seconds) + " seconds longer";
-                break;
-            default:
-                msg = Integer.toString(seconds) + " seconds, random message out of range";
-        }
-
-        return msg + ".";
+        return msg.replace("#", (CharSequence)Integer.toString(seconds)) + ".";
     }
 
     private void speak(String text, int queueAction)
@@ -231,7 +229,7 @@ public class ExerciseFragment extends Fragment {
         ExerciseContent.ExerciseItem exerciseItem = activity.getCurrentExercise();
         if (null != exerciseItem) {
             setStaticViews(exerciseItem, activity.getTotalExercises());
-            String instructions = getInstructions(exerciseItem.mInstructions);
+            String instructions = getInstructionsDeluxe(exerciseItem);
             if (instructions.length() > 0)
                 instructions += " every 10 seconds.";
             speak("Begin.  Do " + exerciseItem.name + " -- for " + exerciseItem.runSeconds + " seconds.  " + instructions, TextToSpeech.QUEUE_FLUSH);
@@ -285,11 +283,13 @@ public class ExerciseFragment extends Fragment {
 
     private void updateTimerDisplay(int seconds)
     {
-        View view = this.getView();
-        if (null != view) {
-            TextView countDown = view.findViewById(R.id.textview_countdown);
-            if (null != countDown)
-                countDown.setText(Integer.toString(seconds));
+        if (seconds >= 0) {
+            View view = this.getView();
+            if (null != view) {
+                TextView countDown = view.findViewById(R.id.textview_countdown);
+                if (null != countDown)
+                    countDown.setText(Integer.toString(seconds));
+            }
         }
     }
 

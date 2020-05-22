@@ -43,6 +43,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
 
         // get the data
         this.programId = getIntent().getIntExtra("courseId", -1);
+        String programName = getIntent().getStringExtra("courseName");
         int exerciseId = getIntent().getIntExtra("sessionId", -1);
         this.sessionName = getIntent().getStringExtra("sessionName");
 
@@ -53,8 +54,9 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         setContentView(R.layout.activity_exercises);
 
         // set title and subtitle
-        String title = this.sessionName;
+        String title = programName + ": " + this.sessionName;
         String subTitle = exercises.exerciseList.size() + " exercises, Total Time: " + exercises.getTotalTime();
+
         ActionBar ab = getSupportActionBar();
         ab.setTitle(title);
         ab.setSubtitle(subTitle);

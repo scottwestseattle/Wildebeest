@@ -55,11 +55,24 @@ public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRe
         holder.mItem = mValues.get(position);
         holder.dayLabel.setText(holder.mItem.name);
         //holder.sessionNumber.setText(position + 1);
-        String name = holder.mItem.exerciseCount + " exercises";
-        holder.programName.setText(name);
 
-        String time = new SimpleDateFormat("mm:ss").format(new Date(((long) holder.mItem.seconds) * 1000));
-        String description = "Total Time: " + time;
+        String name;
+        String description;
+        if (holder.mItem.seconds == 0)
+        {
+            // random session
+            holder.programName.setText("12 exercises");
+            description = "Total Time: Random";
+        }
+        else
+        {
+            name = holder.mItem.exerciseCount + " exercises";
+            holder.programName.setText(name);
+
+            String time = new SimpleDateFormat("mm:ss").format(new Date(((long) holder.mItem.seconds) * 1000));
+            description = "Total Time: " + time;
+        }
+
         holder.programDescription.setText(description);
 
         // show a different bg color every day of the week

@@ -55,9 +55,10 @@ public class SessionsActivity extends AppCompatActivity  implements SessionsFrag
         //
 
         Intent intent = new Intent(this, ExercisesActivity.class);
-        intent.putExtra("sessionName", item.parent + ": Day " + item.number);
+        intent.putExtra("sessionName", item.name);
         intent.putExtra("sessionId", item.id);
         intent.putExtra("courseId", courseId);
+        intent.putExtra("courseName", item.parent);
         startActivity(intent);
     }
 
