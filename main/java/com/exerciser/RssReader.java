@@ -103,7 +103,7 @@ public class RssReader {
 
                     stream.close();
                 } catch (Exception e) {
-                    Log.i("xml:fetchXML", "exception: " + e.getMessage());
+                    Log.i("RssReader:fetchXML", "exception: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -112,9 +112,8 @@ public class RssReader {
         thread.start();
         try {
             thread.join(); // wait for the thread to finish
-            //thread.join(10000);
         } catch (InterruptedException e) {
-            Log.e("rss thread", e.getMessage());
+            Log.e("RssReader:thread.join()", e.getMessage());
             e.printStackTrace();
         }
     }

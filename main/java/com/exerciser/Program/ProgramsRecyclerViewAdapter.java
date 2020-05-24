@@ -46,13 +46,13 @@ public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRe
         switch(position)
         {
             case 0:
-                holder.programLayout.setBackgroundResource(R.drawable.bg_0);
-                break;
-            case 1:
                 holder.programLayout.setBackgroundResource(R.drawable.bg_1);
                 break;
-            case 2:
+            case 1:
                 holder.programLayout.setBackgroundResource(R.drawable.bg_2);
+                break;
+            case 2:
+                holder.programLayout.setBackgroundResource(R.drawable.bg_0);
                 break;
             case 3:
                 holder.programLayout.setBackgroundResource(R.drawable.bg_3);
