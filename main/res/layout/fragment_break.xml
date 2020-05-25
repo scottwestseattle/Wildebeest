@@ -53,13 +53,13 @@
         />
 
         <Button
-            android:id="@+id/buttonAddSeconds"
-            android:onClick="onAddSecondsButtonClick"
+            android:id="@+id/buttonSubtractSeconds"
+            android:onClick="onSubtractSecondsButtonClick"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="10dp"
             android:background="@color/design_default_color_secondary"
-            android:text="+5"
+            android:text="-5"
             android:textColor="#fff"
             android:textSize="15sp"
             android:layout_marginTop="10dp"
@@ -80,14 +80,14 @@
             />
 
         <Button
-            android:id="@+id/buttonSubtractSeconds"
-            android:onClick="onSubtractSecondsButtonClick"
+            android:id="@+id/buttonAddSeconds"
+            android:onClick="onAddSecondsButtonClick"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:background="@color/design_default_color_secondary"
-            android:text="-5"
+            android:text="+5"
             android:textColor="#fff"
             android:textSize="15sp"
             app:layout_constraintLeft_toRightOf="@id/textview_exercise_seconds"
