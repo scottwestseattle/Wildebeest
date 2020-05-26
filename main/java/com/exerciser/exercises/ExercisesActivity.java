@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
-import android.widget.TextView;
 
 import com.exerciser.R;
 import com.exerciser.Speech;
@@ -34,7 +33,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         //
         Fragment f = getSupportFragmentManager().getPrimaryNavigationFragment();
         if (null != f) {
-            speak("Ready to start.", TextToSpeech.QUEUE_ADD);
+            Speech.speak("Ready to start.", TextToSpeech.QUEUE_ADD);
             loadFragment("BreakFragment");
         }
     }
@@ -67,7 +66,6 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         //
         // set up the bottom fab buttons
         //
-
         FloatingActionButton fabPlay = findViewById(R.id.fabPlay);
         fabPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,11 +125,11 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
                 if (fragment instanceof StartFragment) {
                     end();
                 } else if (fragment instanceof BreakFragment) {
-                    speak("Stopping...", TextToSpeech.QUEUE_FLUSH);
+                    Speech.speak("Stopping...", TextToSpeech.QUEUE_FLUSH);
                     setFabPlayIcon(showPlayIcon);
                     ((BreakFragment) fragment).onHardStop();
                 } else if (fragment instanceof ExerciseFragment) {
-                    speak("Stopping...", TextToSpeech.QUEUE_FLUSH);
+                    Speech.speak("Stopping...", TextToSpeech.QUEUE_FLUSH);
                     setFabPlayIcon(showPlayIcon);
                     ((ExerciseFragment) fragment).onHardStop();
                 } else if (fragment instanceof FinishedFragment) {
@@ -141,22 +139,18 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
             }
         });
 
-        FloatingActionButton fabMinus = findViewById(R.id.fabMinus);
-        fabMinus.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabMute = findViewById(R.id.fabMute);
+        setFabMuteIcon(Speech.isMuted());
+        fabMute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // get the active fragment so we know which action to perform
-                Fragment fragment = getActiveFragment();
-                if (fragment instanceof BreakFragment) {
-                    ((BreakFragment) fragment).onFabRewindClicked();
-                } else if (fragment instanceof ExerciseFragment) {
-                    ((ExerciseFragment) fragment).onFabRewindClicked();
-                }
+                Speech.setMuted(!Speech.isMuted());
+                setFabMuteIcon(Speech.isMuted());
             }
         });
 
-        FloatingActionButton fabPlus = findViewById(R.id.fabPlus);
-        fabPlus.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabFastForward = findViewById(R.id.fabFastForward);
+        fabFastForward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // get the active fragment so we know which action to perform
@@ -198,14 +192,15 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
     public void loadFragment(String tag) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-
         Fragment fragment = fm.findFragmentByTag(tag);
         if (null == fragment) {
+            showFabButton(R.id.fabFastForward, false);
             switch(tag) {
                 case "StartFragment":
                     fragment = new StartFragment();
                     break;
                 case "BreakFragment":
+                    showFabButton(R.id.fabFastForward, true);
                     fragment = new BreakFragment();
                     break;
                 case "ExerciseFragment":
@@ -238,14 +233,6 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         return;
     }
 
-    public void speak(String text, int queueAction) {
-        Speech.speak(text, queueAction);
-    }
-
-    public void shutup() {
-        Speech.shutup();
-    }
-
     private Fragment getActiveFragment()
     {
         FragmentManager fm = getSupportFragmentManager();
@@ -256,15 +243,25 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
     }
 
     public void setFabPlayIcon(boolean paused) {
-
         setFabButtonIcon(R.id.fabPlay,
                 paused  ? R.drawable.fab_play
                         : android.R.drawable.ic_media_pause);
     }
 
+    public void setFabMuteIcon(boolean muted) {
+        setFabButtonIcon(R.id.fabMute,
+                muted ? android.R.drawable.ic_lock_silent_mode_off
+                        : android.R.drawable.ic_lock_silent_mode);
+    }
+
     public void setFabButtonIcon(int buttonId, int buttonIcon) {
-        FloatingActionButton fabPlay = findViewById(buttonId);
-        fabPlay.setImageResource(buttonIcon);
+        FloatingActionButton fabButton = findViewById(buttonId);
+        fabButton.setImageResource(buttonIcon);
+    }
+
+    public void showFabButton(int buttonId, boolean show) {
+        FloatingActionButton fabButton = findViewById(buttonId);
+        fabButton.setVisibility(show ? FloatingActionButton.VISIBLE : FloatingActionButton.INVISIBLE);
     }
 
     public boolean isLoaded() {

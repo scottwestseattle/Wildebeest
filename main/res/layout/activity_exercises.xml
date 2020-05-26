@@ -24,16 +24,15 @@
         app:srcCompat="@drawable/fab_play" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabMinus"
+        android:id="@+id/fabMute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
         android:layout_marginLeft="80dp"
         android:layout_marginBottom="5dp"
         android:clickable="true"
-        app:srcCompat="@drawable/fab_rewind"
-        android:visibility="invisible"
-        />
+        android:visibility="visible"
+        app:srcCompat="@android:drawable/ic_lock_silent_mode" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabNext"
@@ -46,16 +45,15 @@
         app:srcCompat="@android:drawable/ic_media_next" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabPlus"
+        android:id="@+id/fabFastForward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="80dp"
         android:layout_marginBottom="5dp"
         android:clickable="true"
-        app:srcCompat="@drawable/fab_fast_forward"
         android:visibility="invisible"
-        />
+        app:srcCompat="@android:drawable/ic_media_ff" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabEnd"

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.exerciser.R;
+import com.exerciser.Speech;
 import com.exerciser.exercises.content.ExerciseContent;
 
 import java.util.Random;
@@ -110,7 +111,7 @@ public class BreakFragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                speak("Stopping", TextToSpeech.QUEUE_FLUSH);
+                Speech.speak("Stopping", TextToSpeech.QUEUE_FLUSH);
                 onHardStop();
             }
         };
@@ -129,33 +130,13 @@ public class BreakFragment extends Fragment {
         }
     }
 
-    public boolean onFabNextClicked() {
-        if (started) {
-            if (timerPaused) {
-                speak("Resuming...  ", TextToSpeech.QUEUE_FLUSH);
-                startTimer(nextCountdownSeconds); // restart timer
-                timerPaused = false;
-            } else {
-                int seconds = nextCountdownSeconds + 1;
-                if (secondsRemaining > seconds)
-                    secondsRemaining = seconds; // countdown from 3
-                else
-                    secondsRemaining = 1; // do it now
-            }
-        } else {
-            start();
-        }
-
-        return timerPaused;
-    }
-
     public boolean onFabPlayPauseClicked() {
         if (started) {
             if (timerPaused) {
-                speak("Continued.  ", TextToSpeech.QUEUE_FLUSH);
+                Speech.speak("Continued.  ", TextToSpeech.QUEUE_FLUSH);
                 startTimer(secondsRemaining); // restart timer
             } else {
-                speak("paused.  ", TextToSpeech.QUEUE_FLUSH);
+                Speech.speak("paused.  ", TextToSpeech.QUEUE_FLUSH);
                 stopTimer();
             }
 
@@ -169,20 +150,46 @@ public class BreakFragment extends Fragment {
         return timerPaused;
     }
 
+    public boolean onFabNextClicked() {
+        if (started) {
+            timerPaused = false;
+            loadFragment("ExerciseFragment");
+        }
+        else {
+            start();
+        }
+
+        return timerPaused;
+    }
+
+    // takes timer down to 3 seconds
+    public boolean onFabFastForwardClicked() {
+
+        if (started) {
+            if (timerPaused) {
+                Speech.speak("Resuming...  ", TextToSpeech.QUEUE_FLUSH);
+                startTimer(nextCountdownSeconds); // restart timer
+                timerPaused = false;
+            } else {
+                int seconds = nextCountdownSeconds + 1;
+                if (secondsRemaining > seconds)
+                    secondsRemaining = seconds; // countdown from 3
+                else
+                    secondsRemaining = 1; // do it now
+            }
+        } else {
+            start();
+        }
+
+        ((ExercisesActivity) getActivity()).setFabPlayIcon(timerPaused);
+
+        return timerPaused;
+    }
+
     public void onFabRewindClicked() {
         this.secondsRemaining += this.secondsRewind;
         if (timerPaused)
             updateTimerDisplay(secondsRemaining);
-    }
-
-    public void onFabFastForwardClicked() {
-        this.secondsRemaining -= this.secondsFastForward;
-        if (this.secondsRemaining <= 0)
-            this.secondsRemaining = timerPaused ? 0 : 1;
-
-        if (timerPaused) {
-            updateTimerDisplay(secondsRemaining);
-        }
     }
 
     private String getRandomMessage(String[] msgs) {
@@ -194,12 +201,12 @@ public class BreakFragment extends Fragment {
         ExercisesActivity activity = (ExercisesActivity) getActivity();
         if (null != activity) {
             if (activity.isLoaded()) {
-                activity.speak(getRandomMessage(startMsgs), TextToSpeech.QUEUE_ADD);
+                Speech.speak(getRandomMessage(startMsgs), TextToSpeech.QUEUE_ADD);
                 this.started = true;
                 activity.reset();
                 loadNext();
             } else {
-                activity.speak("Wait for exercises to finish loading...", TextToSpeech.QUEUE_ADD);
+                Speech.speak("Wait for exercises to finish loading...", TextToSpeech.QUEUE_ADD);
                 handler.postDelayed(this.startUp, this.second); // wait 1 second
             }
         }
@@ -237,7 +244,7 @@ public class BreakFragment extends Fragment {
                 text += "  The next exercise is, " + exerciseItem.name + ", for " + exerciseItem.runSeconds + " seconds.";
             }
 
-            speak(text, TextToSpeech.QUEUE_ADD);
+            Speech.speak(text, TextToSpeech.QUEUE_ADD);
 
             // start
             setStaticViews(activity, exerciseItem, title);
@@ -246,8 +253,8 @@ public class BreakFragment extends Fragment {
         }
         else {
             // end
-            activity.speak("All exercises completed.", TextToSpeech.QUEUE_ADD);
-            activity.speak("Well done!  Congratulations!", TextToSpeech.QUEUE_ADD);
+            Speech.speak("All exercises completed.", TextToSpeech.QUEUE_ADD);
+            Speech.speak("Well done!  Congratulations!", TextToSpeech.QUEUE_ADD);
             stopTimer();
             activity.setFabPlayIcon(true);
         }
@@ -316,17 +323,11 @@ public class BreakFragment extends Fragment {
 
     private void updateTimerAudio(int seconds) {
         if (seconds == this.getReadySeconds) {
-            speak("Starting in: ", TextToSpeech.QUEUE_FLUSH);
+            Speech.speak("Starting in: ", TextToSpeech.QUEUE_FLUSH);
         }
         else if (seconds <= this.countdownSeconds && seconds > 0) {
-            speak(Integer.toString(seconds), TextToSpeech.QUEUE_FLUSH);
+            Speech.speak(Integer.toString(seconds), TextToSpeech.QUEUE_FLUSH);
         }
-    }
-
-    private void speak(String text, int queueAction) {
-        ExercisesActivity activity = (ExercisesActivity) getActivity();
-        if (null != activity)
-            activity.speak(text, queueAction);
     }
 
     private void loadFragment(String tag)

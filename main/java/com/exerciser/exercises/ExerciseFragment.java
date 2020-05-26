@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.exerciser.R;
+import com.exerciser.Speech;
 import com.exerciser.Tools;
 import com.exerciser.exercises.content.ExerciseContent;
 
@@ -61,7 +62,7 @@ public class ExerciseFragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                speak("Stopping", TextToSpeech.QUEUE_FLUSH);
+                Speech.speak("Stopping", TextToSpeech.QUEUE_FLUSH);
                 onHardStop();
             }
         };
@@ -76,7 +77,7 @@ public class ExerciseFragment extends Fragment {
     }
 
     public boolean onFabNextClicked() {
-        ((ExercisesActivity) getActivity()).shutup();
+        Speech.shutup();
         stopTimer();
         showNextFragment();
 
@@ -86,11 +87,11 @@ public class ExerciseFragment extends Fragment {
     public boolean onFabPlayPauseClicked() {
 
         if (timerPaused) {
-            speak("Continued.  ", TextToSpeech.QUEUE_FLUSH);
+            Speech.speak("Continued.  ", TextToSpeech.QUEUE_FLUSH);
             startTimer(secondsRemaining); // restart timer
         }
         else {
-            speak("paused.  ", TextToSpeech.QUEUE_FLUSH);
+            Speech.speak("paused.  ", TextToSpeech.QUEUE_FLUSH);
             stopTimer();
         }
 
@@ -133,7 +134,7 @@ public class ExerciseFragment extends Fragment {
             //
             // give update every 10 seconds
             //
-            speak(getSecondsRemainingMessage(seconds), TextToSpeech.QUEUE_ADD);
+            Speech.speak(getSecondsRemainingMessage(seconds), TextToSpeech.QUEUE_ADD);
         }
         else if (seconds == 11)
         {
@@ -146,7 +147,7 @@ public class ExerciseFragment extends Fragment {
             //
             // countdown last 10 seconds
             //
-            speak(Integer.toString(seconds), TextToSpeech.QUEUE_FLUSH);
+            Speech.speak(Integer.toString(seconds), TextToSpeech.QUEUE_FLUSH);
         }
     }
 
@@ -154,7 +155,7 @@ public class ExerciseFragment extends Fragment {
         ExerciseContent.ExerciseItem exerciseItem = ((ExercisesActivity) getActivity()).getCurrentExercise();
         String instructions = getInstructionsDeluxe(exerciseItem);
         if (instructions.length() > 0) {
-            speak(instructions, TextToSpeech.QUEUE_ADD);
+            Speech.speak(instructions, TextToSpeech.QUEUE_ADD);
         }
     }
 
@@ -217,12 +218,6 @@ public class ExerciseFragment extends Fragment {
         return msg.replace("#", (CharSequence)Integer.toString(seconds)) + ".";
     }
 
-    private void speak(String text, int queueAction)
-    {
-        ExercisesActivity activity = (ExercisesActivity) getActivity();
-        activity.speak(text, queueAction);
-    }
-
     private void loadCurrent() {
 
         ExercisesActivity activity = (ExercisesActivity) getActivity();
@@ -232,7 +227,7 @@ public class ExerciseFragment extends Fragment {
             String instructions = getInstructionsDeluxe(exerciseItem);
             if (instructions.length() > 0)
                 instructions += " every 10 seconds.";
-            speak("Begin.  Do " + exerciseItem.name + " -- for " + exerciseItem.runSeconds + " seconds.  " + instructions, TextToSpeech.QUEUE_FLUSH);
+            Speech.speak("Begin.  Do " + exerciseItem.name + " -- for " + exerciseItem.runSeconds + " seconds.  " + instructions, TextToSpeech.QUEUE_FLUSH);
             startTimer(exerciseItem.runSeconds);
         }
     }

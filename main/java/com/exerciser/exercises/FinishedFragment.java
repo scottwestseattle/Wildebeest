@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.exerciser.R;
+import com.exerciser.Speech;
 
 import java.util.Random;
 
@@ -54,13 +55,13 @@ public class FinishedFragment extends Fragment {
         activity.setFabPlayIcon(true);
 
         String title = "All exercises completed!";
-        activity.speak(title, TextToSpeech.QUEUE_ADD);
+        Speech.speak(title, TextToSpeech.QUEUE_ADD);
         TextView tvTitle = this.getView().findViewById(R.id.title);
         if (null != tvTitle)
             tvTitle.setText(title);
 
         String msg = endMsgs[new Random().nextInt(endMsgs.length)];
-        activity.speak(msg, TextToSpeech.QUEUE_ADD);
+        Speech.speak(msg, TextToSpeech.QUEUE_ADD);
         TextView tvMsg = this.getView().findViewById(R.id.msg);
         if (null != tvMsg)
             tvMsg.setText(msg);

@@ -10,6 +10,17 @@ import java.util.Locale;
 public class Speech  {
 
     private static TextToSpeech tts = null;
+    private static boolean mMuted = false;
+
+    public static boolean isMuted() {
+        return mMuted;
+    }
+
+    public static void setMuted(boolean muted) {
+        mMuted = muted;
+        if (mMuted)
+            shutup();
+    }
 
     public static void init(Context context)
     {
@@ -44,7 +55,7 @@ public class Speech  {
 
     public static void speak(CharSequence text, int queueMode)
     {
-        if (null != tts)
+        if (null != tts && !mMuted)
             tts.speak(text, queueMode, null, "");
     }
 
