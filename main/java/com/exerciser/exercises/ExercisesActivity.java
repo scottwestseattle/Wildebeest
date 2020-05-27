@@ -7,16 +7,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
 
 import com.exerciser.R;
 import com.exerciser.Speech;
+import com.exerciser.UserPreferences;
 import com.exerciser.exercises.content.ExerciseContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.prefs.Preferences;
 
 public class ExercisesActivity extends AppCompatActivity  implements StartFragment.OnListFragmentInteractionListener {
 
@@ -24,30 +29,24 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
     public static ExerciseContent exercises = null;
     public int currentExerciseIndex = -1;
     public int programId = -1;
+    public String programName = "";
+    public int sessionId = -1;
     public String sessionName = "";
 
     @Override
     public void onListFragmentInteraction(ExerciseContent.ExerciseItem exerciseItem) {
         //
-        // handle click from any item in Exercise list: start exercise
+        // todo: handle click on an item in the Exercise list: edit exercise
         //
-        Fragment f = getSupportFragmentManager().getPrimaryNavigationFragment();
-        if (null != f) {
-            Speech.speak("Ready to start.", TextToSpeech.QUEUE_ADD);
-            loadFragment("BreakFragment");
-        }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         // get the data
-        this.programId = getIntent().getIntExtra("courseId", -1);
-        String programName = getIntent().getStringExtra("courseName");
-        int exerciseId = getIntent().getIntExtra("sessionId", -1);
-        this.sessionName = getIntent().getStringExtra("sessionName");
+        loadSessionInfo(getIntent());
 
         // get the data
-        exercises = new ExerciseContent(exerciseId);
+        exercises = new ExerciseContent(this.sessionId);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);
@@ -164,6 +163,13 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         });
     }
 
+    private void loadSessionInfo(Intent intent) {
+        this.programId = intent.getIntExtra("courseId", -1);
+        this.programName = intent.getStringExtra("courseName");
+        this.sessionId = intent.getIntExtra("sessionId", -1);
+        this.sessionName = intent.getStringExtra("sessionName");
+    }
+
     public void onAddSecondsButtonClick(View view) {
         addSeconds(5);
     }
@@ -207,6 +213,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
                     fragment = new ExerciseFragment();
                     break;
                 case "FinishedFragment":
+                    saveUserPreferences();
                     fragment = new FinishedFragment();
                     break;
                 default:
@@ -216,6 +223,11 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
 
         ft.replace(R.id.fragment_holder, fragment);
         ft.commit();
+    }
+
+    private void saveUserPreferences() {
+        UserPreferences.mProgramId = this.programId;
+        UserPreferences.mSessionId = this.sessionId;
     }
 
     public ExerciseContent getExercises()

@@ -2,7 +2,9 @@ package com.exerciser;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.View;
 
 import com.exerciser.Program.ProgramContent;
 import com.exerciser.Program.ProgramsFragment;
+import com.exerciser.exercises.ExercisesActivity;
 import com.exerciser.sessions.SessionsActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
     protected void onDestroy() {
         super.onDestroy();
         Log.i("onDestroy", "destroying...");
+        UserPreferences.save(this);
     }
 
     @Override
@@ -54,7 +58,28 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
                 finishAffinity(); // closes but doesn't exit app
             }
         });
+
+        start();
     }
+
+    private void start() {
+
+        UserPreferences.load(this);
+
+        // start the next exercise
+        if (UserPreferences.mSessionId > 0) {
+
+            int size = ProgramContent.programList.size();
+
+            Intent intent = new Intent(this, ExercisesActivity.class);
+            intent.putExtra("sessionName", "Session Name");
+            intent.putExtra("sessionId", UserPreferences.mSessionId);
+            intent.putExtra("courseId", UserPreferences.mProgramId);
+            intent.putExtra("courseName", "Program Name");
+            startActivity(intent);
+        }
+    }
+
 
     public void speak(CharSequence text, int queueAction) {
         Speech.speak(text, queueAction);
