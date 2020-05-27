@@ -17,11 +17,8 @@ public class SessionContent {
         //
         // todo: do the rss read again here because I couldn't figure out how to pass in the data from the programs read
         //
-        sessionList.clear();
         this.courseId = courseId;
-        String url = "https://learnfast.xyz/courses/rss";
-        Log.i("parse", "Getting Session list from rss...");
-        RssReader.fetchSessionList(url, sessionList, courseId);
+        this.sessionList = RssReader.getSessionList(courseId);
     }
 
     private static void addItem(SessionItem item) {

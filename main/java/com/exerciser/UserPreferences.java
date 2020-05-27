@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class UserPreferences {
 
-    public static int mProgramId = -1;
-    public static int mSessionId = -1;
+    public static int mProgramId = Integer.MIN_VALUE;
+    public static int mSessionId = Integer.MIN_VALUE;
 
     public static void save(AppCompatActivity context) {
         SharedPreferences preferences = context.getPreferences(Context.MODE_PRIVATE);
@@ -19,7 +19,13 @@ public class UserPreferences {
 
     public static void load(AppCompatActivity context) {
         SharedPreferences preferences = context.getPreferences(Context.MODE_PRIVATE);
-        mProgramId = preferences.getInt("current_program_id", -1);
-        mSessionId = preferences.getInt("current_session_id", -1);
+        mProgramId = preferences.getInt("current_program_id", Integer.MIN_VALUE);
+        mSessionId = preferences.getInt("current_session_id", Integer.MIN_VALUE);
+    }
+
+    public static void clear(AppCompatActivity context) {
+        mProgramId = Integer.MIN_VALUE;
+        mSessionId = Integer.MIN_VALUE;
+        save(context);
     }
 }

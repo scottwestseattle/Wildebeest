@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.exerciser.Program.ProgramsFragment.OnListFragmentInteractionListener;
-import com.exerciser.Program.ProgramContent.ProgramItem;
+import com.exerciser.Program.ProgramItem;
 import com.exerciser.R;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package com.exerciser;
 
 import android.util.Log;
 
-import com.exerciser.Program.ProgramContent;
+import com.exerciser.Program.ProgramItem;
 import com.exerciser.exercises.content.ExerciseContent;
 import com.exerciser.sessions.content.SessionContent;
 
@@ -10,8 +10,11 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class RssReader {
@@ -40,27 +43,51 @@ public class RssReader {
     static private String exerciseDescription = "";
     static private String exerciseImageName = "";
 
-    static List<ProgramContent.ProgramItem> programItems = null;
-    static List<SessionContent.SessionItem> sessionItems = null;
+    static List<ProgramItem> programItems = null;
     static List<ExerciseContent.ExerciseItem> exerciseItems = null;
+
+    static public List<SessionContent.SessionItem> getSessionList(int courseId) {
+        List<SessionContent.SessionItem> sessionItems = null;
+        Iterator<ProgramItem> iterator = programItems.iterator();
+        while (iterator.hasNext()) {
+            ProgramItem item = iterator.next();
+            if (item.id == courseId) {
+                sessionItems = item.sessionItems;
+                break;
+            }
+        }
+        return sessionItems;
+    }
+
+    static public SessionContent.SessionItem getNextSession(int courseId, int sessionId) {
+        SessionContent.SessionItem session = null;
+        List<SessionContent.SessionItem> sessionItems = getSessionList(courseId);
+        if (null != sessionItems) {
+            Iterator<SessionContent.SessionItem> iterator = sessionItems.iterator();
+            boolean next = false;
+            while (iterator.hasNext()) {
+                SessionContent.SessionItem item = iterator.next();
+                if (item.id == sessionId) {
+                    next = true;
+                }
+                else if (next) {
+                    session = item;
+                    break;
+                }
+            }
+        }
+        return session;
+    }
 
     private RssReader()
     {
         // only allow static use
     }
 
-    static public void fetchProgramList(String url, List<ProgramContent.ProgramItem> items) {
+    static public void fetchProgramList(String url, List<ProgramItem> items) {
         items.clear();
         programItems = items;
         sessionCourseId = -1; // flag that we're not loading sessions
-
-        fetchXML(url);
-    }
-
-    static public void fetchSessionList(String url, List<SessionContent.SessionItem> items, int id) {
-        items.clear();
-        sessionItems = items;
-        sessionCourseId = id;
 
         fetchXML(url);
     }
@@ -132,6 +159,8 @@ public class RssReader {
         try {
             event = myParser.getEventType();
 
+            List<SessionContent.SessionItem> sessionItems = new ArrayList<SessionContent.SessionItem>();
+
             while (event != XmlPullParser.END_DOCUMENT) {
 
                 String name = myParser.getName();
@@ -153,16 +182,17 @@ public class RssReader {
                         //
                         if(name.equals("course")){
                             if (sessionCourseId <= 0) { // make sure we're not loading sessions
-                                ProgramContent.ProgramItem item = new ProgramContent.ProgramItem(
+                                ProgramItem item = new ProgramItem(
                                         programId,
                                         programName,
                                         programDescription,
                                         -1,
-                                        sessionCount
+                                        sessionCount,
+                                        sessionItems
                                 );
 
                                 programItems.add(item);
-
+                                sessionItems = new ArrayList<SessionContent.SessionItem>();
                                 sessionCount = 0; // re-start the count
                             }
                         }
@@ -184,7 +214,7 @@ public class RssReader {
 
                             sessionCount++; // count the session from the program list
 
-                            if (null != sessionItems && sessionCourseId > 0 && programId == sessionCourseId) {
+                            if (null != sessionItems) {
                                 SessionContent.SessionItem item = new SessionContent.SessionItem(
                                         sessionId,
                                         sessionName,

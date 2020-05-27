@@ -11,11 +11,14 @@ import android.util.Log;
 import android.view.View;
 
 import com.exerciser.Program.ProgramContent;
+import com.exerciser.Program.ProgramItem;
 import com.exerciser.Program.ProgramsFragment;
 import com.exerciser.exercises.ExercisesActivity;
 import com.exerciser.sessions.SessionsActivity;
+import com.exerciser.sessions.content.SessionContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Iterator;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ProgramsFragment.OnListFragmentInteractionListener
@@ -26,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
     }
 
     @Override
-    public void onListFragmentInteraction(ProgramContent.ProgramItem item) {
+    public void onListFragmentInteraction(ProgramItem item) {
         //
         // handle click from Program list: load Sessions
         //
@@ -68,18 +71,26 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
 
         // start the next exercise
         if (UserPreferences.mSessionId > 0) {
-
-            int size = ProgramContent.programList.size();
-
-            Intent intent = new Intent(this, ExercisesActivity.class);
-            intent.putExtra("sessionName", "Session Name");
-            intent.putExtra("sessionId", UserPreferences.mSessionId);
-            intent.putExtra("courseId", UserPreferences.mProgramId);
-            intent.putExtra("courseName", "Program Name");
-            startActivity(intent);
+            //
+            // user is already doing a program, get and load the next session
+            //
+            SessionContent.SessionItem sessionItem = RssReader.getNextSession(UserPreferences.mProgramId, UserPreferences.mSessionId);
+            if (null != sessionItem) {
+                Intent intent = new Intent(this, ExercisesActivity.class);
+                intent.putExtra("sessionName", sessionItem.name);
+                intent.putExtra("sessionId", sessionItem.id);
+                intent.putExtra("courseId", UserPreferences.mProgramId);
+                intent.putExtra("courseName", sessionItem.parent);
+                startActivity(intent);
+            }
+            else
+            {
+                // next session not found so consider this program to be finished
+                // so clear the settings
+                UserPreferences.clear(this);
+            }
         }
     }
-
 
     public void speak(CharSequence text, int queueAction) {
         Speech.speak(text, queueAction);

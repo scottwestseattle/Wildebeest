@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.exerciser.MainActivity;
-import com.exerciser.Program.ProgramContent.ProgramItem;
+import com.exerciser.Program.ProgramItem;
 import com.exerciser.R;
 
 import java.util.List;
