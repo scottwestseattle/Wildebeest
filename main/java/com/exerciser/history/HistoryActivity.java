@@ -49,6 +49,9 @@ public class HistoryActivity extends AppCompatActivity  implements HistoryFragme
         int exercises = i.getIntExtra("sessionExercises", -1);
 
         TextView tv = null;
+        
+        tv = (TextView) findViewById(R.id.textViewNextLabel);
+        tv.setText("Your next exercise session is:");
 
         tv = (TextView) findViewById(R.id.textViewProgramName);
         tv.setText(mProgramName);

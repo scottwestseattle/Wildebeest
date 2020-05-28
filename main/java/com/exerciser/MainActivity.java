@@ -66,10 +66,18 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
             }
         });
 
-        start();
+        FloatingActionButton fabHistory = findViewById(R.id.fabHistory);
+        fabHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showHistory();
+            }
+        });
+
+        showHistory();
     }
 
-    private void start() {
+    private void showHistory() {
 
         // figure out the next Session from the history records
         HistoryContent.HistoryItem newestItem = HistoryContent.getNewestItem();
