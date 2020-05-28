@@ -50,6 +50,16 @@ public class HistoryContent {
         }
     }
 
+    public static HistoryItem getNewestItem() {
+        HistoryItem item = null;
+        HistoryContent.load();
+
+        if (itemList.size() > 0)
+            item = HistoryContent.itemList.get(0);
+
+        return item;
+    }
+
     /**
      * A History item representing a piece of content.
      */

@@ -43,24 +43,7 @@ public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRe
         holder.mItem = mValues.get(position);
         holder.programName.setText(mValues.get(position).name);
         holder.programDescription.setText(mValues.get(position).description);
-        switch(position)
-        {
-            case 0:
-                holder.programLayout.setBackgroundResource(R.drawable.bg_1);
-                break;
-            case 1:
-                holder.programLayout.setBackgroundResource(R.drawable.bg_2);
-                break;
-            case 2:
-                holder.programLayout.setBackgroundResource(R.drawable.bg_0);
-                break;
-            case 3:
-                holder.programLayout.setBackgroundResource(R.drawable.bg_3);
-                break;
-            default:
-                holder.card_view.setCardBackgroundColor(Color.RED);
-                break;
-        }
+        holder.programLayout.setBackgroundResource(ProgramContent.getBackgroundImageResourceId(mValues.get(position).imageId));
 
         // show number of sessions
         int cnt = mValues.get(position).sessionCount;

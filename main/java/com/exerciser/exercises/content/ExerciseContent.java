@@ -3,6 +3,7 @@ package com.exerciser.exercises.content;
 import android.util.Log;
 
 import com.exerciser.RssReader;
+import com.exerciser.Tools;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -274,14 +275,7 @@ public class ExerciseContent {
     }
 
     public String getTotalTime() {
-
-        long totalSeconds = getTotalSeconds();
-
-        // format the seconds to look like: 13:10
-        Date dt = new Date((totalSeconds) * 1000);
-        String time = new SimpleDateFormat("mm:ss").format(dt);
-
-        return time;
+        return Tools.getTimeFromSeconds(getTotalSeconds());
     }
 
     private static void addItem(ExerciseItem item) {

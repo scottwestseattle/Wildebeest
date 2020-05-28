@@ -5,59 +5,130 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".history.HistoryActivity"
-    android:paddingHorizontal="10dp"
+    android:paddingHorizontal="5dp"
+    android:paddingTop="5dp"
     >
 
-    <TextView
-        android:id="@+id/textViewNextLabel"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="The next exercise is: "
-        android:textSize="20sp"
-        android:layout_margin="20dp"
-        android:layout_marginLeft="20dp"
+        android:id="@+id/cardViewCard"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        >
 
-    <TextView
-        android:id="@+id/textViewNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Intermediate: Segundo"
-        android:textSize="20sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="20dp"
-        app:layout_constraintTop_toBottomOf="@id/textViewNextLabel"
-        />
+        <RelativeLayout
+            android:id="@+id/card_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:background="@drawable/bg_2"
+            >
 
-    <Button
-        android:id="@+id/buttonNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        app:layout_constraintTop_toBottomOf="@id/textViewNext"
-        android:paddingHorizontal="40dp"
-        android:layout_marginTop="20dp"
-        />
+            <TextView
+                android:id="@+id/textViewNextLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="Your next exercise is:"
+                android:textSize="12sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_centerHorizontal="true"
+                android:textColor="#fff"
+                />
 
-    <TextView
-        android:id="@+id/textViewHistory"
-        android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textViewProgramName"
+                android:text="Program Name"
+                android:textSize="18sp"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewNextLabel"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:textColor="#fff"
+                />
+
+            <TextView
+                android:id="@+id/textViewSessionName"
+                android:text="Session Name"
+                android:textSize="30sp"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewProgramName"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:textColor="#fff"
+                />
+
+            <TextView
+                android:id="@+id/textViewExerciseCount"
+                android:text="11 exercises"
+                android:textSize="12sp"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewSessionName"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:textColor="#fff"
+                />
+
+            <TextView
+                android:id="@+id/textViewExerciseTime"
+                android:text="Total Time: 13:15"
+                android:textSize="12sp"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewExerciseCount"
+                android:layout_centerHorizontal="true"
+                android:textColor="#fff"
+                />
+
+            <Button
+                android:id="@+id/buttonNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/textViewExerciseTime"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:onClick="onStartButtonClick"
+                />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="History"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/buttonNext"
-        android:layout_margin="20dp"
-        android:layout_marginLeft="20dp"
-        />
+        app:layout_constraintTop_toBottomOf="@id/cardViewCard"
+        >
+
+        <TextView
+            android:id="@+id/textViewHistory"
+            android:text="History"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+    </RelativeLayout>
 
     <fragment
         android:name="com.exerciser.history.HistoryFragment"
         android:id="@+id/historyFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/textViewHistory"
+        app:layout_constraintTop_toBottomOf="@id/title_layout"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

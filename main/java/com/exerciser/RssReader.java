@@ -14,8 +14,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class RssReader {
 
@@ -29,6 +31,7 @@ public class RssReader {
     static private String programDescription = "";
     static private int sessionCount = 0;
     static List<ProgramItem> programItems = null;
+    static public final Map<Integer, ProgramItem> programMap = new HashMap<Integer, ProgramItem>();
 
     // Session
     static private int sessionCourseId = -1;
@@ -39,6 +42,7 @@ public class RssReader {
     static private int sessionExerciseCount = -1;
     static private int sessionSeconds = -1;
     static private String sessionParentName = "";
+    static public final Map<Integer, SessionContent.SessionItem> sessionMap = new HashMap<Integer, SessionContent.SessionItem>();
 
     // Exercise
     static private String exerciseName = "";
@@ -60,14 +64,11 @@ public class RssReader {
 
     static public List<SessionContent.SessionItem> getSessionList(int courseId) {
         List<SessionContent.SessionItem> sessionItems = null;
-        Iterator<ProgramItem> iterator = programItems.iterator();
-        while (iterator.hasNext()) {
-            ProgramItem item = iterator.next();
-            if (item.id == courseId) {
-                sessionItems = item.sessionItems;
-                break;
-            }
-        }
+
+        ProgramItem programItem = programMap.get(courseId);
+        if (null != programItem)
+            sessionItems = programItem.sessionItems;
+
         return sessionItems;
     }
 
@@ -205,12 +206,14 @@ public class RssReader {
                                         programId,
                                         programName,
                                         programDescription,
-                                        -1,
+                                        programItems.size(), // used for image id
                                         sessionCount,
                                         sessionItems
                                 );
 
                                 programItems.add(item);
+                                programMap.put(programId, item);
+
                                 sessionItems = new ArrayList<SessionContent.SessionItem>();
                                 sessionCount = 0; // re-start the count
                             }
@@ -245,6 +248,7 @@ public class RssReader {
                                 );
 
                                 sessionItems.add(item);
+                                sessionMap.put(sessionId, item);
                             }
                         }
                         else if(name.equals("lesson_id")){

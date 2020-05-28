@@ -10,11 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.exerciser.R;
+import com.exerciser.Tools;
 import com.exerciser.sessions.SessionsFragment.OnListFragmentInteractionListener;
 import com.exerciser.sessions.content.SessionContent.SessionItem;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -68,9 +67,7 @@ public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRe
         {
             name = holder.mItem.exerciseCount + " exercises";
             holder.programName.setText(name);
-
-            String time = new SimpleDateFormat("mm:ss").format(new Date(((long) holder.mItem.seconds) * 1000));
-            description = "Total Time: " + time;
+            description = "Total Time: " + Tools.getTimeFromSeconds(holder.mItem.seconds);
         }
 
         holder.programDescription.setText(description);

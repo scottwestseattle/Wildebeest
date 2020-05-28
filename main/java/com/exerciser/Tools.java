@@ -4,9 +4,18 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Random;
 
 public class Tools {
+
+    // format the seconds to look like: 13:10
+    public static String getTimeFromSeconds(long seconds) {
+        Date dt = new Date((seconds) * 1000);
+        String time = new SimpleDateFormat("mm:ss").format(dt);
+        return time;
+    }
 
     public static String getRandomString(String ... msgs)
     {
