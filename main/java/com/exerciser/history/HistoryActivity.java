@@ -16,6 +16,7 @@ import com.exerciser.Tools;
 import com.exerciser.UserPreferences;
 import com.exerciser.exercises.ExercisesActivity;
 import com.exerciser.history.content.HistoryContent;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HistoryActivity extends AppCompatActivity  implements HistoryFragment.OnListFragmentInteractionListener {
 
@@ -28,6 +29,14 @@ public class HistoryActivity extends AppCompatActivity  implements HistoryFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
+        FloatingActionButton fabEnd = findViewById(R.id.fabEnd);
+        fabEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         setTitle("History");
 
