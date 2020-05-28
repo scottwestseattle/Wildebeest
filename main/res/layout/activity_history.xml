@@ -4,13 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".history.HistoryActivity">
+    tools:context=".history.HistoryActivity"
+    android:paddingHorizontal="10dp"
+    >
+
+    <TextView
+        android:id="@+id/textViewNextLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The next exercise is: "
+        android:textSize="20sp"
+        android:layout_margin="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/textViewNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Intermediate: Segundo"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toBottomOf="@id/textViewNextLabel"
+        />
+
+    <Button
+        android:id="@+id/buttonNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        app:layout_constraintTop_toBottomOf="@id/textViewNext"
+        android:paddingHorizontal="40dp"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/textViewHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="History"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/buttonNext"
+        android:layout_margin="20dp"
+        android:layout_marginLeft="20dp"
+        />
 
     <fragment
         android:name="com.exerciser.history.HistoryFragment"
         android:id="@+id/historyFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textViewHistory"
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabBack"

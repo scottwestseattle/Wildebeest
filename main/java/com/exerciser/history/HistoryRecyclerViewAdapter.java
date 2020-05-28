@@ -44,7 +44,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 
         SimpleDateFormat df = new SimpleDateFormat("MM/dd HH:mm");
         String d = df.format(holder.mItem.date);
-        
+
         holder.mIdView.setText(d);
         holder.mContentView.setText(holder.mItem.programName + ": " + holder.mItem.sessionName);
 
