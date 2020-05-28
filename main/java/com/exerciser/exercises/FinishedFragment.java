@@ -65,7 +65,6 @@ public class FinishedFragment extends Fragment {
         TextView tvMsg = this.getView().findViewById(R.id.msg);
         if (null != tvMsg)
             tvMsg.setText(msg);
-
     }
 
 }

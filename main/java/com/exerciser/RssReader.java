@@ -4,13 +4,13 @@ import android.util.Log;
 
 import com.exerciser.Program.ProgramItem;
 import com.exerciser.exercises.content.ExerciseContent;
+import com.exerciser.history.content.HistoryContent;
 import com.exerciser.sessions.content.SessionContent;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,11 +23,14 @@ public class RssReader {
     static private volatile boolean parsingComplete = false;
     static public String urlString = "";
 
+    // Program
     static private String programName = "";
     static private int programId = -1;
     static private String programDescription = "";
     static private int sessionCount = 0;
+    static List<ProgramItem> programItems = null;
 
+    // Session
     static private int sessionCourseId = -1;
     static private int sessionId = -1;
     static private int sessionNumber = -1;
@@ -37,14 +40,23 @@ public class RssReader {
     static private int sessionSeconds = -1;
     static private String sessionParentName = "";
 
+    // Exercise
     static private String exerciseName = "";
     static private int exerciseRunSeconds = -1;
     static private int exerciseBreakSeconds = -1;
     static private String exerciseDescription = "";
     static private String exerciseImageName = "";
-
-    static List<ProgramItem> programItems = null;
     static List<ExerciseContent.ExerciseItem> exerciseItems = null;
+
+    // History
+    static private String historyDatetime = "";
+    static private String historyProgramName = "";
+    static private int historyProgramId = -1;
+    static private String historySessionName = "";
+    static private int historySessionId = -1;
+    static private String historyTime = "";
+    static private int historySeconds = -1;
+    static List<HistoryContent.HistoryItem> historyItems = null;
 
     static public List<SessionContent.SessionItem> getSessionList(int courseId) {
         List<SessionContent.SessionItem> sessionItems = null;
@@ -95,6 +107,13 @@ public class RssReader {
     static public void fetchExerciseList(String url, List<ExerciseContent.ExerciseItem> items) {
         items.clear();
         exerciseItems = items;
+
+        fetchXML(url);
+    }
+
+    static public void fetchHistoryList(String url, List<HistoryContent.HistoryItem> items) {
+        items.clear();
+        historyItems = items;
 
         fetchXML(url);
     }
@@ -258,6 +277,52 @@ public class RssReader {
                             } catch(NumberFormatException nfe){}
                         }
                         //
+                        // the 'history' block
+                        //
+                        else if(name.equals("history")){
+
+                            sessionCount++; // count the session from the program list
+
+                            if (null != historyItems) {
+                                HistoryContent.HistoryItem item = new HistoryContent.HistoryItem(
+                                        historyProgramName,
+                                        historyProgramId,
+                                        historySessionName,
+                                        historySessionId,
+                                        historyDatetime,
+                                        historySeconds
+                                );
+                                historyItems.add(item);
+                            }
+                        }
+                        else if (name.equals("history_datetime")){
+                            historyDatetime = text.trim();
+                        }
+                        else if (name.equals("history_programName")){
+                            historyProgramName = text.trim();
+                        }
+                        else if(name.equals("history_programId")){
+                            try {
+                                historyProgramId = Integer.parseInt(text);
+                            } catch(NumberFormatException nfe){}
+                        }
+                        else if (name.equals("history_sessionName")){
+                            historySessionName = text.trim();
+                        }
+                        else if(name.equals("history_sessionId")){
+                            try {
+                                historySessionId = Integer.parseInt(text);
+                            } catch(NumberFormatException nfe){}
+                        }
+                        else if(name.equals("history_seconds")){
+                            try {
+                                historySeconds = Integer.parseInt(text);
+                            } catch(NumberFormatException nfe){}
+                        }
+                        else if(name.equals("history_time")){
+                            historyTime = text.trim();
+                        }
+                        //
                         // the 'exercise' block
                         //
                         if(name.equals("record")){
@@ -321,5 +386,40 @@ public class RssReader {
     static public boolean isLoaded()
     {
         return parsingComplete;
+    }
+
+    static public void ping(String url) {
+
+        urlString = url;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(urlString);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                    conn.setConnectTimeout(15000 /* milliseconds */);
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+
+                    // Starts the query
+                    conn.connect();
+                    InputStream stream = conn.getInputStream();
+                    stream.close();
+                } catch (Exception e) {
+                    Log.i("RssReader:ping", "exception: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+        try {
+            thread.join(); // wait for the thread to finish
+        } catch (InterruptedException e) {
+            Log.e("RssReader:thread.join()", e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

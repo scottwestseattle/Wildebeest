@@ -12,14 +12,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 
 import com.exerciser.R;
+import com.exerciser.RssReader;
 import com.exerciser.Speech;
 import com.exerciser.UserPreferences;
 import com.exerciser.exercises.content.ExerciseContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.prefs.Preferences;
 
@@ -213,7 +216,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
                     fragment = new ExerciseFragment();
                     break;
                 case "FinishedFragment":
-                    saveUserPreferences();
+                    saveHistory();
                     fragment = new FinishedFragment();
                     break;
                 default:
@@ -223,6 +226,28 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
 
         ft.replace(R.id.fragment_holder, fragment);
         ft.commit();
+    }
+
+    private void saveHistory() {
+
+        // save preferences locally
+        saveUserPreferences();
+
+        // save the history on the server
+        String url = "https://learnfast.xyz/history/add/";
+        try {
+            url += URLEncoder.encode(this.programName, "utf-8") + "/";
+            url += this.programId + "/";
+            url += URLEncoder.encode(this.sessionName, "utf-8") + "/";
+            url += this.sessionId + "/";
+            url += this.exercises.getTotalSeconds();
+        }
+        catch(Exception e)
+        {
+            Log.e("Exercise", "Error encoding url: " + e.getMessage());
+        }
+
+        RssReader.ping(url);
     }
 
     private void saveUserPreferences() {

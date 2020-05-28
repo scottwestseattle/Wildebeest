@@ -14,6 +14,7 @@ import com.exerciser.Program.ProgramContent;
 import com.exerciser.Program.ProgramItem;
 import com.exerciser.Program.ProgramsFragment;
 import com.exerciser.exercises.ExercisesActivity;
+import com.exerciser.history.HistoryActivity;
 import com.exerciser.sessions.SessionsActivity;
 import com.exerciser.sessions.content.SessionContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
         UserPreferences.load(this);
 
         // start the next exercise
-        if (UserPreferences.mSessionId > 0) {
+        if (false && UserPreferences.mSessionId > 0) {
             //
             // user is already doing a program, get and load the next session
             //
@@ -89,6 +90,10 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
                 // so clear the settings
                 UserPreferences.clear(this);
             }
+        }
+        else {
+            Intent intent = new Intent(this, HistoryActivity.class);
+            startActivity(intent);
         }
     }
 
