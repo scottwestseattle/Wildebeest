@@ -20,9 +20,11 @@ import com.exerciser.RssReader;
 import com.exerciser.Speech;
 import com.exerciser.UserPreferences;
 import com.exerciser.exercises.content.ExerciseContent;
+import com.exerciser.history.content.HistoryContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 import java.util.prefs.Preferences;
 
@@ -235,12 +237,13 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
 
         // save the history on the server
         String url = "https://learnfast.xyz/history/add/";
+        int totalSeconds = (int) this.exercises.getTotalSeconds();
         try {
             url += URLEncoder.encode(this.programName, "utf-8") + "/";
             url += this.programId + "/";
             url += URLEncoder.encode(this.sessionName, "utf-8") + "/";
             url += this.sessionId + "/";
-            url += this.exercises.getTotalSeconds();
+            url += totalSeconds;
         }
         catch(Exception e)
         {
@@ -248,6 +251,8 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         }
 
         RssReader.ping(url);
+
+        HistoryContent.addItem(this.programName, this.programId, this.sessionName, this.sessionId, new Date(), totalSeconds);
     }
 
     private void saveUserPreferences() {

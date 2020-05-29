@@ -11,9 +11,7 @@ import com.exerciser.R;
 import com.exerciser.history.HistoryFragment.OnListFragmentInteractionListener;
 import com.exerciser.history.content.HistoryContent.HistoryItem;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -74,8 +72,8 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mIdView = (TextView) view.findViewById(R.id.textViewHistoryItemDatetime);
+            mContentView = (TextView) view.findViewById(R.id.textViewHistoryItemTitle);
         }
 
         @Override

@@ -34,7 +34,11 @@ public class HistoryContent {
         load();
     }
 
-    private static void addItem(HistoryItem item) {
+    public static void addItem(String programName, int programId, String sessionName, int sessionId, Date date, int seconds) {
+        addItem(new HistoryItem(programName, programId, sessionName, sessionId, date, seconds));
+    }
+
+    public static void addItem(HistoryItem item) {
         itemList.add(item);
         itemMap.put(item.sessionId, item);
     }
@@ -70,6 +74,15 @@ public class HistoryContent {
         public int sessionId;
         public String programName;
         public int programId;
+
+        public HistoryItem(String programName, int programId, String sessionName, int sessionId, Date date, int seconds) {
+            this.programName = programName;
+            this.programId = programId;
+            this.sessionName = sessionName;
+            this.sessionId = sessionId;
+            this.seconds = seconds;
+            this.date = date;
+        }
 
         public HistoryItem(String programName, int programId, String sessionName, int sessionId, String sDate, int seconds) {
             this.programName = programName;

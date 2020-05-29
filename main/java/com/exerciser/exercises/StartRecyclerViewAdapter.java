@@ -2,9 +2,6 @@ package com.exerciser.exercises;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +78,7 @@ public class StartRecyclerViewAdapter extends RecyclerView.Adapter<StartRecycler
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.program_name);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mContentView = (TextView) view.findViewById(R.id.textViewHistoryItemTitle);
             mImageView = (ImageView) view.findViewById(R.id.program_photo);
         }
 
