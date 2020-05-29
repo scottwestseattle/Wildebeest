@@ -2,6 +2,7 @@ package com.exerciser.history.content;
 
 import android.util.Log;
 
+import com.exerciser.R;
 import com.exerciser.RssReader;
 
 import java.text.ParsePosition;
@@ -34,6 +35,11 @@ public class HistoryContent {
         load();
     }
 
+    public static void clear() {
+        itemList.clear();
+        itemMap.clear();
+    }
+
     public static void addItem(String programName, int programId, String sessionName, int sessionId, Date date, int seconds) {
         addItem(new HistoryItem(programName, programId, sessionName, sessionId, date, seconds));
     }
@@ -48,9 +54,10 @@ public class HistoryContent {
             String url = "https://learnfast.xyz/history/rss";
             Log.i("HistoryContent", "Getting history list from rss...");
             RssReader.fetchHistoryList(url, itemList);
+            Log.i("HistoryContent", "History loaded from rss, count=" + itemList.size());
         }
         else {
-            Log.i("HistoryContent", "History already loaded");
+            Log.i("HistoryContent", "History already loaded, count=" + itemList.size());
         }
     }
 
@@ -62,6 +69,21 @@ public class HistoryContent {
             item = HistoryContent.itemList.get(0);
 
         return item;
+    }
+
+    public static int getBackgroundImageResourceId(int index) {
+        int id = 0;
+        int bgImagesResourceId[] = {
+                R.drawable.bg_history_list_gradient,
+                R.drawable.bg_history_list_2,
+                R.drawable.bg_history_list_gradient,
+                R.drawable.bg_history_list_gradient
+        };
+
+        if (index < bgImagesResourceId.length)
+            id = bgImagesResourceId[index];
+
+        return id;
     }
 
     /**

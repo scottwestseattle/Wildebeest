@@ -12,6 +12,7 @@
     tools:context=".exercises.StartFragment"
     tools:listitem="@layout/fragment_start"
     android:layout_marginBottom="65dp"
+    android:background="#daf4ff"
     />
 
 <!--

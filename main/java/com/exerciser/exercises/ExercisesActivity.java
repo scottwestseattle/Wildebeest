@@ -252,7 +252,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
 
         RssReader.ping(url);
 
-        HistoryContent.addItem(this.programName, this.programId, this.sessionName, this.sessionId, new Date(), totalSeconds);
+        HistoryContent.clear(); // clear the history so it will have to reload for the next view
     }
 
     private void saveUserPreferences() {

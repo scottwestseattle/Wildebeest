@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".exercises.ExercisesActivity">
+    tools:context=".exercises.ExercisesActivity"
+    android:id="@+id/exerciseMainLayout"
+    >
 
     <FrameLayout
         android:id="@+id/fragment_holder"
@@ -64,7 +66,5 @@
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="5dp"
         app:srcCompat="?attr/homeAsUpIndicator" />
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
