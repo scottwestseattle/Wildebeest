@@ -241,7 +241,10 @@ public class BreakFragment extends Fragment {
             {
                 title = getResources().getString(R.string.exercise_take_a_break);
                 text = title + " for " + seconds + " seconds.";
-                text += "  The next exercise is, " + exerciseItem.name + ", for " + exerciseItem.runSeconds + " seconds.";
+
+                String next = (exerciseItem.order == activity.getTotalExercises()) ? "last" : "next";
+
+                text += "  The " + next + " exercise is, " + exerciseItem.name + ", for " + exerciseItem.runSeconds + " seconds.";
             }
 
             Speech.speak(text, TextToSpeech.QUEUE_ADD);
