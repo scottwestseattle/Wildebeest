@@ -23,9 +23,8 @@ public class ExerciseContent {
 
     public ExerciseContent(int exerciseId)
     {
-        String url = "https://learnfast.xyz/lessons/rss/" + exerciseId;
         Log.i("parse", "Get Exercises from RSS...");
-        RssReader.fetchExerciseList(url, exerciseList);
+        RssReader.fetchExerciseList(exerciseId, exerciseList);
 
         if (getTotalSeconds() == 0)
         {

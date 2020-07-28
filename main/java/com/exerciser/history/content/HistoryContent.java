@@ -51,9 +51,8 @@ public class HistoryContent {
 
     public static void load() {
         if (itemList.size() == 0) {
-            String url = "https://learnfast.xyz/history/rss";
             Log.i("HistoryContent", "Getting history list from rss...");
-            RssReader.fetchHistoryList(url, itemList);
+            RssReader.fetchHistoryList(itemList);
             Log.i("HistoryContent", "History loaded from rss, count=" + itemList.size());
         }
         else {

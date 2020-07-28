@@ -21,6 +21,7 @@ import java.util.Map;
 
 public class RssReader {
 
+    static private String mServer = "https://spanish50.com/";
     static private XmlPullParserFactory xmlFactoryObject;
     static private volatile boolean parsingComplete = false;
     static public String urlString = "";
@@ -97,25 +98,25 @@ public class RssReader {
         // only allow static use
     }
 
-    static public void fetchProgramList(String url, List<ProgramItem> items) {
+    static public void fetchProgramList(List<ProgramItem> items) {
+        String url = mServer + "courses/rss";
         items.clear();
         programItems = items;
         sessionCourseId = -1; // flag that we're not loading sessions
-
         fetchXML(url);
     }
 
-    static public void fetchExerciseList(String url, List<ExerciseContent.ExerciseItem> items) {
+    static public void fetchExerciseList(int exerciseId, List<ExerciseContent.ExerciseItem> items) {
+        String url = mServer + "lessons/rss/" + exerciseId;
         items.clear();
         exerciseItems = items;
-
         fetchXML(url);
     }
 
-    static public void fetchHistoryList(String url, List<HistoryContent.HistoryItem> items) {
+    static public void fetchHistoryList(List<HistoryContent.HistoryItem> items) {
+        String url = mServer + "history/rss";
         items.clear();
         historyItems = items;
-
         fetchXML(url);
     }
 
@@ -394,7 +395,7 @@ public class RssReader {
 
     static public void ping(String url) {
 
-        urlString = url;
+        urlString = mServer + url;
 
         Thread thread = new Thread(new Runnable() {
             @Override

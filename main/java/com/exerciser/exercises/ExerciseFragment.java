@@ -27,6 +27,7 @@ public class ExerciseFragment extends Fragment {
     private boolean timerPaused = false;
     private int secondsRemaining = -1;
     private int secondsRewind = 5;
+    private int countdownSeconds = 10;
     private int secondsFastForward = secondsRewind;
     private final int second = 1000; // 1 Second
     private Handler handler = new Handler();
@@ -136,16 +137,9 @@ public class ExerciseFragment extends Fragment {
             //
             Speech.speak(getSecondsRemainingMessage(seconds), TextToSpeech.QUEUE_ADD);
         }
-        else if (seconds == 11)
-        {
+        else if (seconds <= countdownSeconds && seconds > 0) {
             //
-            // give last instructions before countdown
-            //
-            //speakInstructions();
-        }
-        else if (seconds <= 10 && seconds > 0) {
-            //
-            // countdown last 10 seconds
+            // countdown last "countdownSeconds" seconds
             //
             Speech.speak(Integer.toString(seconds), TextToSpeech.QUEUE_FLUSH);
         }
@@ -227,7 +221,18 @@ public class ExerciseFragment extends Fragment {
             String instructions = getInstructionsDeluxe(exerciseItem);
             if (instructions.length() > 0)
                 instructions += " every 10 seconds.";
-            Speech.speak("Begin.  Do " + exerciseItem.name + " -- for " + exerciseItem.runSeconds + " seconds.  " + instructions, TextToSpeech.QUEUE_FLUSH);
+
+            if (exerciseItem.name.compareTo("Inhale") == 0) //todo: hardcoded for breathing exercise
+            {
+                Speech.speak("Inhale", TextToSpeech.QUEUE_FLUSH);
+                exerciseItem.runSeconds++;
+                countdownSeconds = 2;
+            }
+            else
+            {
+                Speech.speak("Begin.  Do " + exerciseItem.name + " -- for " + exerciseItem.runSeconds + " seconds.  " + instructions, TextToSpeech.QUEUE_FLUSH);
+            }
+
             startTimer(exerciseItem.runSeconds);
         }
     }

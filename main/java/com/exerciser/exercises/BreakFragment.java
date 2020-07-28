@@ -30,7 +30,7 @@ public class BreakFragment extends Fragment {
     private int secondsRewind = 5;
     private int secondsFastForward = secondsRewind;
     private final int second = 1000; // 1 Second
-    private final int countdownSeconds = 5;
+    private int countdownSeconds = 5;
     private final int nextCountdownSeconds = 3;
     private final int getReadySeconds = countdownSeconds + 1;
     private Handler handler = new Handler();
@@ -239,12 +239,20 @@ public class BreakFragment extends Fragment {
             }
             else
             {
-                title = getResources().getString(R.string.exercise_take_a_break);
-                text = title + " for " + seconds + " seconds.";
+                if (exerciseItem.name.compareTo("Inhale") == 0) //todo: hardcoded for breathing exercise
+                {
+                    text = "Exhale";
+                    seconds++;
+                    this.countdownSeconds = 2;
+                }
+                else
+                {
+                    title = getResources().getString(R.string.exercise_take_a_break);
+                    text = title + " for " + seconds + " seconds.";
 
-                String next = (exerciseItem.order == activity.getTotalExercises()) ? "last" : "next";
-
-                text += "  The " + next + " exercise is, " + exerciseItem.name + ", for " + exerciseItem.runSeconds + " seconds.";
+                    String next = (exerciseItem.order == activity.getTotalExercises()) ? "last" : "next";
+                    text += "  The " + next + " exercise is, " + exerciseItem.name + ", for " + exerciseItem.runSeconds + " seconds.";
+                }
             }
 
             Speech.speak(text, TextToSpeech.QUEUE_ADD);

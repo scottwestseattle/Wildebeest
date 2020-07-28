@@ -41,9 +41,8 @@ public class ProgramContent {
 
     static {
         if (programList.size() == 0) {
-            String url = "https://learnfast.xyz/courses/rss";
             Log.i("ProgramContent", "Getting program list from rss...");
-            RssReader.fetchProgramList(url, programList);
+            RssReader.fetchProgramList(programList);
         }
         else {
             Log.i("ProgramContent", "Programs already loaded");
