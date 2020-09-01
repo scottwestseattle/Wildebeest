@@ -2,15 +2,11 @@ package com.exerciser;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 
-import com.exerciser.Program.ProgramContent;
 import com.exerciser.Program.ProgramItem;
 import com.exerciser.Program.ProgramsFragment;
 import com.exerciser.exercises.ExercisesActivity;
@@ -19,11 +15,6 @@ import com.exerciser.history.content.HistoryContent;
 import com.exerciser.sessions.SessionsActivity;
 import com.exerciser.sessions.content.SessionContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ProgramsFragment.OnListFragmentInteractionListener
 {

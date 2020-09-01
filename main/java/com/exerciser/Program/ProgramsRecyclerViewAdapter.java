@@ -3,7 +3,6 @@ package com.exerciser.Program;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.exerciser.Program.ProgramsFragment.OnListFragmentInteractionListener;
-import com.exerciser.Program.ProgramItem;
 import com.exerciser.R;
 
 import java.util.List;
