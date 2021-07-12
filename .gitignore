@@ -1,0 +1,10 @@
+.DS_Store
+gradle*
+local.properties
+settings.gradle
+*.iml
+keystore/
+app/build/
+app/release/
+build/
+gradle/
