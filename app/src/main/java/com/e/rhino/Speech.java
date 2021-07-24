@@ -55,10 +55,10 @@ public class Speech  {
                         Resources resources = context.getResources();
                         Configuration configuration = resources.getConfiguration();
                         configuration.setLocale(locSpanish);
-                        ready = resources.getString(R.string.exercise_get_ready);
+                        ready = resources.getString(R.string.language_loaded);
                     }
 
-                    ready = context.getResources().getString(R.string.exercise_get_ready);
+                    ready = context.getResources().getString(R.string.language_loaded);
 
                     Log.i("TTS", "Initialization success.");
                     speak( ready, TextToSpeech.QUEUE_ADD);
@@ -95,5 +95,9 @@ public class Speech  {
         if (null != tts) {
             tts.shutdown();
         }
+    }
+
+    public static boolean isSpeaking() {
+        return (null != tts && tts.isSpeaking());
     }
 }

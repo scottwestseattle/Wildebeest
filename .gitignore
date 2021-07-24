@@ -1,4 +1,8 @@
 .DS_Store
+.gradle/
+.idea/
+*.swp
+build.gradle
 gradle*
 local.properties
 settings.gradle

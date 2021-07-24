@@ -21,9 +21,10 @@ public class FinishedFragment extends Fragment {
     private static String endMsgs[] = {
             "You killed it like a boss!",
             "You made it your bitch!",
-            "You did it like a boss!",
+            "Whoop there it is!",
+            "You murdered it!",
             "Boom chocka locka!",
-            "Whazzup?",
+            "Ooo rah ooo rah rah rah",
             "Who's your daddy!",
             "You've got that Boom Boom Pow!"
     };

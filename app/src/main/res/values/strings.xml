@@ -3,6 +3,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello</string>
+    <string name="language_loaded">English loaded</string>
     <string name="exercise_get_ready">Get Ready</string>
     <string name="exercise_take_a_break">Take a break</string>
 </resources>

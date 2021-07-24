@@ -35,6 +35,7 @@ public class BreakFragment extends Fragment {
     private int countdownSeconds = 5;
     private final int nextCountdownSeconds = 3;
     private final int getReadySeconds = countdownSeconds + 1;
+    private final int dontInterruptUntilSeconds = 3;
     private Handler handler = new Handler();
     private boolean timerPaused = false;
 
@@ -349,7 +350,12 @@ public class BreakFragment extends Fragment {
     }
 
     private void updateTimerAudio(int seconds) {
-        if (seconds == this.getReadySeconds) {
+
+        if (Speech.isSpeaking() && seconds > this.dontInterruptUntilSeconds)
+        {
+            // still speaking, so don't interrupt
+        }
+        else if (seconds == this.getReadySeconds) {
             Speech.speak("Starting in: ", TextToSpeech.QUEUE_FLUSH);
         }
         else if (seconds <= this.countdownSeconds && seconds > 0) {

@@ -42,6 +42,7 @@ public class Tools {
         return time;
     }
 
+    // Returns: string with speach format, example: "2 minutes and 10 seconds" or "2 minutes"
     public static String secondsToMinutesLong(int seconds)
     {
         String msg = "";
@@ -66,7 +67,7 @@ public class Tools {
         return msg;
     }
 
-
+    // Returns: string with format mm:ss, example: "2:05"
     public static String secondsToMinutesShort(int seconds)
     {
         String msg = "";
