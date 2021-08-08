@@ -25,7 +25,7 @@ public class FinishedFragment extends Fragment {
             "You murdered it!",
             "Boom chocka locka!",
             "Ooo rah ooo rah rah rah",
-            "Who's your daddy!",
+            "Who's your papa!",
             "You've got that Boom Boom Pow!"
     };
 

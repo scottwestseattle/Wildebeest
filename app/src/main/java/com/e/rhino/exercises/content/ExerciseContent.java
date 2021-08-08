@@ -13,22 +13,26 @@ import java.util.Random;
 public class ExerciseContent {
 
     public static final int startSeconds = 15;
+    private int _programId = -1;
+    private int _sessionId = -1;
 
     /**
      * The array of items from the rss feed
      */
     public static List<ExerciseItem> exerciseList = new ArrayList<ExerciseItem>();
 
-    public ExerciseContent(int exerciseId)
+    public ExerciseContent(int programId, int sessionId)
     {
-        Log.i("parse", "Get Exercises from RSS...");
-        RssReader.fetchExerciseList(exerciseId, exerciseList);
+        _programId = programId;
+        _sessionId = sessionId;
 
-        if (getTotalSeconds() == 0)
-        {
-            // generate random exercises
-            generate();
-            //generateWild();
+        if (_programId > 0) {
+            Log.i("parse", "Get Exercises from RSS...");
+            RssReader.fetchExerciseList(sessionId, exerciseList);
+        }
+        else {
+            generate(sessionId); //todo: new that will loop trough each
+            //generateRandom(); // original
         }
     }
 
@@ -43,43 +47,47 @@ public class ExerciseContent {
     private final int mTypeStarter3     = 2;
     private final int mTypeAbs          = 3;
     private final int mTypeReverse      = 4;
-    private final int mTypeFlex         = 5;
-    private final int mTypeFixed        = 6;
-    private final int mTypeSideLeft     = 7;
-    private final int mTypeSideRight    = 8;
-    private final int mTypeCloser       = 9;
+    private final int mTypeKnees        = 5;
+    private final int mTypeStanding     = 6;
+    private final int mTypeFixed        = 7;
+    private final int mTypeSideLeft     = 8;
+    private final int mTypeSideRight    = 9;
+    private final int mTypeCloser       = 10;
 
-    private List<ExerciseItem> load(int type)
+    private List<ExerciseItem> load(int type, int seconds)
     {
         List<ExerciseItem> list = new ArrayList<ExerciseItem>();
         int index = 0;
-        int seconds = 60;
+        int secondsShort = seconds - 10;
         switch(type)
         {
             case mTypeStarter1:
-                list.add(new ExerciseItem("Dolphin Plank", 40, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Dolphin Plank with leg lift", 40, index++, type, eInstructionType.switchLeg));
+                list.add(new ExerciseItem("Dolphin Plank", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Dolphin Plank with leg lift", seconds, index++, type, eInstructionType.switchLeg));
                 break;
+
             case mTypeStarter2:
                 list.add(new ExerciseItem("Plank", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Plank Cross Tap", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Plank with leg lift", seconds, index++, type, eInstructionType.switchLeg));
                 break;
+
             case mTypeStarter3:
                 list.add(new ExerciseItem("Downward Dog", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Downward Dog Elbows", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Downward Dog Knees Bent", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Scissor", seconds, index++, type, eInstructionType.switchLeg));
                 break;
+
             case mTypeAbs:
                 seconds = 40;
                 list.add(new ExerciseItem("Ab Scissors", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Bicycle Abs", seconds, index++, type, eInstructionType.none));
-                //list.add(new ExerciseItem("Boat", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Cat", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Leg Lift", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Sprinter Situp", seconds, index++, type, eInstructionType.none));
                 break;
+
             case mTypeReverse:
                 list.add(new ExerciseItem("Bridge", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Bridge with leg lift", seconds, index++, type, eInstructionType.switchLeg));
@@ -87,36 +95,44 @@ public class ExerciseContent {
                 list.add(new ExerciseItem("Reverse Table", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Reverse Table with leg lift", seconds, index++, type, eInstructionType.switchLeg));
                 break;
-            case mTypeFlex:
+
+            case mTypeKnees:
                 list.add(new ExerciseItem("Balancing Cat", seconds, index++, type, eInstructionType.switchSide));
                 list.add(new ExerciseItem("Chair", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Fire Hydrant", seconds, index++, type, eInstructionType.switchSide));
                 list.add(new ExerciseItem("Half Bow", seconds, index++, type, eInstructionType.switchSide));
-                list.add(new ExerciseItem("Lord of the Dance", seconds, index++, type, eInstructionType.switchSide));
-                list.add(new ExerciseItem("Lunge Stretch", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Plow", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Plow knees bent", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Runners Lunge", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Skiers Lunge", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Squat", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Standing Glute Iso", seconds * 2, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Lunge Stretch", seconds, index++, type, eInstructionType.none));
+
+            case mTypeStanding:
+                list.add(new ExerciseItem("Lord of the Dance", seconds, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Standing Glute Iso", seconds, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Tree", seconds, index++, type, eInstructionType.switchSide));
                 list.add(new ExerciseItem("Warrior 1", seconds, index++, type, eInstructionType.switchSide));
                 list.add(new ExerciseItem("Warrior 2", seconds, index++, type, eInstructionType.switchSide));
                 list.add(new ExerciseItem("Warrior 3", seconds, index++, type, eInstructionType.switchSide));
                 list.add(new ExerciseItem("Windmill", seconds, index++, type, eInstructionType.none));
                 break;
+
             case mTypeFixed:
-                list.add(new ExerciseItem("Curls", seconds * 2, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Push-ups", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Curls", 120, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Push-ups", 60, index++, type, eInstructionType.none));
                 break;
+
             case mTypeSideLeft:
-                list.add(new ExerciseItem("Side Plank Elbow Left", 40, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Side Plank Left", 30, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Side Plank Elbow Left", secondsShort, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Plow", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Side Plank Left", secondsShort, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Plow knees bent", seconds, index++, type, eInstructionType.none));
                 break;
+
             case mTypeSideRight:
-                list.add(new ExerciseItem("Side Plank Elbow Right", 40, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Side Plank Right", 30, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Side Plank Elbow Right", secondsShort, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Skiers Lunge", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Side Plank Right", secondsShort, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Runners Lunge", seconds, index++, type, eInstructionType.none));
                 break;
+
             case mTypeCloser:
                 seconds = 45;
                 list.add(new ExerciseItem("Bow", seconds, index++, type, eInstructionType.none));
@@ -126,7 +142,6 @@ public class ExerciseContent {
                 list.add(new ExerciseItem("Squatting Buddha", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Standing Forward Bend", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Superman", seconds, index++, type, eInstructionType.switchSide));
-                list.add(new ExerciseItem("Tree", seconds, index++, type, eInstructionType.switchSide));
                 break;
             default:
                 break;
@@ -135,18 +150,61 @@ public class ExerciseContent {
         return list;
     }
 
-    private void generate() {
+    private void generate(int sessionId) {
         exerciseList.clear();
-        List<ExerciseItem> starter1 = load(mTypeStarter1);
-        List<ExerciseItem> starter2 = load(mTypeStarter2);
-        List<ExerciseItem> starter3 = load(mTypeStarter3);
-        List<ExerciseItem> abs = load(mTypeAbs);
-        List<ExerciseItem> reverse = load(mTypeReverse);
-        List<ExerciseItem> flex = load(mTypeFlex);
-        List<ExerciseItem> sideLeft = load(mTypeSideLeft);
-        List<ExerciseItem> sideRight = load(mTypeSideRight);
-        List<ExerciseItem> fixed = load(mTypeFixed);
-        List<ExerciseItem> closer = load(mTypeCloser);
+
+        int seconds = 40;
+
+        List<ExerciseItem> dolphinPlank = load(mTypeStarter1, seconds);
+        List<ExerciseItem> plank = load(mTypeStarter2, seconds);
+        List<ExerciseItem> downwardDog = load(mTypeStarter3, seconds);
+        List<ExerciseItem> abs = load(mTypeAbs, seconds);
+        List<ExerciseItem> reverse = load(mTypeReverse, seconds);
+        List<ExerciseItem> knees = load(mTypeKnees, seconds);
+        List<ExerciseItem> standing = load(mTypeStanding, seconds);
+        List<ExerciseItem> sideLeft = load(mTypeSideLeft, seconds);
+        List<ExerciseItem> sideRight = load(mTypeSideRight, seconds);
+        List<ExerciseItem> fixed = load(mTypeFixed, seconds);
+        List<ExerciseItem> closer = load(mTypeCloser, seconds);
+
+        int index = sessionId - 1;
+        int indexPushups = 1;
+
+        // 12 exercises
+
+        add(getIndex(plank, index));
+        add(getIndex(abs, index));
+
+        // Sides
+        ExerciseItem itemSideLeft = getIndex(sideLeft, index); // needed in order to get it's position
+        int order = itemSideLeft.order;
+        add(itemSideLeft);
+        add(sideRight.get(order)); // match up the left and right sides
+
+        add(fixed.get(indexPushups));
+        add(getIndex(dolphinPlank, index));
+        add(getIndex(reverse, index));
+        add(getIndex(knees, index));
+        add(getIndex(downwardDog, index));
+        add(getIndex(standing, index));
+        add(fixed.get(indexPushups));
+        add(getIndex(closer, index));
+    }
+
+    private void generateRandom() {
+        exerciseList.clear();
+
+        int seconds = 60;
+        List<ExerciseItem> starter1 = load(mTypeStarter1, seconds);
+        List<ExerciseItem> starter2 = load(mTypeStarter2, seconds);
+        List<ExerciseItem> starter3 = load(mTypeStarter3, seconds);
+        List<ExerciseItem> abs = load(mTypeAbs, seconds);
+        List<ExerciseItem> reverse = load(mTypeReverse, seconds);
+        List<ExerciseItem> flex = load(mTypeStanding, seconds);
+        List<ExerciseItem> sideLeft = load(mTypeSideLeft, seconds);
+        List<ExerciseItem> sideRight = load(mTypeSideRight, seconds);
+        List<ExerciseItem> fixed = load(mTypeFixed, seconds);
+        List<ExerciseItem> closer = load(mTypeCloser, seconds);
 
         int random = new Random().nextInt(100);
 
@@ -199,16 +257,17 @@ public class ExerciseContent {
 
     private void generateWild() {
         exerciseList.clear();
-        List<ExerciseItem> starter1 = load(mTypeStarter1);
-        List<ExerciseItem> starter2 = load(mTypeStarter2);
-        List<ExerciseItem> starter3 = load(mTypeStarter3);
-        List<ExerciseItem> abs = load(mTypeAbs);
-        List<ExerciseItem> reverse = load(mTypeReverse);
-        List<ExerciseItem> flex = load(mTypeFlex);
-        List<ExerciseItem> sideLeft = load(mTypeSideLeft);
-        List<ExerciseItem> sideRight = load(mTypeSideRight);
-        List<ExerciseItem> fixed = load(mTypeFixed);
-        List<ExerciseItem> closer = load(mTypeCloser);
+        int seconds = 60;
+        List<ExerciseItem> starter1 = load(mTypeStarter1, seconds);
+        List<ExerciseItem> starter2 = load(mTypeStarter2, seconds);
+        List<ExerciseItem> starter3 = load(mTypeStarter3, seconds);
+        List<ExerciseItem> abs = load(mTypeAbs, seconds);
+        List<ExerciseItem> reverse = load(mTypeReverse, seconds);
+        List<ExerciseItem> flex = load(mTypeStanding, seconds);
+        List<ExerciseItem> sideLeft = load(mTypeSideLeft, seconds);
+        List<ExerciseItem> sideRight = load(mTypeSideRight, seconds);
+        List<ExerciseItem> fixed = load(mTypeFixed, seconds);
+        List<ExerciseItem> closer = load(mTypeCloser, seconds);
         List<ExerciseItem> all = new ArrayList<ExerciseItem>();
 
         all.addAll(starter1);
@@ -258,6 +317,17 @@ public class ExerciseContent {
         return item;
     }
 
+    private ExerciseItem getIndex(List<ExerciseItem> list, int index) {
+
+        // wrap the index around based on size of list
+        if (index >= list.size())
+            index = index % list.size();
+
+        ExerciseItem item = list.get(index);
+
+        return item;
+    }
+
     public long getTotalSeconds() {
         long totalSeconds = 0;
 
@@ -280,7 +350,11 @@ public class ExerciseContent {
     }
 
     public boolean isLoaded() {
-        return (RssReader.isLoaded());
+        if (_programId > 0)
+            return (RssReader.isLoaded());
+        else
+            // generated, nothing to load
+            return true;
     }
 
     /**
@@ -307,7 +381,7 @@ public class ExerciseContent {
             this.type = type;
             this.mInstructionType = instructions;
 
-            //todo sbw: temporary to get started, set all seconds to 20 secs
+            //todo test: temporary to get started, set all seconds to 20 secs
             if (false) {
                 this.runSeconds = this.runSecondsOverride;
             }
@@ -322,7 +396,7 @@ public class ExerciseContent {
             this.order = order;
             this.instructions = instructions;
 
-            //todo sbw: temporary to get started
+            //todo test: temporary to get started
             if (false) {
                 this.runSeconds = this.runSecondsOverride;
             }

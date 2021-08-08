@@ -51,7 +51,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         loadSessionInfo(getIntent());
 
         // get the data
-        exercises = new ExerciseContent(this.sessionId);
+        exercises = new ExerciseContent(this.programId, this.sessionId);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercises);

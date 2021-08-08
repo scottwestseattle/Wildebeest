@@ -31,8 +31,8 @@ public class RssReader {
     static private int programId = -1;
     static private String programDescription = "";
     static private int sessionCount = 0;
-    static List<ProgramItem> programItems = null;
-    static public final Map<Integer, ProgramItem> programMap = new HashMap<Integer, ProgramItem>();
+    static private List<ProgramItem> programItems = null;
+    static public Map<Integer, ProgramItem> programMap = new HashMap<Integer, ProgramItem>();
 
     // Session
     static private int sessionCourseId = -1;
@@ -71,6 +71,17 @@ public class RssReader {
             sessionItems = programItem.sessionItems;
 
         return sessionItems;
+    }
+
+    static public void setProgram(List<ProgramItem> items, Map<Integer, ProgramItem> map)
+    {
+        programItems = items;
+        programMap = map;
+    }
+
+    static public void addProgramMap(ProgramItem item, int index)
+    {
+        programMap.put(index, item);
     }
 
     static public SessionContent.SessionItem getNextSession(int courseId, int sessionId) {
@@ -209,7 +220,8 @@ public class RssReader {
                                         programDescription,
                                         programItems.size(), // used for image id
                                         sessionCount,
-                                        sessionItems
+                                        sessionItems,
+                                        sessionMap
                                 );
 
                                 programItems.add(item);

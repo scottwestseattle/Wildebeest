@@ -47,7 +47,7 @@ public class Speech  {
                     }
 
                     String ready = "";
-                    //todo sbw: Set language to Spanish
+                    //todo: Set language to Spanish
                     if (false) {
                         Locale locSpanish = new Locale("spa", "ESP");
                         //tts.setLanguage(locSpanish);
