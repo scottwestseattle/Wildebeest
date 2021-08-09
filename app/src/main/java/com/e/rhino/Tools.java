@@ -11,6 +11,11 @@ import java.util.Random;
 
 public class Tools {
 
+    // calculate rest day
+    public static boolean isRestDay(int day) {
+        return ((day % 7) == 0);
+    }
+
     // format the seconds to look like: 13:10
     public static String getTimeFromSeconds(long seconds) {
         Date dt = new Date((seconds) * 1000);

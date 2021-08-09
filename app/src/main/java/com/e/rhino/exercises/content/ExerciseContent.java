@@ -55,6 +55,7 @@ public class ExerciseContent {
     private final int mTypeSideLeft     = 8;
     private final int mTypeSideRight    = 9;
     private final int mTypeCloser       = 10;
+    public static final int mTypeRestDay      = 11;
 
     private List<ExerciseItem> load(int type, int seconds)
     {
@@ -144,6 +145,11 @@ public class ExerciseContent {
                 list.add(new ExerciseItem("Standing Forward Bend", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Superman", seconds, index++, type, eInstructionType.switchSide));
                 break;
+
+            case mTypeRestDay:
+                list.add(new ExerciseItem("Rest Day", 0, index++, type, eInstructionType.none));
+                break;
+
             default:
                 break;
         }
@@ -155,41 +161,53 @@ public class ExerciseContent {
         exerciseList.clear();
 
         int seconds = 40;
+        boolean restDay = (sessionId % 7) == 0; // rest every 7 days
+        int totalRestDays = sessionId / 7; // number of rest days so far
 
-        List<ExerciseItem> dolphinPlank = load(mTypeStarter1, seconds);
-        List<ExerciseItem> plank = load(mTypeStarter2, seconds);
-        List<ExerciseItem> downwardDog = load(mTypeStarter3, seconds);
-        List<ExerciseItem> abs = load(mTypeAbs, seconds);
-        List<ExerciseItem> reverse = load(mTypeReverse, seconds);
-        List<ExerciseItem> knees = load(mTypeKnees, seconds);
-        List<ExerciseItem> standing = load(mTypeStanding, seconds);
-        List<ExerciseItem> sideLeft = load(mTypeSideLeft, seconds);
-        List<ExerciseItem> sideRight = load(mTypeSideRight, seconds);
-        List<ExerciseItem> fixed = load(mTypeFixed, seconds);
-        List<ExerciseItem> closer = load(mTypeCloser, seconds);
+        if (restDay) // rest day is once a week
+        {
+            // the only exercise is Rest Day
+            List<ExerciseItem> rest = load(mTypeRestDay, 0);
+            add(getIndex(rest, 0));
+        }
+        else {
+            List<ExerciseItem> dolphinPlank = load(mTypeStarter1, seconds);
+            List<ExerciseItem> plank = load(mTypeStarter2, seconds);
+            List<ExerciseItem> downwardDog = load(mTypeStarter3, seconds);
+            List<ExerciseItem> abs = load(mTypeAbs, seconds);
+            List<ExerciseItem> reverse = load(mTypeReverse, seconds);
+            List<ExerciseItem> knees = load(mTypeKnees, seconds);
+            List<ExerciseItem> standing = load(mTypeStanding, seconds);
+            List<ExerciseItem> sideLeft = load(mTypeSideLeft, seconds);
+            List<ExerciseItem> sideRight = load(mTypeSideRight, seconds);
+            List<ExerciseItem> fixed = load(mTypeFixed, seconds);
+            List<ExerciseItem> closer = load(mTypeCloser, seconds);
 
-        int index = sessionId - 1;
-        int indexPushups = 1;
+            int index = (sessionId - 1) - totalRestDays; // don't skip exercises after rest days
+            int indexPushups = 1;
 
-        // 12 exercises
+            //
+            // 12 exercises
+            //
 
-        add(getIndex(plank, index));
-        add(getIndex(abs, index));
+            add(getIndex(plank, index));
+            add(getIndex(abs, index));
 
-        // Sides
-        ExerciseItem itemSideLeft = getIndex(sideLeft, index); // needed in order to get it's position
-        int order = itemSideLeft.order;
-        add(itemSideLeft);
-        add(sideRight.get(order)); // match up the left and right sides
+            // Sides
+            ExerciseItem itemSideLeft = getIndex(sideLeft, index); // needed in order to get it's position
+            int order = itemSideLeft.order;
+            add(itemSideLeft);
+            add(sideRight.get(order)); // match up the left and right sides
 
-        add(fixed.get(indexPushups));
-        add(getIndex(dolphinPlank, index));
-        add(getIndex(reverse, index));
-        add(getIndex(knees, index));
-        add(getIndex(downwardDog, index));
-        add(getIndex(standing, index));
-        add(fixed.get(indexPushups));
-        add(getIndex(closer, index));
+            add(fixed.get(indexPushups));
+            add(getIndex(dolphinPlank, index));
+            add(getIndex(reverse, index));
+            add(getIndex(knees, index));
+            add(getIndex(downwardDog, index));
+            add(getIndex(standing, index));
+            add(fixed.get(indexPushups));
+            add(getIndex(closer, index));
+        }
     }
 
     private void generateRandom() {
@@ -374,6 +392,7 @@ public class ExerciseContent {
         public eInstructionType mInstructionType = eInstructionType.none;
         public boolean mUsed = false;
 
+
         public ExerciseItem(String name, int runSeconds, int order, int type, eInstructionType instructions) {
             this.name = name;
             this.imageName = getImageName(name);
@@ -397,9 +416,8 @@ public class ExerciseContent {
             this.order = order;
             this.instructions = instructions;
 
-            //todo test: temporary to get started
-            if (false) {
-                this.runSeconds = this.runSecondsOverride;
+            if (this.imageName.equals("rest_day")) {
+                this.type = ExerciseContent.mTypeRestDay;
             }
         }
 
@@ -411,6 +429,10 @@ public class ExerciseContent {
 
         public boolean isFirst() {
             return this.order <= 1;
+        }
+
+        public boolean isRestDay() {
+            return (this.type == ExerciseContent.mTypeRestDay);
         }
 
         @Override

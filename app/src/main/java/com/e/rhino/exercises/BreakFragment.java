@@ -240,15 +240,21 @@ public class BreakFragment extends Fragment {
 
             if (exerciseItem.order == 1) // first exercise
             {
-                //test String language = Locale.getDefault().getLanguage();
+                if (exerciseItem.isRestDay())
+                {
+                    text = "Today is a rest day.";
+                    seconds = 7;
+                }
+                else
+                {
+                    // Get ready to start in # seconds.
+                    title = getResources().getString(R.string.exercise_get_ready);
+                    text = title + " to start in " + seconds + " seconds.";
 
-                // Get ready to start in # seconds.
-                title = getResources().getString(R.string.exercise_get_ready);
-                text = title + " to start in " + seconds + " seconds.";
-
-                // The first exercis is, # , for # seconds
-                String msgTime = Tools.secondsToMinutesLong(exerciseItem.runSeconds);
-                text += "  The first exercise is, " + exerciseItem.name + ", for " + msgTime + ".";
+                    // The first exercis is, # , for # seconds
+                    String msgTime = Tools.secondsToMinutesLong(exerciseItem.runSeconds);
+                    text += "  The first exercise is, " + exerciseItem.name + ", for " + msgTime + ".";
+                }
             }
             else
             {

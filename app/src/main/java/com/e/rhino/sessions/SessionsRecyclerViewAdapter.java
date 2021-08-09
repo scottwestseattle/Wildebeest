@@ -57,11 +57,12 @@ public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRe
 
         String name;
         String description;
-        if (holder.mItem.seconds == 0)
+        if (holder.mItem.isGenerated())
         {
             // random session
-            holder.programName.setText("12 exercises");
-            description = "Total Time: Random";
+            name = holder.mItem.exerciseCount + " exercises";
+            holder.programName.setText(name);
+            description = "Total Time: " + Tools.getTimeFromSeconds(holder.mItem.seconds);
         }
         else
         {

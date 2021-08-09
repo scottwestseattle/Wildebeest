@@ -257,7 +257,8 @@ public class RssReader {
                                         sessionNumber,
                                         sessionParentName,
                                         sessionSeconds,
-                                        sessionExerciseCount
+                                        sessionExerciseCount,
+                                        false
                                 );
 
                                 sessionItems.add(item);

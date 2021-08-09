@@ -36,8 +36,9 @@ public class SessionContent {
         public final String parent;
         public final int seconds;
         public final int exerciseCount;
+        private boolean _isGenerated = false;
 
-        public SessionItem(int id, String name, String description, int number, String parent, int seconds, int exerciseCount) {
+        public SessionItem(int id, String name, String description, int number, String parent, int seconds, int exerciseCount, boolean isGenerated) {
             this.id = id;
             this.number = number;
             this.name = name;
@@ -45,6 +46,12 @@ public class SessionContent {
             this.parent = parent;
             this.seconds = seconds;
             this.exerciseCount = exerciseCount;
+            this._isGenerated = isGenerated;
+        }
+
+        public boolean isGenerated()
+        {
+            return _isGenerated;
         }
 
         @Override

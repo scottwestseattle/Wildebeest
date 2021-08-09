@@ -47,10 +47,13 @@ public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRe
         ProgramItem program = mValues.get(position);
         int next = program.sessionNext;
         holder.continueButton.setTag(program);
-        if (next >= 0)
-            holder.continueButton.setText("Continue: " + program.sessionMap.get(next).name);
-        else
+        if (next >= 0) {
+            String name = program.sessionMap.get(next).name;
+            holder.continueButton.setText("Continue: " + name);
+        }
+        else {
             holder.continueButton.setVisibility(View.INVISIBLE);
+        }
 
         // show number of sessions
         int cnt = mValues.get(position).sessionCount;

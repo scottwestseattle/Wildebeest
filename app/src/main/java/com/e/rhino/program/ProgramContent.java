@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.e.rhino.R;
 import com.e.rhino.RssReader;
+import com.e.rhino.Tools;
 import com.e.rhino.history.HistoryActivity;
 import com.e.rhino.history.content.HistoryContent;
 import com.e.rhino.sessions.content.SessionContent;
@@ -73,21 +74,29 @@ public class ProgramContent {
 
                     String title = "Intermediate Planking";
                     int programId = _generateIdRange; // need a real id that doesn't clash with RSS id's
-                    int sessionId = programId;
+                    int sessionId = 1;  // must start at 1 for Rest Day mod to work
+                    int secondsPerExercise = 40;
+                    int secondsBreak = 20;
 
                     for (int i = 0; i < 30; i++) {
+
+                        boolean restDay = Tools.isRestDay(i + 1);
+                        int exercises = restDay ? 1 : 12;
+                        int seconds = restDay ? 0 : exercises * (secondsPerExercise + secondsBreak);
+
                         SessionContent.SessionItem sessionItem = new SessionContent.SessionItem(
-                                sessionId++,
-                                "Day " + (i + 1),
-                                "12 Planking exercises starting at 40 seconds each.",
+                                sessionId,
+                                "Day " + Integer.toString(sessionId),
+                                Integer.toString(exercises) + " Planking exercises starting at 40 seconds each.",
                                 i + 1,
                                 title,
-                                0,
-                                0
+                                seconds,
+                                exercises,
+                                true
                         );
 
                         sessionItems.add(sessionItem);
-                        sessionMap.put(sessionId, sessionItem);
+                        sessionMap.put(sessionId++, sessionItem);
                     }
 
                     ProgramItem item = new ProgramItem(
