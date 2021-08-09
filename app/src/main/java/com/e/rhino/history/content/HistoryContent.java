@@ -60,12 +60,21 @@ public class HistoryContent {
         }
     }
 
-    public static HistoryItem getNewestItem() {
+    public static HistoryItem getNewestItem(int programId) {
         HistoryItem item = null;
         HistoryContent.load();
 
         if (itemList.size() > 0)
-            item = HistoryContent.itemList.get(0);
+        {
+            for (HistoryItem record : HistoryContent.itemList)
+            {
+                if (record.programId == programId)
+                {
+                    item = record;
+                    break;
+                }
+            }
+        }
 
         return item;
     }

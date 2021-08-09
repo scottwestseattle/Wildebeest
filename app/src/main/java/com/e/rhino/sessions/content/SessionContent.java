@@ -1,6 +1,8 @@
 package com.e.rhino.sessions.content;
 
 import com.e.rhino.RssReader;
+import com.e.rhino.program.ProgramContent;
+import com.e.rhino.program.ProgramItem;
 
 import java.util.ArrayList;
 import java.util.List;

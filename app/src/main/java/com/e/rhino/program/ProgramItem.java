@@ -13,6 +13,7 @@ public class ProgramItem {
     public final String description;
     public final int imageId;
     public final int sessionCount;
+    public int sessionNext = -1;
     public List<SessionContent.SessionItem> sessionItems = new ArrayList<SessionContent.SessionItem>();
     public Map<Integer, SessionContent.SessionItem> sessionMap = new HashMap<Integer, SessionContent.SessionItem>();
 

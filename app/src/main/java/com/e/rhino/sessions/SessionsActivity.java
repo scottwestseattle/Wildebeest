@@ -21,7 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SessionsActivity extends AppCompatActivity  implements SessionsFragment.OnListFragmentInteractionListener {
 
-    public static SessionContent sessions = null;
+    private static SessionContent sessions = null;
     public static int courseId = -1;
 
     @Override
@@ -54,7 +54,6 @@ public class SessionsActivity extends AppCompatActivity  implements SessionsFrag
         //
         // start the selected exercise
         //
-
         Intent intent = new Intent(this, ExercisesActivity.class);
         intent.putExtra("sessionName", item.name);
         intent.putExtra("sessionId", item.id);

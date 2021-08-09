@@ -55,6 +55,26 @@
                 android:layout_centerHorizontal="true"
                 />
 
+            <Button
+                android:id="@+id/buttonStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/session_count"
+                android:layout_centerInParent="false"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#00a4e8"
+                android:fontFamily="sans-serif"
+                android:minWidth="120dip"
+                android:onClick="onContinueButtonClick"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="Continue"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

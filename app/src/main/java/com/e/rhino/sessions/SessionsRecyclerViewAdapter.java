@@ -90,7 +90,7 @@ public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRe
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return (null != mValues) ? mValues.size() : 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

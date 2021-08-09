@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
+import com.e.rhino.program.ProgramContent;
 import com.e.rhino.program.ProgramItem;
 import com.e.rhino.program.ProgramsFragment;
 import com.e.rhino.exercises.ExercisesActivity;
@@ -15,6 +17,7 @@ import com.e.rhino.history.content.HistoryContent;
 import com.e.rhino.sessions.SessionsActivity;
 import com.e.rhino.sessions.content.SessionContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ProgramsFragment.OnListFragmentInteractionListener
 {
@@ -65,25 +68,39 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
             }
         });
 
-        showHistory();
+        //showHistory();
+    }
+
+    public void onContinueButtonClick(View view) {
+
+        ProgramItem program = (ProgramItem) view.getTag();
+
+        Intent intent = new Intent(this, ExercisesActivity.class);
+        intent.putExtra("sessionName", program.sessionMap.get(program.sessionNext).name);
+        intent.putExtra("sessionId", program.sessionNext);
+        intent.putExtra("courseId", program.id);
+        intent.putExtra("courseName", program.name);
+        startActivity(intent);
     }
 
     private void showHistory() {
 
-        // figure out the next Session from the history records
-        HistoryContent.HistoryItem newestItem = HistoryContent.getNewestItem();
-        if (null != newestItem)
+        // search history for the first relavent record and abort
+        // this will be done again in HistoryActivity to get all pending exercises
+        List<ProgramItem> programItemList = ProgramContent.programList;
+        for (ProgramItem item : programItemList)
         {
-            SessionContent.SessionItem nextSession = RssReader.getNextSession(newestItem.programId, newestItem.sessionId);
-            if (null != nextSession) { // if not all sessions completed then show the next session
-                Intent intent = new Intent(this, HistoryActivity.class);
-                intent.putExtra("courseId", newestItem.programId);
-                intent.putExtra("courseName", nextSession.parent);
-                intent.putExtra("sessionName", nextSession.name);
-                intent.putExtra("sessionId", nextSession.id);
-                intent.putExtra("sessionSeconds", nextSession.seconds);
-                intent.putExtra("sessionExercises", nextSession.exerciseCount);
-                startActivity(intent);
+            // figure out the next Session from the history records
+            HistoryContent.HistoryItem newestItem = HistoryContent.getNewestItem(item.id);
+            if (null != newestItem)
+            {
+                SessionContent.SessionItem nextSession = RssReader.getNextSession(newestItem.programId, newestItem.sessionId);
+                if (null != nextSession) { // if not all sessions completed then show the next session
+
+                    Intent intent = new Intent(this, HistoryActivity.class);
+                    startActivity(intent);
+                    break;
+                }
             }
         }
 

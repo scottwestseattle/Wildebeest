@@ -1,9 +1,11 @@
 package com.e.rhino.program;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.e.rhino.R;
 import com.e.rhino.RssReader;
+import com.e.rhino.history.HistoryActivity;
 import com.e.rhino.history.content.HistoryContent;
 import com.e.rhino.sessions.content.SessionContent;
 
@@ -20,6 +22,12 @@ public class ProgramContent {
      */
     public static List<ProgramItem> programList = new ArrayList<ProgramItem>();
     public static Map<Integer, ProgramItem> programMap = new HashMap<Integer, ProgramItem>();
+    private static final int _generateIdRange = 10000;
+
+    public static boolean isGenerated(int id)
+    {
+        return (id >= _generateIdRange);
+    }
 
     public static int getBackgroundImageResourceId(int index) {
         int id = 0;
@@ -60,11 +68,12 @@ public class ProgramContent {
             if (useGen) {
                 List<SessionContent.SessionItem> sessionItems = new ArrayList<SessionContent.SessionItem>();
                 Map<Integer, SessionContent.SessionItem> sessionMap = new HashMap<Integer, SessionContent.SessionItem>();
-                int sessionId = 1;
 
                 if (null != sessionItems) {
 
                     String title = "Intermediate Planking";
+                    int programId = _generateIdRange; // need a real id that doesn't clash with RSS id's
+                    int sessionId = programId;
 
                     for (int i = 0; i < 30; i++) {
                         SessionContent.SessionItem sessionItem = new SessionContent.SessionItem(
@@ -82,10 +91,10 @@ public class ProgramContent {
                     }
 
                     ProgramItem item = new ProgramItem(
-                            0,
+                            programId,
                             title,
                             "30 day program with 12 assorted exercises per day, starting at 40 seconds each.",
-                            1, // used for image id
+                            3, // used for image id
                             sessionItems.size(),
                             sessionItems,
                             sessionMap
@@ -94,12 +103,25 @@ public class ProgramContent {
                     programList.add(item);
 
                     if (programList.size() == 1) { // if the generated program is the only one
-                        programMap.put(0, item);
+                        programMap.put(programId, item);
                         RssReader.setProgram(programList, programMap);
                     }
                     else // adding the generated program to a rss loaded program
                     {
-                        RssReader.addProgramMap(item, 0);
+                        RssReader.addProgramMap(item, programId);
+                    }
+                }
+            }
+
+            for (ProgramItem item : programList)
+            {
+                // figure out the next Session from the history records
+                HistoryContent.HistoryItem newestItem = HistoryContent.getNewestItem(item.id);
+                if (null != newestItem)
+                {
+                    SessionContent.SessionItem nextSession = RssReader.getNextSession(newestItem.programId, newestItem.sessionId);
+                    if (null != nextSession) { // if not all sessions completed then show the next session
+                        item.sessionNext = nextSession.id;
                     }
                 }
             }

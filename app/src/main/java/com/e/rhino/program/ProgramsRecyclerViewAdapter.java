@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Button;
 
 import com.e.rhino.program.ProgramsFragment.OnListFragmentInteractionListener;
 import com.e.rhino.R;
@@ -43,6 +44,14 @@ public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRe
         holder.programDescription.setText(mValues.get(position).description);
         holder.programLayout.setBackgroundResource(ProgramContent.getBackgroundImageResourceId(mValues.get(position).imageId));
 
+        ProgramItem program = mValues.get(position);
+        int next = program.sessionNext;
+        holder.continueButton.setTag(program);
+        if (next >= 0)
+            holder.continueButton.setText("Continue: " + program.sessionMap.get(next).name);
+        else
+            holder.continueButton.setVisibility(View.INVISIBLE);
+
         // show number of sessions
         int cnt = mValues.get(position).sessionCount;
         String sessionCount = Integer.toString(cnt) + ((cnt == 1) ? " session" : " sessions");
@@ -71,6 +80,7 @@ public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRe
         TextView programDescription;
         TextView sessionCount;
         RelativeLayout programLayout;
+        Button continueButton;
 
         public ViewHolder(View view) {
             super(view);
@@ -80,6 +90,8 @@ public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRe
             programDescription = (TextView)view.findViewById(R.id.program_description);
             sessionCount = (TextView)view.findViewById(R.id.session_count);
             programLayout = (RelativeLayout) view.findViewById(R.id.program_layout);
+            continueButton = (Button) view.findViewById(R.id.buttonStart);
+            //continueButton.setPadding(30, 20,30,20);
         }
 
         @Override

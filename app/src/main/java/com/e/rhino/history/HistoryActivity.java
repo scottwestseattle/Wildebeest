@@ -15,7 +15,10 @@ import com.e.rhino.RssReader;
 import com.e.rhino.Tools;
 import com.e.rhino.exercises.ExercisesActivity;
 import com.e.rhino.history.content.HistoryContent;
+import com.e.rhino.sessions.content.SessionContent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity  implements HistoryFragment.OnListFragmentInteractionListener {
 
@@ -23,6 +26,9 @@ public class HistoryActivity extends AppCompatActivity  implements HistoryFragme
     private int mProgramId = -1;
     private String mSessionName;
     private int mSessionId = -1;
+    private int mSessionSeconds = -1;
+    private int mSessionExercises = -1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +45,7 @@ public class HistoryActivity extends AppCompatActivity  implements HistoryFragme
 
         setTitle("History");
 
-        Intent i = getIntent();
-        mProgramId = i.getIntExtra("courseId", -1);
-        mProgramName = i.getStringExtra("courseName");
-        mSessionId = i.getIntExtra("sessionId", -1);
-        mSessionName = i.getStringExtra("sessionName");
-        int seconds = i.getIntExtra("sessionSeconds", -1);
-        int exercises = i.getIntExtra("sessionExercises", -1);
+        load();
 
         TextView tv = null;
 
@@ -59,10 +59,10 @@ public class HistoryActivity extends AppCompatActivity  implements HistoryFragme
         tv.setText(mSessionName);
 
         tv = (TextView) findViewById(R.id.textViewExerciseCount);
-        tv.setText(exercises + " exercises");
+        tv.setText(mSessionExercises + " exercises");
 
         tv = (TextView) findViewById(R.id.textViewExerciseTime);
-        tv.setText("Total Time: " + Tools.getTimeFromSeconds(seconds));
+        tv.setText("Total Time: " + Tools.getTimeFromSeconds(mSessionSeconds));
 
         // set the background image for the next exercise
         RelativeLayout rl = (RelativeLayout) findViewById(R.id.card_layout);
@@ -70,6 +70,30 @@ public class HistoryActivity extends AppCompatActivity  implements HistoryFragme
             ProgramItem program = RssReader.programMap.get(mProgramId);
             if (null != program)
                 rl.setBackgroundResource(ProgramContent.getBackgroundImageResourceId(program.imageId));
+        }
+    }
+
+    private void load()
+    {
+        List<ProgramItem> programItemList = ProgramContent.programList;
+        for (ProgramItem item : programItemList)
+        {
+            // figure out the next Session from the history records
+            HistoryContent.HistoryItem newestItem = HistoryContent.getNewestItem(item.id);
+            if (null != newestItem)
+            {
+                SessionContent.SessionItem nextSession = RssReader.getNextSession(newestItem.programId, newestItem.sessionId);
+                if (null != nextSession) { // if not all sessions completed then show the next session
+
+                    mProgramId = newestItem.programId;
+                    mProgramName = nextSession.parent;
+                    mSessionName = nextSession.name;
+                    mSessionId = nextSession.id;
+                    mSessionSeconds = nextSession.seconds;
+                    mSessionExercises = nextSession.exerciseCount;
+                    break;
+                }
+            }
         }
     }
 

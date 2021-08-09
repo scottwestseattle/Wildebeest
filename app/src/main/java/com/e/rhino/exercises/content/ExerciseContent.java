@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.e.rhino.RssReader;
 import com.e.rhino.Tools;
+import com.e.rhino.program.ProgramContent;
+import com.e.rhino.program.ProgramItem;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,13 +28,13 @@ public class ExerciseContent {
         _programId = programId;
         _sessionId = sessionId;
 
-        if (_programId > 0) {
-            Log.i("parse", "Get Exercises from RSS...");
-            RssReader.fetchExerciseList(sessionId, exerciseList);
+        if (ProgramContent.isGenerated(_programId)) {
+            generate(sessionId); //todo: new code that will cycle through each exercise
+
         }
         else {
-            generate(sessionId); //todo: new that will loop trough each
-            //generateRandom(); // original
+            Log.i("parse", "Get Exercises from RSS...");
+            RssReader.fetchExerciseList(sessionId, exerciseList);
         }
     }
 
@@ -134,7 +136,6 @@ public class ExerciseContent {
                 break;
 
             case mTypeCloser:
-                seconds = 45;
                 list.add(new ExerciseItem("Bow", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Child", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Cobra", seconds, index++, type, eInstructionType.none));
@@ -350,11 +351,11 @@ public class ExerciseContent {
     }
 
     public boolean isLoaded() {
-        if (_programId > 0)
-            return (RssReader.isLoaded());
-        else
+        if (ProgramContent.isGenerated(_programId))
             // generated, nothing to load
             return true;
+        else
+            return (RssReader.isLoaded());
     }
 
     /**
