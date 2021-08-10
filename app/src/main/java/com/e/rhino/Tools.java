@@ -7,7 +7,10 @@ import android.text.style.TtsSpan;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.Random;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class Tools {
 
@@ -22,6 +25,18 @@ public class Tools {
         String time = new SimpleDateFormat("mm:ss").format(dt);
         return time;
     }
+
+    // get current date/time
+    public static java.util.Date getDateTimeNow() {
+        //String[] ids = TimeZone.getAvailableIDs();
+        TimeZone tz = TimeZone.getTimeZone("Etc/GMT");
+        java.util.Date dt = Calendar.getInstance(tz).getTime();
+//        SimpleDateFormat df = new SimpleDateFormat("MM/dd HH:mm");
+//        String rc = df.format(dt);
+
+        return dt;
+    }
+
 
     public static int[] secondsToMinutes(int seconds, boolean roundup)
     {

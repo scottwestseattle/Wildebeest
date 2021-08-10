@@ -4,6 +4,7 @@ import com.e.rhino.MainActivity;
 import com.e.rhino.R;
 import com.e.rhino.RssReader;
 import com.e.rhino.Speech;
+import com.e.rhino.Tools;
 import com.e.rhino.UserPreferences;
 import com.e.rhino.exercises.content.ExerciseContent;
 import com.e.rhino.history.content.HistoryContent;
@@ -23,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 
 public class ExercisesActivity extends AppCompatActivity  implements StartFragment.OnListFragmentInteractionListener {
@@ -262,7 +264,8 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         }
 
         RssReader.ping(url);
-        HistoryContent.clear(); // clear the history so it will get updated
+        Date dt = Tools.getDateTimeNow();
+        HistoryContent.addItem(this.programName, this.programId, this.sessionName, this.sessionId, dt, totalSeconds);
     }
 
     private void saveUserPreferences() {

@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRecyclerViewAdapter.ViewHolder> {
 
-    private final List<ProgramItem> mValues;
+    private List<ProgramItem> mValues;
     private final OnListFragmentInteractionListener mListener;
 
     public ProgramsRecyclerViewAdapter(List<ProgramItem> items, OnListFragmentInteractionListener listener) {
@@ -74,6 +74,12 @@ public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRe
         return mValues.size();
     }
 
+    public void updatePrograms(List<ProgramItem> programs)
+    {
+        this.mValues = programs;
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public ProgramItem mItem;
@@ -100,5 +106,7 @@ public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRe
         public String toString() {
             return super.toString() + " '" + programName.getText() + "'";
         }
+
+
     }
 }

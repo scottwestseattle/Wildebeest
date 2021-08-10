@@ -31,8 +31,19 @@ public class HistoryContent {
      */
     public static final Map<Integer, HistoryItem> itemMap = new HashMap<Integer, HistoryItem>();
 
+    // dirty flag: unset when program list is updated / set when history is updated
+    private static boolean mIsDirty = true;
+
     static {
         load();
+    }
+
+    public static boolean isDirty() {
+        return mIsDirty;
+    }
+
+    public static void setDirty(boolean dirty) {
+        mIsDirty = dirty;
     }
 
     public static void clear() {
@@ -45,8 +56,9 @@ public class HistoryContent {
     }
 
     public static void addItem(HistoryItem item) {
-        itemList.add(item);
+        itemList.add(0, item);
         itemMap.put(item.sessionId, item);
+        mIsDirty = true;
     }
 
     public static void load() {

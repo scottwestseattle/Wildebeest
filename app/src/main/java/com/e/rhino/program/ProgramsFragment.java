@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +29,22 @@ public class ProgramsFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-
+    private ProgramsRecyclerViewAdapter mAdapter = null;
     public ProgramsFragment() {
+    }
+
+    @Override
+    // get called every time program fragment is opened
+    public void onStart()
+    {
+        super.onStart();
+
+        // update the program history in case there's been an update
+        if (ProgramContent.updateHistory()) {
+            // if it was updated, update the program list continue buttons
+            if (null != mAdapter)
+                mAdapter.updatePrograms(ProgramContent.programList);
+        }
     }
 
     @Override
@@ -56,15 +71,15 @@ public class ProgramsFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            // update the program history in case there's been an update
-            ProgramContent.updateHistory();
-
             List<ProgramItem> items = ProgramContent.programList;
             int programCount = items.size();
             getActivity().setTitle("Programs: " + programCount);
 
-            recyclerView.setAdapter(new ProgramsRecyclerViewAdapter(items, mListener));
+            mAdapter = new ProgramsRecyclerViewAdapter(items, mListener);
+
+            recyclerView.setAdapter(mAdapter);
         }
+
         return view;
     }
 

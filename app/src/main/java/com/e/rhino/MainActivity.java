@@ -84,27 +84,34 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
 
     private void showHistory() {
 
-        // search history for the first relavent record and abort
-        // this will be done again in HistoryActivity to get all pending exercises
-        List<ProgramItem> programItemList = ProgramContent.programList;
-        for (ProgramItem item : programItemList)
-        {
-            // figure out the next Session from the history records
-            HistoryContent.HistoryItem newestItem = HistoryContent.getNewestItem(item.id);
-            if (null != newestItem)
-            {
-                SessionContent.SessionItem nextSession = RssReader.getNextSession(newestItem.programId, newestItem.sessionId);
-                if (null != nextSession) { // if not all sessions completed then show the next session
+        // just show the history list
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
 
-                    Intent intent = new Intent(this, HistoryActivity.class);
-                    startActivity(intent);
-                    break;
+        //
+        // old way that only updated on first load
+        //
+        if (false) {
+            // search history for the first relavent record and abort
+            // this will be done again in HistoryActivity to get all pending exercises
+            List<ProgramItem> programItemList = ProgramContent.programList;
+            for (ProgramItem item : programItemList) {
+                // figure out the next Session from the history records
+                HistoryContent.HistoryItem newestItem = HistoryContent.getNewestItem(item.id);
+                if (null != newestItem) {
+                    SessionContent.SessionItem nextSession = RssReader.getNextSession(newestItem.programId, newestItem.sessionId);
+                    if (null != nextSession) { // if not all sessions completed then show the next session
+
+                        Intent intent2 = new Intent(this, HistoryActivity.class);
+                        startActivity(intent2);
+                        break;
+                    }
                 }
             }
         }
 
         //
-        // old way with user preferences file
+        // old old way with user preferences file
         //
         if (false) {
             // get the saved user preferences if any
@@ -116,12 +123,12 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
                 //
                 SessionContent.SessionItem sessionItem = RssReader.getNextSession(UserPreferences.mProgramId, UserPreferences.mSessionId);
                 if (null != sessionItem) {
-                    Intent intent = new Intent(this, ExercisesActivity.class);
-                    intent.putExtra("sessionName", sessionItem.name);
-                    intent.putExtra("sessionId", sessionItem.id);
-                    intent.putExtra("courseId", UserPreferences.mProgramId);
-                    intent.putExtra("courseName", sessionItem.parent);
-                    startActivity(intent);
+                    Intent intent3 = new Intent(this, ExercisesActivity.class);
+                    intent3.putExtra("sessionName", sessionItem.name);
+                    intent3.putExtra("sessionId", sessionItem.id);
+                    intent3.putExtra("courseId", UserPreferences.mProgramId);
+                    intent3.putExtra("courseName", sessionItem.parent);
+                    startActivity(intent3);
                 }
                 else {
                     // next session not found so consider this program to be finished

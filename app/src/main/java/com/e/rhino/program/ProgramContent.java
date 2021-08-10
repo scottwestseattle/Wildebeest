@@ -127,19 +127,31 @@ public class ProgramContent {
         }
     }
 
-    static public void updateHistory()
+    static public boolean updateHistory()
     {
-        for (ProgramItem item : programList)
-        {
-            // figure out the next Session from the history records
-            HistoryContent.HistoryItem newestItem = HistoryContent.getNewestItem(item.id);
-            if (null != newestItem)
-            {
-                SessionContent.SessionItem nextSession = RssReader.getNextSession(newestItem.programId, newestItem.sessionId);
-                if (null != nextSession) { // if not all sessions completed then show the next session
-                    item.sessionNext = nextSession.id;
+        boolean rc = false;
+
+        if (HistoryContent.isDirty()) {
+
+            rc = true;
+
+            for (ProgramItem item : programList) {
+                // reset to no next item
+                item.sessionNext = -1;
+
+                // figure out the next Session from the history records
+                HistoryContent.HistoryItem newestItem = HistoryContent.getNewestItem(item.id);
+                if (null != newestItem) {
+                    SessionContent.SessionItem nextSession = RssReader.getNextSession(newestItem.programId, newestItem.sessionId);
+                    if (null != nextSession) { // if not all sessions completed then show the next session
+                        item.sessionNext = nextSession.id;
+                    }
                 }
             }
+
+            HistoryContent.setDirty(false);
         }
+
+        return rc;
     }
 }
