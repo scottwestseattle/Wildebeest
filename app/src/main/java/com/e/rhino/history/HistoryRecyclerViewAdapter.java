@@ -1,19 +1,25 @@
 package com.e.rhino.history;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.e.rhino.R;
+import com.e.rhino.Tools;
 import com.e.rhino.history.HistoryFragment.OnListFragmentInteractionListener;
 import com.e.rhino.history.content.HistoryContent.HistoryItem;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link HistoryItem} and makes a call to the
@@ -41,12 +47,38 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
 
+        // set the date
         SimpleDateFormat df = new SimpleDateFormat("MM/dd HH:mm");
-        String d = df.format(holder.mItem.date);
+        String date = df.format(holder.mItem.date);
+        holder.mIdView.setText(date);
 
-        holder.mIdView.setText(d);
+        // set the session name
         holder.mContentView.setText(holder.mItem.programName + ": " + holder.mItem.sessionName);
 
+        //
+        // show a different bg for current day
+        //
+
+        // record date is already set to local timezone
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String recordDate = dateFormat.format(holder.mItem.date);
+
+        //todo: get day of week and show different backgrounds
+        dateFormat = new SimpleDateFormat("dd"); // use "u" for weekdays
+        String dayOfTheWeek = dateFormat.format(holder.mItem.date);
+        int day = Integer.parseInt(dayOfTheWeek);
+
+        // get today from local timezone
+        //String today = dateFormat.format(new Date());
+
+        if (day % 2 == 0) // change colors for even/odd dates
+            holder.mCardLayout.setBackgroundResource(R.drawable.bg_history_list_gradient);
+        else
+            holder.mCardLayout.setBackgroundResource(R.drawable.bg_history_list_2);
+
+        //
+        // listen for the click
+        //
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,12 +101,14 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         public final TextView mIdView;
         public final TextView mContentView;
         public HistoryItem mItem;
+        public final RelativeLayout mCardLayout;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.textViewHistoryItemDatetime);
             mContentView = (TextView) view.findViewById(R.id.textViewHistoryItemTitle);
+            mCardLayout = (RelativeLayout) view.findViewById(R.id.card_layout);
         }
 
         @Override
