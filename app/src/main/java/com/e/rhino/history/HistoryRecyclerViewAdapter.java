@@ -1,5 +1,6 @@
 package com.e.rhino.history;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;

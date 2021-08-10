@@ -67,8 +67,6 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
                 showHistory();
             }
         });
-
-        //showHistory();
     }
 
     public void onContinueButtonClick(View view) {
@@ -80,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements ProgramsFragment.
         intent.putExtra("sessionId", program.sessionNext);
         intent.putExtra("courseId", program.id);
         intent.putExtra("courseName", program.name);
+
         startActivity(intent);
     }
 

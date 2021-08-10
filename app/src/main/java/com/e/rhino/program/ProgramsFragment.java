@@ -56,6 +56,9 @@ public class ProgramsFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
+            // update the program history in case there's been an update
+            ProgramContent.updateHistory();
+
             List<ProgramItem> items = ProgramContent.programList;
             int programCount = items.size();
             getActivity().setTitle("Programs: " + programCount);

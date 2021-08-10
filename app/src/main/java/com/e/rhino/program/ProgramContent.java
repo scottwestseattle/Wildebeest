@@ -65,8 +65,8 @@ public class ProgramContent {
             }
 
             // load the generated exercise program that uses all
-            boolean useGen = true; // sbw
-            if (useGen) {
+            boolean generate = true;
+            if (generate) {
                 List<SessionContent.SessionItem> sessionItems = new ArrayList<SessionContent.SessionItem>();
                 Map<Integer, SessionContent.SessionItem> sessionMap = new HashMap<Integer, SessionContent.SessionItem>();
 
@@ -121,22 +121,25 @@ public class ProgramContent {
                     }
                 }
             }
-
-            for (ProgramItem item : programList)
-            {
-                // figure out the next Session from the history records
-                HistoryContent.HistoryItem newestItem = HistoryContent.getNewestItem(item.id);
-                if (null != newestItem)
-                {
-                    SessionContent.SessionItem nextSession = RssReader.getNextSession(newestItem.programId, newestItem.sessionId);
-                    if (null != nextSession) { // if not all sessions completed then show the next session
-                        item.sessionNext = nextSession.id;
-                    }
-                }
-            }
         }
         else {
             Log.i("ProgramContent", "Programs already loaded");
+        }
+    }
+
+    static public void updateHistory()
+    {
+        for (ProgramItem item : programList)
+        {
+            // figure out the next Session from the history records
+            HistoryContent.HistoryItem newestItem = HistoryContent.getNewestItem(item.id);
+            if (null != newestItem)
+            {
+                SessionContent.SessionItem nextSession = RssReader.getNextSession(newestItem.programId, newestItem.sessionId);
+                if (null != nextSession) { // if not all sessions completed then show the next session
+                    item.sessionNext = nextSession.id;
+                }
+            }
         }
     }
 }

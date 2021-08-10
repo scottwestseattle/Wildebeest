@@ -1,5 +1,6 @@
 package com.e.rhino.exercises;
 
+import com.e.rhino.MainActivity;
 import com.e.rhino.R;
 import com.e.rhino.RssReader;
 import com.e.rhino.Speech;
@@ -15,18 +16,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 
 import java.net.URLEncoder;
-import java.util.Date;
 import java.util.List;
-import java.util.prefs.Preferences;
 
 public class ExercisesActivity extends AppCompatActivity  implements StartFragment.OnListFragmentInteractionListener {
 
@@ -137,8 +134,16 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
                     setFabPlayIcon(showPlayIcon);
                     ((ExerciseFragment) fragment).onHardStop();
                 } else if (fragment instanceof FinishedFragment) {
-                    setFabPlayIcon(showPlayIcon);
-                    loadFragment("StartFragment");
+                    boolean old = false;
+                    if (old) {
+                        setFabPlayIcon(showPlayIcon);
+                        loadFragment("StartFragment");
+                    }
+                    else
+                    {
+                        backToPrograms();
+                        end();
+                    }
                 }
             }
         });
@@ -166,6 +171,12 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
                 }
             }
         });
+    }
+
+    private void backToPrograms()
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void loadSessionInfo(Intent intent) {
@@ -251,8 +262,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         }
 
         RssReader.ping(url);
-
-        HistoryContent.clear(); // clear the history so it will have to reload for the next view
+        HistoryContent.clear(); // clear the history so it will get updated
     }
 
     private void saveUserPreferences() {

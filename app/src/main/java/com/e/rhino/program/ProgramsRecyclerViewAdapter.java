@@ -94,7 +94,6 @@ public class ProgramsRecyclerViewAdapter extends RecyclerView.Adapter<ProgramsRe
             sessionCount = (TextView)view.findViewById(R.id.session_count);
             programLayout = (RelativeLayout) view.findViewById(R.id.program_layout);
             continueButton = (Button) view.findViewById(R.id.buttonStart);
-            //continueButton.setPadding(30, 20,30,20);
         }
 
         @Override

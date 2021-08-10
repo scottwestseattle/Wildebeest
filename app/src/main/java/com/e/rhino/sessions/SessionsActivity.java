@@ -64,7 +64,7 @@ public class SessionsActivity extends AppCompatActivity  implements SessionsFrag
 
     public void navigateUp() {
         //
-        // start the selected exercise
+        // back up to the program list
         //
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("courseId", courseId);
