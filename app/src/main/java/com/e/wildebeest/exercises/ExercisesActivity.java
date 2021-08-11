@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
 import java.net.URLEncoder;
 import java.util.Date;
@@ -53,6 +54,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         exercises = new ExerciseContent(this.programId, this.sessionId);
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_exercises);
 
         // set title and subtitle
@@ -228,11 +230,13 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
                     fragment = new BreakFragment();
                     break;
                 case "ExerciseFragment":
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                     fragment = new ExerciseFragment();
                     break;
                 case "FinishedFragment":
                     saveHistory();
                     fragment = new FinishedFragment();
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                     break;
                 default:
                     break;
@@ -284,6 +288,7 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
     }
 
     public void end() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         finish();
         return;
     }
