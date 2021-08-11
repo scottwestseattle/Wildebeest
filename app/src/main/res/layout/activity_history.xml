@@ -12,7 +12,7 @@
 
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.e.rhino.history.HistoryFragment"
+        android:name="com.e.wildebeest.history.HistoryFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="5dp"

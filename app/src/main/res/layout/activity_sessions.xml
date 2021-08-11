@@ -7,7 +7,7 @@
     tools:context=".sessions.SessionsActivity">
 
     <fragment
-        android:name="com.e.rhino.sessions.SessionsFragment"
+        android:name="com.e.wildebeest.sessions.SessionsFragment"
         android:id="@+id/sessionsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
