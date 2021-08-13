@@ -245,7 +245,7 @@ public class BreakFragment extends Fragment {
                 }
                 else
                 {
-                    // Get ready to start in # seconds.
+                    // Get ready to start in # seconds
                     title = getResources().getString(R.string.exercise_get_ready);
                     text = title + " to start in " + seconds + " seconds.";
 

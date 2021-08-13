@@ -70,8 +70,8 @@ public class ExerciseContent {
 
             case mTypeStarter2:
                 list.add(new ExerciseItem("Plank", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Plank Cross Tap", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Plank with leg lift", seconds, index++, type, eInstructionType.switchLeg));
+                list.add(new ExerciseItem("Plank Cross Tap", seconds, index++, type, eInstructionType.none));
                 break;
 
             case mTypeStarter3:
@@ -194,6 +194,7 @@ public class ExerciseContent {
 
             add(getIndex(plank, index));
             add(getIndex(abs, index));
+            add(fixed.get(indexPushups++)); // first set of push ups
 
             // Sides
             ExerciseItem itemSideLeft = getIndex(sideLeft, index); // needed in order to get it's position
@@ -201,7 +202,6 @@ public class ExerciseContent {
             add(itemSideLeft);
             add(sideRight.get(order)); // match up the left and right sides
 
-            add(fixed.get(indexPushups++)); // first set of push ups
             add(getIndex(dolphinPlank, index));
             add(getIndex(reverse, index));
             add(getIndex(knees, index));
