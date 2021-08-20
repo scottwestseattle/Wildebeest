@@ -50,12 +50,11 @@ public class Speech  {
                     //todo: Set language to Spanish
                     if (false) {
                         Locale locSpanish = new Locale("spa", "ESP");
-                        //tts.setLanguage(locSpanish);
+                        tts.setLanguage(locSpanish);
 
-                        Resources resources = context.getResources();
-                        Configuration configuration = resources.getConfiguration();
-                        configuration.setLocale(locSpanish);
-                        ready = resources.getString(R.string.language_loaded);
+                        //Resources resources = context.getResources();
+                        //Configuration configuration = resources.getConfiguration();
+                        //configuration.setLocale(locSpanish);
                     }
 
                     ready = context.getResources().getString(R.string.language_loaded);

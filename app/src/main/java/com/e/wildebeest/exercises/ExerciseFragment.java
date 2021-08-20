@@ -157,9 +157,6 @@ public class ExerciseFragment extends Fragment {
 
         if (exerciseItem.mInstructionType == ExerciseContent.eInstructionType.none) {
             // if exercise has recognized written instructions, standardize and randomize them
-            if (exerciseItem.name.toLowerCase().toLowerCase().contains("leg lift")) {
-                exerciseItem.mInstructionType = ExerciseContent.eInstructionType.switchLeg;
-            }
             if (exerciseItem.instructions.length() > 0) {
                 if (exerciseItem.instructions.toLowerCase().contains("legs"))
                     exerciseItem.mInstructionType = ExerciseContent.eInstructionType.switchLeg;

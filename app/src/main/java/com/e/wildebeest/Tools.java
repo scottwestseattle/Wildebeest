@@ -37,7 +37,6 @@ public class Tools {
         return dt;
     }
 
-
     public static int[] secondsToMinutes(int seconds, boolean roundup)
     {
         int time[] = {0, 0};

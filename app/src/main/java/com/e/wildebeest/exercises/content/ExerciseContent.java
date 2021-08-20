@@ -145,7 +145,7 @@ public class ExerciseContent {
                 list.add(new ExerciseItem("Happy Baby", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Squatting Buddha", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Standing Forward Bend", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Superman", seconds, index++, type, eInstructionType.switchSide));
+                list.add(new ExerciseItem("Superman", seconds, index++, type, eInstructionType.none));
                 break;
 
             case mTypeRestDay:
@@ -162,9 +162,9 @@ public class ExerciseContent {
     private void generate(int sessionId) {
         exerciseList.clear();
 
-        int seconds = 40;
         boolean restDay = (sessionId % 7) == 0; // rest every 7 days
         int totalRestDays = sessionId / 7; // number of rest days so far
+        int seconds = 40 + (totalRestDays * 5); // add 5 seconds per week
 
         if (restDay) // rest day is once a week
         {
