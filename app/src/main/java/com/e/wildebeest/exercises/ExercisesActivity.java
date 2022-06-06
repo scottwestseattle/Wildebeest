@@ -33,6 +33,8 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
     private Toolbar mToolbar;
     public static ExerciseContent exercises = null;
     public int currentExerciseIndex = -1;
+
+    // History parameters
     public int programId = -1;
     public String programName = "";
     public int sessionId = -1;
@@ -253,21 +255,22 @@ public class ExercisesActivity extends AppCompatActivity  implements StartFragme
         saveUserPreferences();
 
         // save the history on the server
-        String url = "history/add-public/";
         int totalSeconds = (int) this.exercises.getTotalSeconds();
+        String parameters = "";
         try {
-            url += URLEncoder.encode(this.programName, "utf-8") + "/";
-            url += this.programId + "/";
-            url += URLEncoder.encode(this.sessionName, "utf-8") + "/";
-            url += this.sessionId + "/";
-            url += totalSeconds;
+            parameters += "programType=" + RssReader.historyTypeExercise;
+            parameters += "&programName=" + URLEncoder.encode(this.programName, "utf-8");
+            parameters += "&programId=" + this.programId;
+            parameters += "&sessionName=" + URLEncoder.encode(this.sessionName, "utf-8");
+            parameters += "&sessionId=" + this.sessionId;
+            parameters += "&seconds=" + totalSeconds;
         }
         catch(Exception e)
         {
             Log.e("Exercise", "Error encoding url: " + e.getMessage());
         }
 
-        RssReader.ping(url);
+        RssReader.ping(RssReader.historyUrl + parameters);
         Date dt = Tools.getDateTimeNow();
         HistoryContent.addItem(this.programName, this.programId, this.sessionName, this.sessionId, dt, totalSeconds);
     }

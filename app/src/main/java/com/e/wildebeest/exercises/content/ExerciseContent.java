@@ -60,7 +60,10 @@ public class ExerciseContent {
     {
         List<ExerciseItem> list = new ArrayList<ExerciseItem>();
         int index = 0;
-        int secondsShort = seconds - 10;
+        int secondsShort = seconds - 10;                    // less seconds for the side exercises
+        int secondsCloser = (seconds > 45) ? 45 : seconds;  // max 45 secs for the closer
+        int secondsFixed = 60;                              // fixed exercise seconds
+
         switch(type)
         {
             case mTypeStarter1:
@@ -82,8 +85,7 @@ public class ExerciseContent {
                 break;
 
             case mTypeAbs:
-                seconds = 40;
-                list.add(new ExerciseItem("Ab Scissors", seconds, index++, type, eInstructionType.none));
+                 list.add(new ExerciseItem("Ab Scissors", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Bicycle Abs", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Cat", seconds, index++, type, eInstructionType.none));
                 list.add(new ExerciseItem("Leg Lift", seconds, index++, type, eInstructionType.none));
@@ -117,11 +119,11 @@ public class ExerciseContent {
                 break;
 
             case mTypeFixed:
-                list.add(new ExerciseItem("Curls", 120, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Curls", secondsFixed * 2, index++, type, eInstructionType.none));
 
                 // we need two different push ups so the orders will show correctly
-                list.add(new ExerciseItem("Push-ups", 60, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Push-ups", 60, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Push-ups", secondsFixed, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Push-ups", secondsFixed, index++, type, eInstructionType.none));
                 break;
 
             case mTypeSideLeft:
@@ -139,13 +141,13 @@ public class ExerciseContent {
                 break;
 
             case mTypeCloser:
-                list.add(new ExerciseItem("Bow", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Child", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Cobra", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Happy Baby", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Squatting Buddha", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Standing Forward Bend", seconds, index++, type, eInstructionType.none));
-                list.add(new ExerciseItem("Superman", seconds, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Bow", secondsCloser, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Child", secondsCloser, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Cobra", secondsCloser, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Happy Baby", secondsCloser, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Squatting Buddha", secondsCloser, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Standing Forward Bend", secondsCloser, index++, type, eInstructionType.none));
+                list.add(new ExerciseItem("Superman", secondsCloser, index++, type, eInstructionType.none));
                 break;
 
             case mTypeRestDay:
@@ -163,8 +165,9 @@ public class ExerciseContent {
         exerciseList.clear();
 
         boolean restDay = (sessionId % 7) == 0; // rest every 7 days
-        int totalRestDays = sessionId / 7; // number of rest days so far
-        int seconds = 40 + (totalRestDays * 5); // add 5 seconds per week
+        int weeks = sessionId / 7;      // number of rest days so far
+        int seconds = 40;               // starting  seconds
+        seconds += (weeks * 5);         // add 5 seconds per week to the base of 40 seconds
 
         if (restDay) // rest day is once a week
         {
@@ -185,22 +188,23 @@ public class ExerciseContent {
             List<ExerciseItem> fixed = load(mTypeFixed, seconds);
             List<ExerciseItem> closer = load(mTypeCloser, seconds);
 
-            int index = (sessionId - 1) - totalRestDays; // don't skip exercises after rest days
-            int indexPushups = 1;
+            //
+            // add 12 exercises, cycling through each category based on the sessionId
+            // for example: sessionId 5 would be the 5th exercise or would wrap around if less than 5.
+            //
 
-            //
-            // 12 exercises
-            //
+            int index = (sessionId - 1) - weeks;    // adjustment to not skip the exercise after rest days
+            int indexPushups = 1;                   // pushups is a fixed exercise
 
             add(getIndex(plank, index));
             add(getIndex(abs, index));
             add(fixed.get(indexPushups++)); // first set of push ups
 
-            // Sides
+            // Sides - the side exercises always stay together, left then right
             ExerciseItem itemSideLeft = getIndex(sideLeft, index); // needed in order to get it's position
             int order = itemSideLeft.order;
             add(itemSideLeft);
-            add(sideRight.get(order)); // match up the left and right sides
+            add(sideRight.get(order));      // match up the left and right sides of the side exercises
 
             add(getIndex(dolphinPlank, index));
             add(getIndex(reverse, index));

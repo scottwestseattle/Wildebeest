@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class RssReader {
 
-    static private String mServer = "https://espdaily.com/";
+    static private String mServer = "https://lunalanguage.com/";
     static private XmlPullParserFactory xmlFactoryObject;
     static private volatile boolean parsingComplete = false;
     static public String urlString = "";
@@ -54,6 +54,8 @@ public class RssReader {
     static List<ExerciseContent.ExerciseItem> exerciseItems = null;
 
     // History
+    static public String historyUrl = "history/add-public?";
+    static public int historyTypeExercise = 50;
     static private String historyDatetime = "";
     static private String historyProgramName = "";
     static private int historyProgramId = -1;
@@ -125,7 +127,7 @@ public class RssReader {
     }
 
     static public void fetchHistoryList(List<HistoryContent.HistoryItem> items) {
-        String url = mServer + "history/rss";
+        String url = mServer + "history/rss?type=" + historyTypeExercise;
         items.clear();
         historyItems = items;
         fetchXML(url);

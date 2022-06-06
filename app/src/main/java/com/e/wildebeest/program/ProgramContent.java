@@ -63,7 +63,7 @@ public class ProgramContent {
             }
 
             // load the generated exercise program that uses all
-            boolean generate = true;
+            boolean generate = false;
             if (generate) {
                 List<SessionContent.SessionItem> sessionItems = new ArrayList<SessionContent.SessionItem>();
                 Map<Integer, SessionContent.SessionItem> sessionMap = new HashMap<Integer, SessionContent.SessionItem>();
