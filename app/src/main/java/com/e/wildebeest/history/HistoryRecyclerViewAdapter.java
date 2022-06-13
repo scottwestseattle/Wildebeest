@@ -64,7 +64,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 
         // get today from local timezone
         //String today = dateFormat.format(new Date());
-        if (day % 2 == 0) // change colors for even/odd dates
+        if (position % 2 == 0) // change colors for even/odd position (before it used the day even/odd)
             holder.mCardLayout.setBackgroundResource(R.drawable.bg_history_list_gradient);
         else
             holder.mCardLayout.setBackgroundResource(R.drawable.bg_history_list_2);
